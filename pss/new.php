@@ -69,7 +69,7 @@
   <body>
       
 <?php
-
+//初始化数据库
 include_once 'db.php';
 
 //判断用户是否是从首页进入
@@ -80,9 +80,15 @@ if(!isset($_POST['lastNumber'])){
         $lastPRnumber = $_POST['lastNumber'] + 1;
 }
 
+//判断用户是否填写了邮件地址
 if(isset($_POST['requestor']) && $_POST['requestor']){
     $requestor=$_POST['requestor'];
+}else{
+    echo '<div class="error"> Sorry, please enter your mail address first!<br><a href="index.php">Go Back</a></div>';  
+    return false;    
 }
+
+//判断当前的PR编号是否己经存在
 
 $sqlCheckRequest = "SELECT `prNumber` FROM `request` WHERE `prNumber` = $lastPRnumber";
 $stmtCheckRequest = $db->prepare($sqlCheckRequest);
