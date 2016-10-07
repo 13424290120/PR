@@ -12,6 +12,20 @@
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery.min.js"></script>    
+    
+    
+    <script type = "text/javascript" language = "javascript">
+       $(document).ready(function() {
+          $("#searchButton").click(function(){
+             var searchString = $("#searchBox").val();
+             // alert (searchString);
+            $("#showTable").load('ajax.php', {"prNumber":searchString} );
+          });         
+       }); 
+    </script>   
+    
+    
   </head>
   <body>
       
@@ -36,10 +50,11 @@
           </ul>
         </nav>
           <div style="margin:10px;width:100px;float:left;"><img src="img/pss-logo.png"></img></div>
-          <div style="margin:10px 0px 0px 400px;width:300px;float:left;"><h3>Purchasing History</h3></div>
+          <div style="margin:10px 0px 0px 300px;width:300px;float:left;"><h3>Purchasing History</h3></div>
+          <div style="margin:20px 50px 0px 0px;float:right;"><input id="searchBox" type="text" placeholder="PR number" class="form-control-static"> <input id="searchButton" type="button" value="Search" class="btn btn-success"></div>
       </div> 
       
-        <div>
+        <div id="showTable">
             <table class="table table-hover">
                 <tr>
                     <th>prNumber</th>

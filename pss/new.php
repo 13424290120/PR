@@ -57,11 +57,7 @@
 
             });
           
-       });
-       
-       // To post data to database by ajax
-       
-  
+       }); 
     </script>
     
   </head>
