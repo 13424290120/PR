@@ -103,7 +103,7 @@ if (!$rowCheckRequest){
     return false;
 }
 
-//从数据库取出字典数据，生成下单清单
+//从数据库取出字典数据，生成表单下拉清单
 
 $currentDate = date("Y-m-d");
 
@@ -128,8 +128,7 @@ $stmtInvoice->execute();
     <div id="content" class="container" style="width:1000px;">
         <form id="ajaxform" name="ajaxform" action="ajax-form-submit.php" method="post">
       <div class="page-header">
-          <h1>PremiumSoundSolutions<small> Purchase Requisition</small></h1>
-          
+          <h1>PremiumSoundSolutions<small> Purchase Requisition</small></h1>          
           PR Number: <input type="text" class="prinput" name="prNumber" value="<?php echo $lastPRnumber ?>">
           PR Date: <input type="text" class="prinput" name="prDate" value="<?php echo $currentDate ?>">
       </div>        

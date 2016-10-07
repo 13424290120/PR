@@ -29,14 +29,14 @@
         
       ?>
       <div class="container" style="width:1280px;">
-      <div class="page-header clearfix">
+          <div class="page-header clearfix" style="display:inline;">
         <nav>
           <ul class="nav nav-pills pull-right">
             <li role="presentation"><a href="mailto:jackson.li@premiumsoundsolutions.com">Contact Support</a></li>
           </ul>
         </nav>
           <div style="margin:10px;width:100px;float:left;"><img src="img/pss-logo.png"></img></div>
-          <div style="margin:10px;width:400px;float:right;"></div>
+          <div style="margin:10px 0px 0px 400px;width:300px;float:left;"><h3>Purchasing History</h3></div>
       </div> 
       
         <div>
