@@ -70,7 +70,7 @@
                 <?php
                   while($rowList = $stmtList->fetch(PDO::FETCH_ASSOC)){                      
                     echo "<tr>";
-                    echo "<td>".$rowList["prNumber"]."</td>";
+                    echo "<td><a href=edit.php?id=" .$rowList["prNumber"].">".$rowList["prNumber"]."</a></td>";
                     echo "<td>".$rowList["supplierName"]."</td>";
                     echo "<td>".$rowList["prDate"]."</td>";
                     echo "<td>".$rowList["categoryName"]."</td>";

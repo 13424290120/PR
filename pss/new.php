@@ -20,10 +20,10 @@
     <script type = "text/javascript" language = "javascript">
         // To get the invoice address from database by ajax
        $(document).ready(function() {
-          $("#mySelect").change(function(event){
-             var invoiceId = $(this).val();
-             $("#address").load('ajax.php', {"id":invoiceId} );
-          });
+            $("#mySelect").change(function(event){
+               var invoiceId = $(this).val();
+               $("#address").load('ajax.php', {"id":invoiceId} );
+            });
           
             $("#printButton").click(function()
             {
@@ -56,6 +56,37 @@
                     window.print();
 
             });
+            
+            $("#saveButton").click(function()
+            {
+                    $("#gridForm").submit(function(e)
+                    {
+                            $("#simple-msg").html("");
+                            var postData = $(this).serializeArray();
+                            var formURL = $(this).attr("action");
+                            $.ajax(
+                            {
+                                    url : formURL,
+                                    type: "POST",
+                                    data : postData,
+                                    success:function(data, textStatus, jqXHR) 
+                                    {
+                                            $("#simple-msg").html('<pre><code class="prettyprint">'+data+'</code></pre>');
+                                           //$("#simple-msg").fadeOut(5000);
+
+                                    },
+                                    error: function(jqXHR, textStatus, errorThrown) 
+                                    {
+                                            $("#simple-msg").html('<pre><code class="prettyprint">AJAX Request Failed<br/> textStatus='+textStatus+', errorThrown='+errorThrown+'</code></pre>');
+                                    }
+                            });
+                        e.preventDefault();	//STOP default action
+                        //e.unbind();
+                    });
+
+                    $("#gridForm").submit(); //SUBMIT FORM
+            });           
+            
           
        }); 
     </script>
@@ -90,6 +121,8 @@ $sqlCheckRequest = "SELECT `prNumber` FROM `request` WHERE `prNumber` = $lastPRn
 $stmtCheckRequest = $db->prepare($sqlCheckRequest);
 $stmtCheckRequest->execute();
 $rowCheckRequest = $stmtCheckRequest->fetch(PDO::FETCH_ASSOC);
+
+//如果PR单不存在，就新增该PR单
 if (!$rowCheckRequest){
     $sqlNewRequest = "INSERT INTO `request` (`prNumber`,`requestor`) VALUE('$lastPRnumber','$requestor');";
     $stmtNewRequest = $db->prepare($sqlNewRequest);
@@ -138,7 +171,7 @@ $stmtInvoice->execute();
           </div>
           <div class="col-xs-6">
               <p><span class="badge">Invoice Info</span></p>
-              Invoice to:
+              Invoice to:              
               <select id="mySelect" class="form-control" name="invoiceTo" >
                   <option value="0" selected="selected">------------------------------</option>
                   <?php
@@ -190,12 +223,12 @@ $stmtInvoice->execute();
         
         <div class="row">
           <div class="col-xs-4">
-              Delivery Date Required:<input class="form-control"></input>
+              Delivery Date Required:<input type="date" name="deliveryDate" class="form-control"></input>
               <span class="badge" style="margin:20px;">With In Budget: <input  type="radio" name="withInBudget" value="1" checked>Yes</input>
               <input type="radio" name="withInBudget" value="0">No</input></span>              
           </div>
           <div class="col-xs-4">
-              Project/Study:<input class="form-control" name="projectName"></input>
+              Currency:<select name="currency" class="form-control"><option></option><option>RMB</option><option>HKD</option><option>USD</option><option>EURO</option></select>
               <span class="badge" style="margin:20px;"> Recoverable: <input  type="radio" name="Recoverable" value="1">Yes</input>
               <input  type="radio" name="Recoverable" value="0" checked>No</input></span>
           </div>
@@ -214,142 +247,133 @@ $stmtInvoice->execute();
               Purpose:<textarea class="form-control" rows="3" name="purpose"></textarea>
           </div>         
         </div>
-        
+    </form>
+
         <hr></hr>
         
         
         <div class="row">
-          <div class="col-xs-12">           
-
+          <div class="col-xs-12">
+          <form id="gridForm" action="ajax-gridform-save.php" method="post">
+              <input type="hidden" name="prNumber" value="<?php echo $lastPRnumber ?>">  
             <table id="order-table" class="table-hover">
                     <tr>
                             <th style="width:55%;">Item</th>
-                            <th style="width:10%;">Currency</th>                
-                            <th style="width:10%;">UnitPrice</th>		
-                            <th style="width:10%;">Quantity</th>
+                            <th style="width:20%;">Project</th>               
+                            <th style="width:8%;">UnitPrice</th>		
+                            <th style="width:5%;">Quantity</th>
                             <th style="width:10%;">Subtotal</th>
                     </tr>
                     <tr>
-                            <td class="product-title"><input type="text" class="form-control"></td>
-                            <td class="equals"><select class="form-control"><option></option><option>RMB</option><option>HKD</option><option>USD</option><option>EURO</option></select></td>                
-                            <td><input type="text" class="price-per-pallet form-control"></input></td>
+                            <td class="product-title"><input name="row1[]" type="text" class="form-control"></td>
+                            <td class="product-title"><input name="row1[]" type="text" class="form-control"></td>
+                            <td><input name="row1[]" type="text" class="price-per-pallet form-control"></input></td>
                             <td class="num-pallets">
-                                    <input type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
+                                    <input name="row1[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
                             </td>                
                             <td class="row-total">
-                                    <input type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
+                                    <input name="row1[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
                             </td>
                     </tr>
                     <tr>
-                            <td class="product-title"><input type="text" class="form-control"></td>
-                            <td class="equals"><select class="form-control"><option></option><option>RMB</option><option>HKD</option><option>USD</option><option>EURO</option></select></td>                
-                            <td><input type="text" class="price-per-pallet form-control"></input></td>
+                            <td class="product-title"><input name="row2[]" type="text" class="form-control"></td>
+                            <td class="product-title"><input name="row2[]" type="text" class="form-control"></td>
+                            <td><input name="row2[]" type="text" class="price-per-pallet form-control"></input></td>
                             <td class="num-pallets">
-                                    <input type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
+                                    <input name="row2[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
                             </td>                
                             <td class="row-total">
-                                    <input type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
+                                    <input name="row2[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
                             </td>
                     </tr>
                     <tr>
-                            <td class="product-title"><input type="text" class="form-control"></td>
-                            <td class="equals"><select class="form-control"><option></option><option>RMB</option><option>HKD</option><option>USD</option><option>EURO</option></select></td>                
-                            <td><input type="text" class="price-per-pallet form-control"></input></td>
+                            <td class="product-title"><input name="row3[]" type="text" class="form-control"></td>
+                            <td class="product-title"><input name="row3[]" type="text" class="form-control"></td>
+                            <td><input name="row3[]" type="text" class="price-per-pallet form-control"></input></td>
                             <td class="num-pallets">
-                                    <input type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
+                                    <input name="row3[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
                             </td>                
                             <td class="row-total">
-                                    <input type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
+                                    <input name="row3[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
                             </td>
                     </tr>
                     <tr>
-                            <td class="product-title"><input type="text" class="form-control"></td>
-                            <td class="equals"><select class="form-control"><option></option><option>RMB</option><option>HKD</option><option>USD</option><option>EURO</option></select></td>                
-                            <td><input type="text" class="price-per-pallet form-control"></input></td>
+                            <td class="product-title"><input name="row4[]" type="text" class="form-control"></td>
+                            <td class="product-title"><input name="row4[]" type="text" class="form-control"></td>
+                            <td><input name="row4[]" type="text" class="price-per-pallet form-control"></input></td>
                             <td class="num-pallets">
-                                    <input type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
+                                    <input name="row4[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
                             </td>                
                             <td class="row-total">
-                                    <input type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
+                                    <input name="row4[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
                             </td>
                     </tr>
                     <tr>
-                            <td class="product-title"><input type="text" class="form-control"></td>
-                            <td class="equals"><select class="form-control"><option></option><option>RMB</option><option>HKD</option><option>USD</option><option>EURO</option></select></td>                
-                            <td><input type="text" class="price-per-pallet form-control"></input></td>
+                            <td class="product-title"><input name="row5[]" type="text" class="form-control"></td>
+                            <td class="product-title"><input name="row5[]" type="text" class="form-control"></td>
+                            <td><input name="row5[]" type="text" class="price-per-pallet form-control"></input></td>
                             <td class="num-pallets">
-                                    <input type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
+                                    <input name="row5[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
                             </td>                
                             <td class="row-total">
-                                    <input type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
+                                    <input name="row5[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
                             </td>
                     </tr>
                     <tr>
-                            <td class="product-title"><input type="text" class="form-control"></td>
-                            <td class="equals"><select class="form-control"><option></option><option>RMB</option><option>HKD</option><option>USD</option><option>EURO</option></select></td>                
-                            <td><input type="text" class="price-per-pallet form-control"></input></td>
+                            <td class="product-title"><input name="row6[]" type="text" class="form-control"></td>
+                            <td class="product-title"><input name="row6[]" type="text" class="form-control"></td>
+                            <td><input name="row6[]" type="text" class="price-per-pallet form-control"></input></td>
                             <td class="num-pallets">
-                                    <input type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
+                                    <input name="row6[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
                             </td>                
                             <td class="row-total">
-                                    <input type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
+                                    <input name="row6[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
                             </td>
                     </tr>
                     <tr>
-                            <td class="product-title"><input type="text" class="form-control"></td>
-                            <td class="equals"><select class="form-control"><option></option><option>RMB</option><option>HKD</option><option>USD</option><option>EURO</option></select></td>                
-                            <td><input type="text" class="price-per-pallet form-control"></input></td>
+                            <td class="product-title"><input name="row7[]" type="text" class="form-control"></td>
+                            <td class="product-title"><input name="row7[]" type="text" class="form-control"></td>
+                            <td><input name="row7[]" type="text" class="price-per-pallet form-control"></input></td>
                             <td class="num-pallets">
-                                    <input type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
+                                    <input name="row7[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
                             </td>                
                             <td class="row-total">
-                                    <input type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
+                                    <input name="row7[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
                             </td>
                     </tr>
                     <tr>
-                            <td class="product-title"><input type="text" class="form-control"></td>
-                            <td class="equals"><select class="form-control"><option></option><option>RMB</option><option>HKD</option><option>USD</option><option>EURO</option></select></td>                
-                            <td><input type="text" class="price-per-pallet form-control"></input></td>
+                            <td class="product-title"><input name="row8[]" type="text" class="form-control"></td>
+                            <td class="product-title"><input name="row8[]" type="text" class="form-control"></td>
+                            <td><input name="row8[]" type="text" class="price-per-pallet form-control"></input></td>
                             <td class="num-pallets">
-                                    <input type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
+                                    <input name="row8[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
                             </td>                
                             <td class="row-total">
-                                    <input type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
+                                    <input name="row8[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
                             </td>
                     </tr>
                     <tr>
-                            <td class="product-title"><input type="text" class="form-control"></td>
-                            <td class="equals"><select class="form-control"><option></option><option>RMB</option><option>HKD</option><option>USD</option><option>EURO</option></select></td>                
-                            <td><input type="text" class="price-per-pallet form-control"></input></td>
+                            <td class="product-title"><input name="row9[]" type="text" class="form-control"></td>
+                            <td class="product-title"><input name="row9[]" type="text" class="form-control"></td>
+                            <td><input name="row9[]" type="text" class="price-per-pallet form-control"></input></td>
                             <td class="num-pallets">
-                                    <input type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
+                                    <input name="row9[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
                             </td>                
                             <td class="row-total">
-                                    <input type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
+                                    <input name="row9[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
                             </td>
                     </tr>
+
                     <tr>
-                            <td class="product-title"><input type="text" class="form-control"></td>
-                            <td class="equals"><select class="form-control"><option></option><option>RMB</option><option>HKD</option><option>USD</option><option>EURO</option></select></td>                
-                            <td><input type="text" class="price-per-pallet form-control"></input></td>
-                            <td class="num-pallets">
-                                    <input type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
-                            </td>                
-                            <td class="row-total">
-                                    <input type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
-                            </td>
-                    </tr>
-                    <tr>
-                            <td>Total:</td>
-                            <td></td>
-                            <td></td>
+                            <td>Total:</td>                            
+                            <td><input id="saveButton" type="button" value=">>> Save <<<" class="btn btn-success"></td>
                             <td></td>
                             <td colspan="6" style="text-align: right;">
                                     <input type="text" class="total-box form-control" id="product-subtotal" name="total"></input>
                             </td>
                     </tr>
             </table>
-
+          </form>
           </div>         
         </div>
 
@@ -379,7 +403,6 @@ $stmtInvoice->execute();
             <center><input id="printButton" type="button" value=">>> Print This Form <<<" class="btn btn-success"></center>
             <hr>
         </div>        
-        </form>
     </div>
   </body>
 </html>
