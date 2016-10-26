@@ -139,6 +139,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
     
     
     $arrayGridContents = unserialize($gridContents); //将表格内容由文本序列转换成数组
+    //print_r($arrayGridContents);
 
 ?>
 
@@ -173,7 +174,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                   }
                   ?> 
               </select>              
-              Address:<textarea id="address" class="form-control" rows="3"></textarea>
+              Address:<textarea id="address" name="invoiceAddress" class="form-control" rows="3"><?php echo $row['invoiceAddress'] ?></textarea>
 
           </div>
         </div>   
@@ -202,9 +203,9 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                   <?php
                   while($rowCostCode = $stmtCostCode->fetch(PDO::FETCH_ASSOC)){
                       if($rowCostCode['id']===$row['costCode']){
-                          echo "<option value=\"$rowCostCode['id']\" selected='selected'>".$rowCostCode['codeName']."</option>";
+                          echo "<option value=".$rowCostCode['id']." selected='selected'>".$rowCostCode['code']." - ".$rowCostCode['codeName']."</option>";                          
                       }else{
-                          echo "<option value=\"$rowCostCode['id']\">".$rowCostCode['code']." - ".$rowCostCode['codeName']."</option>"; 
+                          echo "<option value=".$rowCostCode['id'].">".$rowCostCode['code']." - ".$rowCostCode['codeName']."</option>"; 
                       }
                                            
                   }
@@ -218,9 +219,9 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                   <?php
                   while($rowAccount = $stmtAccount->fetch(PDO::FETCH_ASSOC)){
                       if($rowAccount['id']===$row['accountNumber']){
-                          echo "<option value=\"$rowAccount['id']\" selected='selected'>".$rowAccount['accountNumber']." - ".$rowAccount['description']."</option>";
+                          echo "<option value=".$rowAccount['id']." selected='selected'>".$rowAccount['accountNumber']." - ".$rowAccount['description']."</option>";
                       }else{
-                          echo "<option value=\"$rowAccount['id']\">".$rowAccount['accountNumber']." - ".$rowAccount['description']."</option>";
+                          echo "<option value=".$rowAccount['id'].">".$rowAccount['accountNumber']." - ".$rowAccount['description']."</option>";
                       }
                                             
                   }
@@ -281,29 +282,32 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                     </tr>
                     
                     <?php
-                    foreach($arrayGridContents as $gridRow){ //遍历表格内容数组
+                    $i = 1; //定义行号                    
+                    foreach($arrayGridContents as $gridRow){ //遍历表格内容数组 
+                        
                         if(is_array($gridRow)){ 
+                            $inputName = "row".$i."[]"; // 定义输入框名称，以数组的形式存储数据
                             echo "<tr>";
-                            echo "        <td class='product-title'><input name='item[]' type='text' value=\"$gridRow[0]\" class='form-control' ></td>";
-                            echo "        <td class='product-title'><input name='project[]' type='text' value=\"$gridRow[1]\" class='form-control'></td>";
-                            echo "        <td><input name='unitprice[]' type='text'  value=\"$gridRow[2]\" class='price-per-pallet form-control'></td>";
+                            echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='form-control' ></td>";
+                            echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[1]\" class='form-control'></td>";
+                            echo "        <td><input name=\"$inputName\" type='text'  value=\"$gridRow[2]\" class='price-per-pallet form-control'></td>";
                             echo "        <td class='num-pallets'>";
-                            echo "                <input name='quantity[]' type='text' value=\"$gridRow[3]\" class='num-pallets-input form-control' id='turface-pro-league-num-pallets'>";
+                            echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[3]\" class='num-pallets-input form-control' id='turface-pro-league-num-pallets'>";
                             echo "        </td>";             
                             echo "        <td class='row-total'>";
-                            echo "                <input name='subtotal[]' type='text'  class='row-total-input form-control' id='turface-pro-league-row-total' disabled='disabled'>";
+                            echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[4]\" class='row-total-input form-control' id='turface-pro-league-row-total' readonly='readonly'>";
                             echo "        </td>";
                             echo "</tr>"; 
+                            $i++;
                         }
-                        
                     }
                     ?>
                     <tr>
                             <td>Total:</td>                            
-                            <td><input id="saveButton" type="button" value=">>> Save <<<" class="btn btn-success"></td>
+                            <td></td>
                             <td></td>
                             <td colspan="6" style="text-align: right;">
-                                    <input type="text" class="total-box form-control" id="product-subtotal" name="total"></input>
+                                    <input type="text" name="total" value="<?php echo $arrayGridContents['total'] ?>" class="total-box form-control" id="product-subtotal" ></input>
                             </td>
                     </tr>
             </table>
@@ -334,7 +338,10 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
         <br></br>
         <div id="simple-msg"></div>
         <div class="row noprint">
-            <center><input id="printButton" type="button" value=">>> Print This Form <<<" class="btn btn-success"></center>
+            <center>
+                <input id="saveButton" type="button" value=" Save " class="btn btn-success">
+                <input id="printButton" type="button" value=" Print " class="btn btn-success">
+            </center>
             <hr>
         </div>        
     </div>

@@ -180,7 +180,7 @@ $stmtInvoice->execute();
                   }
                   ?> 
               </select>              
-              Address:<textarea id="address" class="form-control" rows="3"></textarea>
+              Address:<textarea id="address" name="invoiceAddress" class="form-control" rows="3"></textarea>
 
           </div>
         </div>   
@@ -264,7 +264,25 @@ $stmtInvoice->execute();
                             <th style="width:5%;">Quantity</th>
                             <th style="width:10%;">Subtotal</th>
                     </tr>
-                    <tr>
+
+                <?php
+                                    
+                    for($i=1; $i<10; $i++){ //遍历表格内容数组 
+                            $inputName = "row".$i."[]";
+                            echo "<tr>";
+                            echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control' ></td>";
+                            echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control'></td>";
+                            echo "        <td><input name=\"$inputName\" type='text' class='price-per-pallet form-control'></td>";
+                            echo "        <td class='num-pallets'>";
+                            echo "                <input name=\"$inputName\" type='text' class='num-pallets-input form-control' id='turface-pro-league-num-pallets'>";
+                            echo "        </td>";             
+                            echo "        <td class='row-total'>";
+                            echo "                <input name=\"$inputName\" type='text'  class='row-total-input form-control' id='turface-pro-league-row-total' readonly='readonly'>";
+                            echo "        </td>";
+                            echo "</tr>"; 
+                    }
+                 ?>                    
+<!--                    <tr>
                             <td class="product-title"><input name="row1[]" type="text" class="form-control"></td>
                             <td class="product-title"><input name="row1[]" type="text" class="form-control"></td>
                             <td><input name="row1[]" type="text" class="price-per-pallet form-control"></input></td>
@@ -362,14 +380,14 @@ $stmtInvoice->execute();
                             <td class="row-total">
                                     <input name="row9[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
                             </td>
-                    </tr>
+                    </tr>-->
 
                     <tr>
                             <td>Total:</td>                            
-                            <td><input id="saveButton" type="button" value=">>> Save <<<" class="btn btn-success"></td>
+                            <td></td>
                             <td></td>
                             <td colspan="6" style="text-align: right;">
-                                    <input type="text" class="total-box form-control" id="product-subtotal" name="total"></input>
+                                    <input type="text" class="total-box form-control" id="product-subtotal" name="total">
                             </td>
                     </tr>
             </table>
@@ -400,7 +418,11 @@ $stmtInvoice->execute();
         <br></br>
         <div id="simple-msg"></div>
         <div class="row noprint">
-            <center><input id="printButton" type="button" value=">>> Print This Form <<<" class="btn btn-success"></center>
+            <center>
+                <input id="saveButton" type="button" value=" Save " class="btn btn-success">
+                <input id="printButton" type="button" value=" Print " class="btn btn-success">
+                
+            </center>
             <hr>
         </div>        
     </div>
