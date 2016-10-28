@@ -25,27 +25,6 @@
 
   <body>
       
-<?php
-
-include_once 'db.php';
-$sqlRequest = "SELECT `prNumber` FROM `request` ORDER BY `prNumber` DESC LIMIT 1";
-$stmtRequest = $db->prepare($sqlRequest);
-$stmtRequest->execute();
-$rowRequest = $stmtRequest->fetch(PDO::FETCH_ASSOC);
-
-// To check DB is there any PR number records.
-if ($rowRequest){
-//    echo "True";
-    $lastNumber = $rowRequest['prNumber'];
-//    echo $lastNumber;
-}else{
-    $lastNumber = date("y") * 1000000;
-//    echo "False";
-//    echo $lastNumber;
-}
-
-?>
-
     <div class="container">
       <div class="page-header clearfix">
         <nav>
@@ -73,7 +52,6 @@ if ($rowRequest){
           </div>
         </nav>        -->
 
-        <form class="form-signin" action="new.php" method="post">
           
       <div class="jumbotron">
         <H2>温馨提醒：<H2>
@@ -84,24 +62,22 @@ if ($rowRequest){
       </div>  
       
       <div class="form-field">
-        <h2 class="form-signin-heading">Enter Your Mail Address</h2>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="requestor" required autofocus>
-        <input type="hidden" name="lastNumber" value="<?php echo $lastNumber; ?>">
-        <br>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">New Purchase Request</button>
+        <form class="form-signin" method="post" action="login.php" ?>
+        <input type='hidden' name='loginForm' value='1'>        
+          <h2 class="form-signin-heading">Login</h2>
+          <label for="inputEmail" class="sr-only">Windows Account</label>
+          <input type="text" id="inputEmail" class="form-control" placeholder="Your Windows Account" name="username" required autofocus>
+          <br>        
+          <label for="inputPassword" class="sr-only">Windows Password</label>
+          <input type="password" id="inputPassword" class="form-control" placeholder="Your Windows Password" name="password" required>
+          <br>
+          <button class="btn btn-lg btn-primary btn-block" type="submit"> Login </button> 
+         </form>          
       </div>
-<!--        <label for="inputPassword" class="sr-only">Department</label>
-        <input type="text" id="inputPassword" class="form-control" placeholder="Department" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>-->
 
 <br>
 <br>
-      </form>
+
 
     </div> <!-- /container -->
 

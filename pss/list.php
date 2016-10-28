@@ -31,13 +31,41 @@
       
       <?php
       
-      include_once 'db.php';
-        $sqlList = "SELECT r.prNumber AS prNumber, r.requestor AS Requestor, r.supplierName AS supplierName, "
-                . "r.total AS Total, r.prDate AS prDate, a.accountNumber AS accountNumber, category.name "
-                . "AS categoryName, costcode.code AS costCode from request as r "
-                . "INNER JOIN account as a on ( r.accountNumber = a.id ) "
-                . "INNER JOIN category ON ( category.id = r.categoryName ) "
-                . "INNER JOIN costcode ON ( costcode.id = r.costCode )";
+      include_once 'db.php';    
+
+        $sqlStatus = "SELECT `id`,`statusName` FROM `prStatus`";
+        $stmtStatus = $db->prepare($sqlStatus);
+        $stmtStatus->execute();      
+      
+      //echo $_SESSION["adminUser"];
+      //echo $_SESSION["username"];
+      
+        //判断用户是否登录
+        if(isset($_SESSION["username"]) && $_SESSION["username"]){
+            $requestor=$_SESSION["username"];
+        }else{
+            echo '<div class="error"> Sorry, please login first!<br><a href="index.php">Go Back</a></div>';  
+            return false;    
+        }      
+      
+       if($_SESSION["adminUser"]){
+            $sqlList = "SELECT r.prNumber AS prNumber, r.requestor AS Requestor, r.supplierName AS supplierName, "
+                    . "r.currency AS Currency, r.total AS Total, r.prDate AS prDate, r.prStatus as prStatus, a.accountNumber AS accountNumber, category.name "
+                    . "AS categoryName, costcode.code AS costCode, prStatus.statusName AS statusName from request as r "
+                    . "INNER JOIN account as a on ( r.accountNumber = a.id ) "
+                    . "INNER JOIN category ON ( category.id = r.categoryName ) "
+                    . "INNER JOIN costcode ON ( costcode.id = r.costCode ) " 
+                    . "INNER JOIN prStatus ON ( prStatus.id = r.prStatus )";           
+       }else{
+            $sqlList = "SELECT r.prNumber AS prNumber, r.requestor AS Requestor, r.supplierName AS supplierName, "
+                    . "r.currency AS Currency, r.total AS Total, r.prDate AS prDate, r.prStatus as prStatus, a.accountNumber AS accountNumber, category.name "
+                    . "AS categoryName, costcode.code AS costCode,  prStatus.statusName AS statusName from request as r "
+                    . "INNER JOIN account as a on ( r.accountNumber = a.id ) "
+                    . "INNER JOIN category ON ( category.id = r.categoryName ) "
+                    . "INNER JOIN costcode ON ( costcode.id = r.costCode ) WHERE `requestor`='$requestor'";           
+       }
+      
+
         $stmtList = $db->prepare($sqlList);
         $stmtList->execute();
         
@@ -64,7 +92,9 @@
                     <th>costCode</th>
                     <th>accountNumber</th>                    
                     <th>requestor</th>
+                    <th>Currency</th>
                     <th>total</th>
+                    <th>status</th>
                 </tr>
                 
                 <?php
@@ -77,7 +107,29 @@
                     echo "<td>".$rowList["costCode"]."</td>";
                     echo "<td>".$rowList["accountNumber"]."</td>";
                     echo "<td>".$rowList["Requestor"]."</td>";
+                    echo "<td>".$rowList["Currency"]."</td>";
                     echo "<td>".$rowList["Total"]."</td>";
+                    if($_SESSION["adminUser"]){
+                        echo "<td>";
+//                        echo $rowList['prStatus'];
+                        echo "<select id='statusSelect' class='form-control' name='status'>";
+                        echo "<option value='3'>New</option>";
+                        echo "<option value='4'>FA Approved</option>";
+                        echo "<option value='5'>GM Approved</option>";
+                        
+//                            while($rowStatus = $stmtStatus->fetch(PDO::FETCH_ASSOC)){
+//                                  echo $rowStatus["id"];
+//                                if ($rowStatus['id']===$rowList['prStatus']){                                    
+//                                    echo "<option value=".$rowStatus['id']." selected='selected'>".$rowStatus['statusName']."</option>";
+//                                }else{
+//                                    echo "<option value=".$rowStatus['id'].">".$rowStatus['statusName']."</option>";    
+//                                }
+//                            }                       
+                        echo "</select>";
+                        echo "</td>";
+                    }else{
+                        echo "<td>".$rowList["statusName"]."</td>";
+                    }
                     echo "</tr>";                                           
                   }
                 

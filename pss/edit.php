@@ -24,9 +24,18 @@
                var invoiceId = $(this).val();
                $("#address").load('ajax.php', {"id":invoiceId} );
             });
-          
+           
+            // Click the printButton action
             $("#printButton").click(function()
             {
+                    window.print();
+            });
+            
+            
+            // Click the saveButton action
+            $("#saveButton").click(function()
+            {
+                    // To submit ajaxform data by ajax.
                     $("#ajaxform").submit(function(e)
                     {
                             $("#simple-msg").html("");
@@ -53,12 +62,9 @@
                     });
 
                     $("#ajaxform").submit(); //SUBMIT FORM
-                    window.print();
-
-            });
-            
-            $("#saveButton").click(function()
-            {
+                    
+                    //To submit gridform data by ajax.
+                    
                     $("#gridForm").submit(function(e)
                     {
                             $("#simple-msg").html("");
@@ -72,7 +78,7 @@
                                     success:function(data, textStatus, jqXHR) 
                                     {
                                             $("#simple-msg").html('<pre><code class="prettyprint">'+data+'</code></pre>');
-                                           //$("#simple-msg").fadeOut(5000);
+                                            $("#simple-msg").fadeOut(5000);
 
                                     },
                                     error: function(jqXHR, textStatus, errorThrown) 
@@ -98,6 +104,14 @@
 <?php
 //初始化数据库
 include_once 'db.php';
+
+//判断用户是否登录
+if(isset($_SESSION["username"]) && $_SESSION["username"]){
+    $requestor=$_SESSION["username"];
+}else{
+    echo '<div class="error"> Sorry, please login first!<br><a href="index.php">Go Back</a></div>';  
+    return false;    
+}      
 
 //从数据库取出字典数据，生成表单下拉清单
 
@@ -275,7 +289,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
             <table id="order-table" class="table-hover">
                     <tr>
                             <th style="width:55%;">Item</th>
-                            <th style="width:20%;">Project</th>               
+                            <th style="width:20%;">Project No.</th>               
                             <th style="width:8%;">UnitPrice</th>		
                             <th style="width:5%;">Quantity</th>
                             <th style="width:10%;">Subtotal</th>
@@ -307,7 +321,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                             <td></td>
                             <td></td>
                             <td colspan="6" style="text-align: right;">
-                                    <input type="text" name="total" value="<?php echo $arrayGridContents['total'] ?>" class="total-box form-control" id="product-subtotal" ></input>
+                                    <input type="text" name="total" value="<?php echo $arrayGridContents['total'] ?>" class="total-box form-control" id="product-subtotal" readonly="readonly"></input>
                             </td>
                     </tr>
             </table>
@@ -327,7 +341,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                       <th style="width:25%;">General Manager</th>
                   </tr>                  
                   <tr>
-                      <td><input type="text" class="prinput"></td>
+                      <td><input type="text" class="prinput" value="<?php echo $requestor ?>"></td>
                       <td><input type="text" class="prinput"></td>
                       <td><input type="text" class="prinput"></td>
                       <td><input type="text" class="prinput"></td>

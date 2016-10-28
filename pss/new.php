@@ -20,41 +20,16 @@
     <script type = "text/javascript" language = "javascript">
         // To get the invoice address from database by ajax
        $(document).ready(function() {
+           //auto fill the invoiceAddress by ajax
             $("#mySelect").change(function(event){
                var invoiceId = $(this).val();
                $("#address").load('ajax.php', {"id":invoiceId} );
             });
           
+          //print the form
             $("#printButton").click(function()
-            {
-                    $("#ajaxform").submit(function(e)
-                    {
-                            $("#simple-msg").html("");
-                            var postData = $(this).serializeArray();
-                            var formURL = $(this).attr("action");
-                            $.ajax(
-                            {
-                                    url : formURL,
-                                    type: "POST",
-                                    data : postData,
-                                    success:function(data, textStatus, jqXHR) 
-                                    {
-                                            $("#simple-msg").html('<pre><code class="prettyprint">'+data+'</code></pre>');
-                                            $("#simple-msg").fadeOut(5000);
-
-                                    },
-                                    error: function(jqXHR, textStatus, errorThrown) 
-                                    {
-                                            $("#simple-msg").html('<pre><code class="prettyprint">AJAX Request Failed<br/> textStatus='+textStatus+', errorThrown='+errorThrown+'</code></pre>');
-                                    }
-                            });
-                        e.preventDefault();	//STOP default action
-                        //e.unbind();
-                    });
-
-                    $("#ajaxform").submit(); //SUBMIT FORM
+            {                    
                     window.print();
-
             });
             
             $("#saveButton").click(function()
@@ -85,6 +60,33 @@
                     });
 
                     $("#gridForm").submit(); //SUBMIT FORM
+                    
+                    $("#ajaxform").submit(function(e)
+                    {
+                            $("#simple-msg").html("");
+                            var postData = $(this).serializeArray();
+                            var formURL = $(this).attr("action");
+                            $.ajax(
+                            {
+                                    url : formURL,
+                                    type: "POST",
+                                    data : postData,
+                                    success:function(data, textStatus, jqXHR) 
+                                    {
+                                            $("#simple-msg").html('<pre><code class="prettyprint">'+data+'</code></pre>');
+                                            $("#simple-msg").fadeOut(5000);
+
+                                    },
+                                    error: function(jqXHR, textStatus, errorThrown) 
+                                    {
+                                            $("#simple-msg").html('<pre><code class="prettyprint">AJAX Request Failed<br/> textStatus='+textStatus+', errorThrown='+errorThrown+'</code></pre>');
+                                    }
+                            });
+                        e.preventDefault();	//STOP default action
+                        //e.unbind();
+                    });
+
+                    $("#ajaxform").submit(); //SUBMIT FORM                    
             });           
             
           
@@ -99,20 +101,22 @@
 //初始化数据库
 include_once 'db.php';
 
+//echo $_SESSION["username"];
+
+//判断用户是否登录
+if(isset($_SESSION["username"]) && $_SESSION["username"]){
+    $requestor=$_SESSION["username"];
+}else{
+    echo '<div class="error"> Sorry, please login first!<br><a href="index.php">Go Back</a></div>';  
+    return false;    
+}
+
 //判断用户是否是从首页进入
-if(!isset($_POST['lastNumber'])){    
+if(!isset($_GET['lastNumber'])){    
     echo '<div class="error"> Sorry, please visit home page first!<br><a href="index.php">Go Back</a></div>';  
     return false;
 }else{
-        $lastPRnumber = $_POST['lastNumber'] + 1;
-}
-
-//判断用户是否填写了邮件地址
-if(isset($_POST['requestor']) && $_POST['requestor']){
-    $requestor=$_POST['requestor'];
-}else{
-    echo '<div class="error"> Sorry, please enter your mail address first!<br><a href="index.php">Go Back</a></div>';  
-    return false;    
+        $lastPRnumber = $_GET['lastNumber'] + 1;
 }
 
 //判断当前的PR编号是否己经存在
@@ -259,7 +263,7 @@ $stmtInvoice->execute();
             <table id="order-table" class="table-hover">
                     <tr>
                             <th style="width:55%;">Item</th>
-                            <th style="width:20%;">Project</th>               
+                            <th style="width:20%;">Project No.</th>               
                             <th style="width:8%;">UnitPrice</th>		
                             <th style="width:5%;">Quantity</th>
                             <th style="width:10%;">Subtotal</th>
@@ -267,7 +271,7 @@ $stmtInvoice->execute();
 
                 <?php
                                     
-                    for($i=1; $i<10; $i++){ //遍历表格内容数组 
+                    for($i=1; $i<16; $i++){ //遍历表格内容数组 
                             $inputName = "row".$i."[]";
                             echo "<tr>";
                             echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control' ></td>";
@@ -281,113 +285,13 @@ $stmtInvoice->execute();
                             echo "        </td>";
                             echo "</tr>"; 
                     }
-                 ?>                    
-<!--                    <tr>
-                            <td class="product-title"><input name="row1[]" type="text" class="form-control"></td>
-                            <td class="product-title"><input name="row1[]" type="text" class="form-control"></td>
-                            <td><input name="row1[]" type="text" class="price-per-pallet form-control"></input></td>
-                            <td class="num-pallets">
-                                    <input name="row1[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
-                            </td>                
-                            <td class="row-total">
-                                    <input name="row1[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
-                            </td>
-                    </tr>
-                    <tr>
-                            <td class="product-title"><input name="row2[]" type="text" class="form-control"></td>
-                            <td class="product-title"><input name="row2[]" type="text" class="form-control"></td>
-                            <td><input name="row2[]" type="text" class="price-per-pallet form-control"></input></td>
-                            <td class="num-pallets">
-                                    <input name="row2[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
-                            </td>                
-                            <td class="row-total">
-                                    <input name="row2[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
-                            </td>
-                    </tr>
-                    <tr>
-                            <td class="product-title"><input name="row3[]" type="text" class="form-control"></td>
-                            <td class="product-title"><input name="row3[]" type="text" class="form-control"></td>
-                            <td><input name="row3[]" type="text" class="price-per-pallet form-control"></input></td>
-                            <td class="num-pallets">
-                                    <input name="row3[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
-                            </td>                
-                            <td class="row-total">
-                                    <input name="row3[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
-                            </td>
-                    </tr>
-                    <tr>
-                            <td class="product-title"><input name="row4[]" type="text" class="form-control"></td>
-                            <td class="product-title"><input name="row4[]" type="text" class="form-control"></td>
-                            <td><input name="row4[]" type="text" class="price-per-pallet form-control"></input></td>
-                            <td class="num-pallets">
-                                    <input name="row4[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
-                            </td>                
-                            <td class="row-total">
-                                    <input name="row4[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
-                            </td>
-                    </tr>
-                    <tr>
-                            <td class="product-title"><input name="row5[]" type="text" class="form-control"></td>
-                            <td class="product-title"><input name="row5[]" type="text" class="form-control"></td>
-                            <td><input name="row5[]" type="text" class="price-per-pallet form-control"></input></td>
-                            <td class="num-pallets">
-                                    <input name="row5[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
-                            </td>                
-                            <td class="row-total">
-                                    <input name="row5[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
-                            </td>
-                    </tr>
-                    <tr>
-                            <td class="product-title"><input name="row6[]" type="text" class="form-control"></td>
-                            <td class="product-title"><input name="row6[]" type="text" class="form-control"></td>
-                            <td><input name="row6[]" type="text" class="price-per-pallet form-control"></input></td>
-                            <td class="num-pallets">
-                                    <input name="row6[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
-                            </td>                
-                            <td class="row-total">
-                                    <input name="row6[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
-                            </td>
-                    </tr>
-                    <tr>
-                            <td class="product-title"><input name="row7[]" type="text" class="form-control"></td>
-                            <td class="product-title"><input name="row7[]" type="text" class="form-control"></td>
-                            <td><input name="row7[]" type="text" class="price-per-pallet form-control"></input></td>
-                            <td class="num-pallets">
-                                    <input name="row7[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
-                            </td>                
-                            <td class="row-total">
-                                    <input name="row7[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
-                            </td>
-                    </tr>
-                    <tr>
-                            <td class="product-title"><input name="row8[]" type="text" class="form-control"></td>
-                            <td class="product-title"><input name="row8[]" type="text" class="form-control"></td>
-                            <td><input name="row8[]" type="text" class="price-per-pallet form-control"></input></td>
-                            <td class="num-pallets">
-                                    <input name="row8[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
-                            </td>                
-                            <td class="row-total">
-                                    <input name="row8[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
-                            </td>
-                    </tr>
-                    <tr>
-                            <td class="product-title"><input name="row9[]" type="text" class="form-control"></td>
-                            <td class="product-title"><input name="row9[]" type="text" class="form-control"></td>
-                            <td><input name="row9[]" type="text" class="price-per-pallet form-control"></input></td>
-                            <td class="num-pallets">
-                                    <input name="row9[]" type="text" class="num-pallets-input form-control" id="turface-pro-league-num-pallets"></input>
-                            </td>                
-                            <td class="row-total">
-                                    <input name="row9[]" type="text" class="row-total-input form-control" id="turface-pro-league-row-total" disabled="disabled"></input>
-                            </td>
-                    </tr>-->
-
+                 ?>      
                     <tr>
                             <td>Total:</td>                            
                             <td></td>
                             <td></td>
                             <td colspan="6" style="text-align: right;">
-                                    <input type="text" class="total-box form-control" id="product-subtotal" name="total">
+                                    <input type="text" class="total-box form-control" id="product-subtotal" name="total" readonly="readonly">
                             </td>
                     </tr>
             </table>
@@ -407,7 +311,7 @@ $stmtInvoice->execute();
                       <th style="width:25%;">General Manager</th>
                   </tr>                  
                   <tr>
-                      <td><input type="text" class="prinput"></td>
+                      <td><input type="text" class="prinput" value="<?php echo $requestor ?>"></td>
                       <td><input type="text" class="prinput"></td>
                       <td><input type="text" class="prinput"></td>
                       <td><input type="text" class="prinput"></td>
