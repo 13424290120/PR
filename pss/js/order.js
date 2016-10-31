@@ -67,4 +67,35 @@ $(function(){
         calcProdSubTotal();    
     });
 
+    $('.price-per-pallet').blur(function(){
+    
+        var $this = $(this);
+    
+        var pricePallets = $this.val();
+//        alert (numPallets);
+        var multiplier = $this
+                            .parent().parent()
+                            .find("input.num-pallets-input")
+                            .val();
+//          alert (multiplier);
+        
+        if ( (IsNumeric(pricePallets)) && (pricePallets != '') ) {
+            
+            var rowTotal = pricePallets * multiplier;
+            
+            $this
+                .css("background-color", "white")
+                .parent().parent()
+                .find("td.row-total input")
+                .val(rowTotal);                    
+            
+        } else {
+        
+            $this.css("background-color", "#ffdcdc"); 
+                        
+        };
+        
+        calcProdSubTotal();    
+    });    
+
 });

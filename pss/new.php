@@ -15,7 +15,7 @@
     <link href="css/style.css" rel="stylesheet"> 
     
     <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/order.js"></script>
+    <script type="text/javascript" src="js/order.js"></script>  
     
     <script type = "text/javascript" language = "javascript">
         // To get the invoice address from database by ajax
@@ -34,6 +34,7 @@
             
             $("#saveButton").click(function()
             {
+
                     $("#gridForm").submit(function(e)
                     {
                             $("#simple-msg").html("");
@@ -63,6 +64,7 @@
                     
                     $("#ajaxform").submit(function(e)
                     {
+                        
                             $("#simple-msg").html("");
                             var postData = $(this).serializeArray();
                             var formURL = $(this).attr("action");
@@ -74,7 +76,7 @@
                                     success:function(data, textStatus, jqXHR) 
                                     {
                                             $("#simple-msg").html('<pre><code class="prettyprint">'+data+'</code></pre>');
-                                            $("#simple-msg").fadeOut(5000);
+                                            $("#simple-msg").fadeOut(600);
 
                                     },
                                     error: function(jqXHR, textStatus, errorThrown) 
