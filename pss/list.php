@@ -62,7 +62,8 @@
                     . "AS categoryName, costcode.code AS costCode,  prStatus.statusName AS statusName from request as r "
                     . "INNER JOIN account as a on ( r.accountNumber = a.id ) "
                     . "INNER JOIN category ON ( category.id = r.categoryName ) "
-                    . "INNER JOIN costcode ON ( costcode.id = r.costCode ) WHERE `requestor`='$requestor'";           
+                    . "INNER JOIN costcode ON ( costcode.id = r.costCode ) "
+                    . "INNER JOIN prStatus ON ( prStatus.id = r.prStatus ) WHERE `requestor`='$requestor'";           
        }
       
 
@@ -119,15 +120,6 @@
                         echo "<option value='3'>New</option>";
                         echo "<option value='4'>FA Approved</option>";
                         echo "<option value='5'>GM Approved</option>";
-                        
-//                            while($rowStatus = $stmtStatus->fetch(PDO::FETCH_ASSOC)){
-//                                  echo $rowStatus["id"];
-//                                if ($rowStatus['id']===$rowList['prStatus']){                                    
-//                                    echo "<option value=".$rowStatus['id']." selected='selected'>".$rowStatus['statusName']."</option>";
-//                                }else{
-//                                    echo "<option value=".$rowStatus['id'].">".$rowStatus['statusName']."</option>";    
-//                                }
-//                            }                       
                         echo "</select>";
                         echo "</td>";
                     }else{

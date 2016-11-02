@@ -18,7 +18,7 @@ if ( isset($_REQUEST["id"]) && $_REQUEST["id"]<> ""){
     $stmtInvoice->execute();
     $rowInvoice = $stmtInvoice->fetch(PDO::FETCH_ASSOC);
     echo $rowInvoice['address'];
-
+    exit();
 }
 
 //如果传入prNumber, 则查询PR 记录
@@ -60,9 +60,16 @@ if ( isset($_REQUEST["prNumber"]) && $_REQUEST["prNumber"] <> "" ){
             echo "</tr>";                                           
           } 
         echo "</table>";
-    
-}
-
-
-
+        exit();    
+}else{ //如果什么都没有传入， 则查询最后的PR号
+        $sqlRequest = "SELECT `prNumber` FROM `request` ORDER BY `prNumber` DESC LIMIT 1";
+        $stmtRequest = $db->prepare($sqlRequest);
+        $stmtRequest->execute();
+        $rowRequest = $stmtRequest->fetch(PDO::FETCH_ASSOC);
+        if ($rowRequest){
+            $lastNumber = $rowRequest['prNumber'] + 1;
+        }
+    echo $lastNumber;
+    exit();
+} 
 ?>

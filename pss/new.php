@@ -34,7 +34,6 @@
             
             $("#saveButton").click(function()
             {
-
                     $("#gridForm").submit(function(e)
                     {
                             $("#simple-msg").html("");
@@ -127,9 +126,7 @@ $sqlCheckRequest = "SELECT `prNumber` FROM `request` WHERE `prNumber` = $lastPRn
 $stmtCheckRequest = $db->prepare($sqlCheckRequest);
 $stmtCheckRequest->execute();
 $rowCheckRequest = $stmtCheckRequest->fetch(PDO::FETCH_ASSOC);
-
-//如果PR单不存在，就新增该PR单
-if (!$rowCheckRequest){
+if (!$rowCheckRequest){ //如果PR单不存在，就新增该PR单
     $sqlNewRequest = "INSERT INTO `request` (`prNumber`,`requestor`) VALUE('$lastPRnumber','$requestor');";
     $stmtNewRequest = $db->prepare($sqlNewRequest);
     $stmtNewRequest->execute();    
@@ -164,8 +161,8 @@ $stmtInvoice->execute();
         <form id="ajaxform" name="ajaxform" action="ajax-form-submit.php" method="post">
       <div class="page-header">
           <h1>PremiumSoundSolutions<small> Purchase Requisition</small></h1>          
-          PR Number: <input type="text" class="prinput" name="prNumber" value="<?php echo $lastPRnumber ?>">
-          PR Date: <input type="text" class="prinput" name="prDate" value="<?php echo $currentDate ?>">
+          PR Number: <input type="text" id="prNumber" class="prinput" name="prNumber" value="<?php echo $lastPRnumber ?>">
+          PR Date: <input type="text" id="prDate" class="prinput" name="prDate" value="<?php echo $currentDate ?>">
       </div>        
 
         <div class="row">

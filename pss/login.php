@@ -30,9 +30,6 @@
       </div>    
       
 <?php
-
-include_once 'db.php';
-
 if (isset($_POST["loginForm"])) { //prevent null bind
         $username = strtoupper($_POST["username"]); //remove case sensitivity on the username
         //echo $username;
@@ -63,56 +60,27 @@ if (isset($_POST["loginForm"])) { //prevent null bind
                         //print_r($collection->memberOf);
                         //echo $collection->samaccountname;
                         //$collection->mail;
-                        $isAdminUser = $adldap->user()->inGroup("$username","sga-PSS-IT-SHZ"); // if the user belongs to the group, then he has the admin right.
+                        $isAdminUser = $adldap->user()->inGroup("$username","sga-PSS-Finance-SHZ"); // if the user belongs to the group, then he has the admin right.
                         if($isAdminUser){
                             $_SESSION["adminUser"] = 1;
                         }else{
                             $_SESSION["adminUser"] = 0;
-                        }
-
-                        
-                        // After login, then to generate the PR Number
-                        $sqlRequest = "SELECT `prNumber` FROM `request` ORDER BY `prNumber` DESC LIMIT 1";
-                        $stmtRequest = $db->prepare($sqlRequest);
-                        $stmtRequest->execute();
-                        $rowRequest = $stmtRequest->fetch(PDO::FETCH_ASSOC);
-
-                        // To check DB is there any PR number records.
-                        if ($rowRequest){
-                        //    echo "True";
-                            $lastNumber = $rowRequest['prNumber'];
-                        //    echo $lastNumber;
-                        }else{
-                            $lastNumber = date("y") * 1000000;
-                        //    echo "False";
-                        //    echo $lastNumber;
-                        }
-                        echo "<div class='row'>";
-                        echo "<div class='col-xs-4'>";
-                        echo "</div>";
-                        echo "<div class='col-xs-4'>";
-                        echo "<button class='btn btn-lg btn-primary btn-block' onclick=\"location.href='new.php?lastNumber=$lastNumber'\">New Purchasing Request</button>";
-                        echo "<button class='btn btn-lg btn-primary btn-block' onclick=\"location.href='list.php'\">Purchasing Request History</button>";                        
-                        echo "</div>";
-                        echo "<div class='col-xs-4'>";
-                        echo "</div>";
-                        echo "</div>";                      
-
-			//$redir = "Location: http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/new.php?lastNumber=$lastNumber";
-			//header($redir); 
+                        } 
+			$redir = "Location: http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/home.php";
+			header($redir); 
                         exit();  
 		}
                 
-	}
+	}else{
 	$failed = 1;
-
-        echo "<div class='alert alert-warning'>";
-        echo " <center><h3> Login failed, please try again.</h3></center><br>";
-        echo " <center><h4> <a href='index.php'>Go back</a></h4></center>";
-        echo "</div>";
+            echo "<div class='alert alert-warning'>";
+            echo " <center><h3> Login failed, please try again.</h3></center><br>";
+            echo " <center><h4> <a href='index.php'>Go back</a></h4></center>";
+            echo "</div>";
+        }
 }else{
         echo "<div class='alert alert-warning'>";
-        echo " <center><h3> Login failed, please try again.</h3></center><br>";
+        echo " <center><h3> Please login first !</h3></center><br>";
         echo " <center><h4> <a href='index.php'>Go back</a></h4></center>";
         echo "</div>";    
 }
