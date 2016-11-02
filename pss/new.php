@@ -287,6 +287,8 @@ $stmtInvoice->execute();
                             echo "        </td>";
                             echo "</tr>"; 
                     }
+                    
+                    
                  ?>      
                     <tr>
                             <td>Total:</td>                            

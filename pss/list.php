@@ -55,7 +55,7 @@
                     . "INNER JOIN account as a on ( r.accountNumber = a.id ) "
                     . "INNER JOIN category ON ( category.id = r.categoryName ) "
                     . "INNER JOIN costcode ON ( costcode.id = r.costCode ) " 
-                    . "INNER JOIN prStatus ON ( prStatus.id = r.prStatus )";           
+                    . "INNER JOIN prStatus ON ( prStatus.id = r.prStatus )";
        }else{
             $sqlList = "SELECT r.prNumber AS prNumber, r.requestor AS Requestor, r.supplierName AS supplierName, "
                     . "r.currency AS Currency, r.total AS Total, r.prDate AS prDate, r.prStatus as prStatus, a.accountNumber AS accountNumber, category.name "
@@ -72,15 +72,18 @@
       ?>
       <div class="container" style="width:1280px;">
           <div class="page-header clearfix" style="display:inline;">
-        <nav>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation"><a href="mailto:jackson.li@premiumsoundsolutions.com">Contact Support</a></li>
-          </ul>
-        </nav>
-          <div style="margin:10px;width:100px;float:left;"><img src="img/pss-logo.png"></img></div>
-          <div style="margin:10px 0px 0px 300px;width:300px;float:left;"><h3>Purchasing History</h3></div>
-          <div style="margin:20px 50px 0px 0px;float:right;"><input id="searchBox" type="text" placeholder="PR number" class="form-control-static"> <input id="searchButton" type="button" value="Search" class="btn btn-success"></div>
-      </div> 
+            <div style="margin:10px 0 0 0;width:100px;float:left;"><img src="img/pss-logo.png"></img></div>
+            <div style="margin:10px 0px 0px 300px;width:300px;float:left;"><h3>Purchasing History</h3></div>
+            <div style="margin:20px 60px 0px 0px;float:right;">
+                <input id="searchBox" type="text" placeholder="PR number" class="form-control-static"> 
+                <input id="searchButton" type="button" value="Search" class="btn btn-success">
+                <?php
+                if($_SESSION["adminUser"]){
+                    echo "<span class='btn btn-success'><a style='color: #FFF;' href='export.php'>Download</a></span>";
+                }                
+                ?>
+            </div>
+          </div> 
       
         <div id="showTable">
             <table class="table table-hover">
@@ -134,8 +137,6 @@
                   }
                 
                 ?>
-                
-
             </table>
         </div>
     </div>

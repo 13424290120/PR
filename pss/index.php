@@ -26,13 +26,9 @@
   <body>
       
     <div class="container">
-      <div class="page-header clearfix">
-        <nav>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation"><a href="mailto:jackson.li@premiumsoundsolutions.com">Contact Support</a></li>
-          </ul>
-        </nav>
-          <div style="margin:10px;width:100px;float:left;"><img src="img/pss-logo.png"></img></div>
+      <div class="page-header clearfix row">
+          <div style="margin:0px;width:100px;float:left;"><img src="img/pss-logo.png"></img></div>
+          <span style="float:right; margin: 20px 0 0 0;"><a href="mailto:jackson.li@premiumsoundsolutions.com"> Contact Support </a></span>
       </div>
 
 <!--        <nav class="navbar navbar-inverse">
@@ -57,7 +53,6 @@
         <H2>温馨提醒：<H2>
                 <p>目前该系统仅支持 Google Chrome 和 Firefox 浏览器，如果您的电脑没有安装， 请联系IT部门安装!</p>
                 <p>The system only support Google Chrome and Firefox browser, please feel free to contact IT department if you need any help!</p>
-               
                 <p></p>        
       </div>  
       

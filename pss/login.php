@@ -24,14 +24,10 @@
 
   <body>
     <div class="container">
-      <div class="page-header clearfix">
-        <nav>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation"><a href="mailto:jackson.li@premiumsoundsolutions.com">Contact Support</a></li>
-          </ul>
-        </nav>
-          <div style="margin:10px;width:100px;float:left;"><img src="img/pss-logo.png"></img></div>
-      </div>      
+      <div class="page-header clearfix row">
+          <div style="margin:0px;width:100px;float:left;"><img src="img/pss-logo.png"></img></div>
+          <span style="float:right; margin: 20px 0 0 0;"><a href="mailto:jackson.li@premiumsoundsolutions.com"> Contact Support </a></span>
+      </div>    
       
 <?php
 
@@ -67,7 +63,7 @@ if (isset($_POST["loginForm"])) { //prevent null bind
                         //print_r($collection->memberOf);
                         //echo $collection->samaccountname;
                         //$collection->mail;
-                        $isAdminUser = $adldap->user()->inGroup("$username","sga-PSS-IT-SHZ");
+                        $isAdminUser = $adldap->user()->inGroup("$username","sga-PSS-IT-SHZ"); // if the user belongs to the group, then he has the admin right.
                         if($isAdminUser){
                             $_SESSION["adminUser"] = 1;
                         }else{
@@ -100,8 +96,7 @@ if (isset($_POST["loginForm"])) { //prevent null bind
                         echo "</div>";
                         echo "<div class='col-xs-4'>";
                         echo "</div>";
-                        echo "</div>";
-                        
+                        echo "</div>";                      
 
 			//$redir = "Location: http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/new.php?lastNumber=$lastNumber";
 			//header($redir); 
@@ -125,7 +120,7 @@ if (isset($_POST["loginForm"])) { //prevent null bind
 
 
 
-
+    </div>
   </body>
 </html>
 

@@ -31,7 +31,6 @@
                     window.print();
             });
             
-            
             // Click the saveButton action
             $("#saveButton").click(function()
             {
@@ -49,7 +48,7 @@
                                     success:function(data, textStatus, jqXHR) 
                                     {
                                             $("#simple-msg").html('<pre><code class="prettyprint">'+data+'</code></pre>');
-                                            $("#simple-msg").fadeOut(5000);
+                                            $("#simple-msg").fadeOut(600);
 
                                     },
                                     error: function(jqXHR, textStatus, errorThrown) 
