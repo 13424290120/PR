@@ -288,7 +288,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
             <table id="order-table" class="table-hover">
                     <tr>
                             <th style="width:55%;">Item</th>
-                            <th style="width:20%;">Project No.</th>               
+                            <th style="width:20%;">Project Code</th>               
                             <th style="width:8%;">UnitPrice</th>		
                             <th style="width:5%;">Quantity</th>
                             <th style="width:10%;">Subtotal</th>
@@ -300,17 +300,32 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                         
                         if(is_array($gridRow)){ 
                             $inputName = "row".$i."[]"; // 定义输入框名称，以数组的形式存储数据
-                            echo "<tr>";
-                            echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='form-control' ></td>";
-                            echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[1]\" class='form-control'></td>";
-                            echo "        <td><input name=\"$inputName\" type='text'  value=\"$gridRow[2]\" class='price-per-pallet form-control'></td>";
-                            echo "        <td class='num-pallets'>";
-                            echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[3]\" class='num-pallets-input form-control' id='turface-pro-league-num-pallets'>";
-                            echo "        </td>";             
-                            echo "        <td class='row-total'>";
-                            echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[4]\" class='row-total-input form-control' id='turface-pro-league-row-total' readonly='readonly'>";
-                            echo "        </td>";
-                            echo "</tr>"; 
+                            if($_SESSION["adminUser"]){
+                                    echo "<tr>";
+                                    echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='form-control' readonly='readonly'></td>";
+                                    echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[1]\" class='form-control' readonly='readonly'></td>";
+                                    echo "        <td><input name=\"$inputName\" type='text'  value=\"$gridRow[2]\" class='price-per-pallet form-control' readonly='readonly'></td>";
+                                    echo "        <td class='num-pallets'>";
+                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[3]\" class='num-pallets-input form-control' id='turface-pro-league-num-pallets' readonly='readonly'>";
+                                    echo "        </td>";             
+                                    echo "        <td class='row-total'>";
+                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[4]\" class='row-total-input form-control' id='turface-pro-league-row-total' readonly='readonly'>";
+                                    echo "        </td>";
+                                    echo "</tr>";                                 
+                            }else{
+                                    echo "<tr>";
+                                    echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='form-control'></td>";
+                                    echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[1]\" class='form-control'></td>";
+                                    echo "        <td><input name=\"$inputName\" type='text'  value=\"$gridRow[2]\" class='price-per-pallet form-control'></td>";
+                                    echo "        <td class='num-pallets'>";
+                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[3]\" class='num-pallets-input form-control' id='turface-pro-league-num-pallets'>";
+                                    echo "        </td>";             
+                                    echo "        <td class='row-total'>";
+                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[4]\" class='row-total-input form-control' id='turface-pro-league-row-total' readonly='readonly'>";
+                                    echo "        </td>";
+                                    echo "</tr>";                                 
+                            }
+
                             $i++;
                         }
                     }

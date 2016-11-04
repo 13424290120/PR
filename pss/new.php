@@ -114,7 +114,7 @@ if(isset($_SESSION["username"]) && $_SESSION["username"]){
 
 //判断用户是否是从首页进入
 if(!isset($_GET['lastNumber'])){    
-    echo '<div class="error"> Sorry, please visit home page first!<br><a href="index.php">Go Back</a></div>';  
+    echo '<div class="error"> Sorry, please visit home page first!<br><a href="home.php">Go Back</a></div>';  
     return false;
 }else{
         $lastPRnumber = $_GET['lastNumber'] + 1;
@@ -131,7 +131,7 @@ if (!$rowCheckRequest){ //如果PR单不存在，就新增该PR单
     $stmtNewRequest = $db->prepare($sqlNewRequest);
     $stmtNewRequest->execute();    
 }else{
-    echo '<div class="error">Sorry, the PR number already registered in the database, please apply a new one!<br><a href="index.php">Go Back</a></div>';
+    echo '<div class="error">Sorry, the PR number already registered in the database, please apply a new one!<br><a href="home.php">Go Back</a></div>';
     return false;
 }
 
@@ -262,7 +262,7 @@ $stmtInvoice->execute();
             <table id="order-table" class="table-hover">
                     <tr>
                             <th style="width:55%;">Item</th>
-                            <th style="width:20%;">Project No.</th>               
+                            <th style="width:20%;">Project Code</th>               
                             <th style="width:8%;">UnitPrice</th>		
                             <th style="width:5%;">Quantity</th>
                             <th style="width:10%;">Subtotal</th>

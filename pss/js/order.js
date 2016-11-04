@@ -26,10 +26,10 @@ function calcProdSubTotal() {
     
         var valString = $(this).val() || 0;
         
-        prodSubTotal += parseInt(valString);
+        prodSubTotal += parseFloat(valString);
                     
     });
-        
+       
     $("#product-subtotal").val(prodSubTotal);
 
 };
@@ -51,12 +51,13 @@ $(function(){
         if ( (IsNumeric(numPallets)) && (numPallets != '') ) {
             
             var rowTotal = numPallets * multiplier;
+            var roundRowTotal = rowTotal.toFixed(2);
             
             $this
                 .css("background-color", "white")
                 .parent().parent()
                 .find("td.row-total input")
-                .val(rowTotal);                    
+                .val(roundRowTotal);                    
             
         } else {
         
@@ -82,12 +83,13 @@ $(function(){
         if ( (IsNumeric(pricePallets)) && (pricePallets != '') ) {
             
             var rowTotal = pricePallets * multiplier;
+            var roundRowTotal = rowTotal.toFixed(2);
             
             $this
                 .css("background-color", "white")
                 .parent().parent()
                 .find("td.row-total input")
-                .val(rowTotal);                    
+                .val(roundRowTotal);                    
             
         } else {
         

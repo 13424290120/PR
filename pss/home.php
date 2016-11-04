@@ -26,7 +26,7 @@
     <div class="container">
       <div class="page-header clearfix row">
           <div style="margin:0px;width:100px;float:left;"><img src="img/pss-logo.png"></img></div>
-          <span style="float:right; margin: 20px 0 0 0;"><a href="mailto:jackson.li@premiumsoundsolutions.com"> Contact Support </a></span>
+          <span class="btn btn-success" style="float:right; margin: 20px 0 0 0;"><a style="color:#FFF;" href="logout.php"> Logout </a></span>
       </div>
       <div class="jumbotron">
       <?php
@@ -37,31 +37,27 @@
             }else{
                 echo '<div class="error"> Sorry, please login first!<br><a href="index.php">Go Back</a></div>';  
                 return false;    
-            }        
-      
-            // After login, then to generate the PR Number
-            $sqlRequest = "SELECT `prNumber` FROM `request` ORDER BY `prNumber` DESC LIMIT 1";
-            $stmtRequest = $db->prepare($sqlRequest);
-            $stmtRequest->execute();
-            $rowRequest = $stmtRequest->fetch(PDO::FETCH_ASSOC);
-
-            // To check DB is there any PR number records.
-            if ($rowRequest){
-            //    echo "True";
-                $lastNumber = $rowRequest['prNumber'];
-            //    echo $lastNumber;
-            }else{
-                $year = date("y");
-                $month = date("m");
-                if($month<4){
-                    $yearCode = $year - 1;
-                }else{
-                    $yearCode = $year;
-                }
-                $lastNumber = $yearCode * 10000;
-            //    echo "False";
-            //    echo $lastNumber;
+            } 
+            
+            $year = date("y"); //取得当前的年份
+            $month = date("m"); //取得当前的月份
+            if ($month>3){ //如果当前月份大于3月， 就进入新的财年
+                $yearCode = $year;               
+            }else{ // 如果当前月份小于或等于3月， 就还用去年的财年
+                $yearCode = $year - 1;                
             }
+            
+            $sql = "SELECT `prNumber` FROM `request` WHERE `prNumber` LIKE '$yearCode%' ORDER BY `prNumber` DESC LIMIT 1";
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($row){ //如果有找到当前年份的PR， 则取得最后一张PR号
+                $lastNumber = $row['prNumber'];
+            }else{ // 如果没有找到当前年份的PR， 则重新生成PR
+                $lastNumber = $yearCode * 10000;
+            }           
+            
+           
             echo "<div class='row'>";
             echo "<div class='col-xs-4'>";
             echo "</div>";
