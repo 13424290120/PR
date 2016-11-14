@@ -52,11 +52,11 @@
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             if($row){ //如果有找到当前年份的PR， 则取得最后一张PR号
-                $lastNumber = $row['prNumber'];
+                $lastNumber = $row['prNumber'] + 1;
             }else{ // 如果没有找到当前年份的PR， 则重新生成PR
-                $lastNumber = $yearCode * 10000;
+                $lastNumber = $yearCode * 10000 + 1;
             }           
-            
+            $_SESSION["lastNumber"] = $lastNumber;
            
             echo "<div class='row'>";
             echo "<div class='col-xs-4'>";

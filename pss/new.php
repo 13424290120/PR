@@ -8,7 +8,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="jackson li">
-    <title>Purchase Requisition</title>
+    <title><?php echo $_SESSION["lastNumber"] ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -117,7 +117,7 @@ if(!isset($_GET['lastNumber'])){
     echo '<div class="error"> Sorry, please visit home page first!<br><a href="home.php">Go Back</a></div>';  
     return false;
 }else{
-        $lastPRnumber = $_GET['lastNumber'] + 1;
+        $lastPRnumber = $_GET['lastNumber'];
 }
 
 //判断当前的PR编号是否己经存在
