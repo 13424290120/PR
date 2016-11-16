@@ -146,11 +146,10 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
     $withinBudget=$row['withinBudget'];
     $recoverable=$row['recoverable'];
     $currency=$row['currency'];
+    $capexNumber=$row['capexNumber'];
     $purpose=$row['purpose'];
     $deliveryDate=$row['deliveryDate'];
-    $gridContents=$row['gridContents'];
-    
-    
+    $gridContents=$row['gridContents']; 
     $arrayGridContents = unserialize($gridContents); //将表格内容由文本序列转换成数组
     //print_r($arrayGridContents);
 
@@ -245,11 +244,6 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
         
         <div class="row">
           <div class="col-xs-4">
-              Delivery Date Required:<input type="date" name="deliveryDate" class="form-control" value="<?php echo $deliveryDate ?>"></input>
-              <span class="badge" style="margin:20px;">With In Budget: <input  type="radio" name="withInBudget" value="1" <?php if ($withinBudget==="1"){ echo "checked"; } ?>>Yes</input>
-              <input type="radio" name="withInBudget" value="0" <?php if ($withinBudget==="0"){ echo "checked"; } ?>>No</input></span>              
-          </div>
-          <div class="col-xs-4">
               Currency:
               <select name="currency" class="form-control">                  
                   <option></option>
@@ -258,12 +252,21 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                   <option <?php if($currency==="USD"){ echo "selected=selected"; }?> value="USD">USD</option>
                   <option <?php if($currency==="EURO"){ echo "selected=selected"; }?> value="EURO">EURO</option>
               </select>
-              <span class="badge" style="margin:20px;"> Recoverable: <input  type="radio" name="Recoverable" value="1" <?php if ($recoverable==="1"){ echo "checked"; } ?>>Yes</input>
-              <input  type="radio" name="Recoverable" value="0" <?php if ($recoverable==="0"){ echo "checked"; } ?>>No</input></span>
-          </div>
-
+              CAPEX Number:<input name="capexNumber" class="form-control" value="<?php echo $capexNumber ?>">
+          </div>            
           <div class="col-xs-4">
-              Charge Back To:<textarea class="form-control" rows="3">Customer Code/Name:
+              Delivery Date Required:<input type="date" name="deliveryDate" class="form-control" value="<?php echo $deliveryDate ?>"></input>
+              <span class="form-control">
+                  With In Budget: <input  type="radio" name="withInBudget" value="1" <?php if ($withinBudget==="1"){ echo "checked"; } ?>>Yes</input>
+                  <input type="radio" name="withInBudget" value="0" <?php if ($withinBudget==="0"){ echo "checked"; } ?>>No</input>
+              </span>
+              <span class="form-control">
+                  Recoverable: <input  type="radio" name="Recoverable" value="1" <?php if ($recoverable==="1"){ echo "checked"; } ?>>Yes</input>
+                  <input  type="radio" name="Recoverable" value="0" <?php if ($recoverable==="0"){ echo "checked"; } ?>>No</input>
+              </span>               
+          </div>
+          <div class="col-xs-4">
+              Charge Back To:<textarea class="form-control" rows="4">Customer Code/Name:
                                                                      Charge Amount:
                              </textarea>              
 
@@ -287,7 +290,8 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
               <input type="hidden" name="prNumber" value="<?php echo $prNumber ?>">  
             <table id="order-table" class="table-hover">
                     <tr>
-                            <th style="width:55%;">Item</th>
+                            <th style="width:50%;">Item</th>
+                            <th style="width:5%;">Unit</th>
                             <th style="width:20%;">Project Code</th>               
                             <th style="width:8%;">UnitPrice</th>		
                             <th style="width:5%;">Quantity</th>
@@ -304,24 +308,26 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                                     echo "<tr>";
                                     echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='form-control' readonly='readonly'></td>";
                                     echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[1]\" class='form-control' readonly='readonly'></td>";
-                                    echo "        <td><input name=\"$inputName\" type='text'  value=\"$gridRow[2]\" class='price-per-pallet form-control' readonly='readonly'></td>";
+                                    echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[2]\" class='form-control' readonly='readonly'></td>";
+                                    echo "        <td><input name=\"$inputName\" type='text'  value=\"$gridRow[3]\" class='price-per-pallet form-control' readonly='readonly'></td>";
                                     echo "        <td class='num-pallets'>";
-                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[3]\" class='num-pallets-input form-control' id='turface-pro-league-num-pallets' readonly='readonly'>";
+                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[4]\" class='num-pallets-input form-control' id='turface-pro-league-num-pallets' readonly='readonly'>";
                                     echo "        </td>";             
                                     echo "        <td class='row-total'>";
-                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[4]\" class='row-total-input form-control' id='turface-pro-league-row-total' readonly='readonly'>";
+                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[5]\" class='row-total-input form-control' id='turface-pro-league-row-total' readonly='readonly'>";
                                     echo "        </td>";
                                     echo "</tr>";                                 
                             }else{
                                     echo "<tr>";
                                     echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='form-control'></td>";
                                     echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[1]\" class='form-control'></td>";
-                                    echo "        <td><input name=\"$inputName\" type='text'  value=\"$gridRow[2]\" class='price-per-pallet form-control'></td>";
+                                    echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[2]\" class='form-control'></td>";
+                                    echo "        <td><input name=\"$inputName\" type='text'  value=\"$gridRow[3]\" class='price-per-pallet form-control'></td>";
                                     echo "        <td class='num-pallets'>";
-                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[3]\" class='num-pallets-input form-control' id='turface-pro-league-num-pallets'>";
+                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[4]\" class='num-pallets-input form-control' id='turface-pro-league-num-pallets'>";
                                     echo "        </td>";             
                                     echo "        <td class='row-total'>";
-                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[4]\" class='row-total-input form-control' id='turface-pro-league-row-total' readonly='readonly'>";
+                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[5]\" class='row-total-input form-control' id='turface-pro-league-row-total' readonly='readonly'>";
                                     echo "        </td>";
                                     echo "</tr>";                                 
                             }
@@ -369,6 +375,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
             <center>
                 <input id="saveButton" type="button" value=" Save " class="btn btn-success">
                 <input id="printButton" type="button" value=" Print " class="btn btn-success">
+                <span class="btn btn-success"><a style="color:#FFF;" href="list.php">My Request</a></span>
             </center>
             <hr>
         </div>        

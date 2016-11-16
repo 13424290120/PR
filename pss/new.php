@@ -226,18 +226,22 @@ $stmtInvoice->execute();
         
         <div class="row">
           <div class="col-xs-4">
-              Delivery Date Required:<input type="date" name="deliveryDate" class="form-control"></input>
-              <span class="badge" style="margin:20px;">With In Budget: <input  type="radio" name="withInBudget" value="1" checked>Yes</input>
-              <input type="radio" name="withInBudget" value="0">No</input></span>              
-          </div>
-          <div class="col-xs-4">
               Currency:<select name="currency" class="form-control"><option></option><option>RMB</option><option>HKD</option><option>USD</option><option>EURO</option></select>
-              <span class="badge" style="margin:20px;"> Recoverable: <input  type="radio" name="Recoverable" value="1">Yes</input>
-              <input  type="radio" name="Recoverable" value="0" checked>No</input></span>
-          </div>
-
+              CAPEX Number:<input name="capexNumber" class="form-control"></input>
+          </div>            
           <div class="col-xs-4">
-              Charge Back To:<textarea class="form-control" rows="3">Customer Code/Name:
+              Delivery Date Required:<input type="date" name="deliveryDate" class="form-control"></input>
+              <span class="form-control">
+                  With In Budget: <input  type="radio" name="withInBudget" value="1" checked>Yes</input>
+                  <input type="radio" name="withInBudget" value="0">No</input>                  
+              </span> 
+              <span class="form-control">
+                  Recoverable: <input  type="radio" name="Recoverable" value="1">Yes</input>
+                  <input  type="radio" name="Recoverable" value="0" checked>No</input>
+              </span>              
+          </div>
+          <div class="col-xs-4">
+              Charge Back To:<textarea class="form-control" rows="4">Customer Code/Name:
                                                                      Charge Amount:
                              </textarea>              
 
@@ -261,7 +265,8 @@ $stmtInvoice->execute();
               <input type="hidden" name="prNumber" value="<?php echo $lastPRnumber ?>">  
             <table id="order-table" class="table-hover">
                     <tr>
-                            <th style="width:55%;">Item</th>
+                            <th style="width:50%;">Item</th>
+                            <th style="width:5%;">Unit</th>
                             <th style="width:20%;">Project Code</th>               
                             <th style="width:8%;">UnitPrice</th>		
                             <th style="width:5%;">Quantity</th>
@@ -273,6 +278,7 @@ $stmtInvoice->execute();
                     for($i=1; $i<16; $i++){ //遍历表格内容数组 
                             $inputName = "row".$i."[]";
                             echo "<tr>";
+                            echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control' ></td>";
                             echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control' ></td>";
                             echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control'></td>";
                             echo "        <td><input name=\"$inputName\" type='text' class='price-per-pallet form-control'></td>";
@@ -326,7 +332,7 @@ $stmtInvoice->execute();
             <center>
                 <input id="saveButton" type="button" value=" Save " class="btn btn-success">
                 <input id="printButton" type="button" value=" Print " class="btn btn-success">
-                
+                <span class="btn btn-success"><a style="color:#FFF;" href="list.php">List</a></span>
             </center>
             <hr>
         </div>        
