@@ -251,7 +251,7 @@ $stmtInvoice->execute();
         
         <div class="row">
           <div class="col-xs-12">
-              Purpose:<textarea class="form-control" rows="3" name="purpose"></textarea>
+              Purpose:<textarea class="form-control" rows="3" name="purpose" placeholder="Attention : If it's project cost, please list your project name here!"></textarea>
           </div>         
         </div>
     </form>
@@ -294,7 +294,7 @@ $stmtInvoice->execute();
                     
                  ?>      
                     <tr>
-                            <td>Total:</td>                            
+                        <td>Total:<a style='color:#ff0000;'>(Please use VAT price if it's RMB quotation)</a></td>                            
                             <td></td>
                             <td></td>
                             <td colspan="6" style="text-align: right;">
@@ -332,7 +332,7 @@ $stmtInvoice->execute();
             <center>
                 <input id="saveButton" type="button" value=" Save " class="btn btn-success">
                 <input id="printButton" type="button" value=" Print " class="btn btn-success">
-                <span class="btn btn-success"><a style="color:#FFF;" href="list.php">List</a></span>
+                <span class="btn btn-success"><a style="color:#FFF;" href="home.php">Home</a></span>
             </center>
             <hr>
         </div>        
