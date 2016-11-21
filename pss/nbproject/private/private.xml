@@ -7,11 +7,13 @@
             <file>file:/C:/xampp/htdocs/pss/login.php</file>
             <file>file:/C:/xampp/htdocs/pss/edit.php</file>
             <file>file:/C:/xampp/htdocs/pss/ajax.php</file>
+            <file>file:/C:/xampp/htdocs/pss/export.php</file>
             <file>file:/C:/xampp/htdocs/pss/home.php</file>
             <file>file:/C:/xampp/htdocs/pss/new.php</file>
             <file>file:/C:/xampp/htdocs/pss/db.php</file>
             <file>file:/C:/xampp/htdocs/pss/list.php</file>
             <file>file:/C:/xampp/htdocs/pss/js/order.js</file>
+            <file>file:/C:/xampp/htdocs/pss/ajax-form-submit.php</file>
         </group>
     </open-files>
 </project-private>

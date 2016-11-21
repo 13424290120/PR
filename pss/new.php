@@ -241,9 +241,9 @@ $stmtInvoice->execute();
               </span>              
           </div>
           <div class="col-xs-4">
-              Charge Back To:<textarea class="form-control" rows="4">Customer Code/Name:
-                                                                     Charge Amount:
-                             </textarea>              
+              Ship To: <input class="form-control" name="shipTo">
+              Charge Back To:<textarea class="form-control" rows="2">Customer Code/Name:
+Charge Amount:</textarea>              
 
           </div>            
         </div>
@@ -251,7 +251,7 @@ $stmtInvoice->execute();
         
         <div class="row">
           <div class="col-xs-12">
-              Purpose:<textarea class="form-control" rows="3" name="purpose" placeholder="Attention : If it's project cost, please list your project name here!"></textarea>
+              Remark:<textarea class="form-control" rows="3" name="purpose" placeholder="Attention : If it's project cost, please list your project name here!"></textarea>
           </div>         
         </div>
     </form>

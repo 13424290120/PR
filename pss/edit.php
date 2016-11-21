@@ -143,6 +143,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
     $supplierName=$row['supplierName'];
     $supplierContact = $row['supplierContact'];
     $supplierPhone= $row['supplierPhone'];
+    $shipTo=$row["shipTo"];
     $withinBudget=$row['withinBudget'];
     $recoverable=$row['recoverable'];
     $currency=$row['currency'];
@@ -187,7 +188,6 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                   ?> 
               </select>              
               Address:<textarea id="address" name="invoiceAddress" class="form-control" rows="3"><?php echo $row['invoiceAddress'] ?></textarea>
-
           </div>
         </div>   
         <hr style="margin:5px; margin-bottom: 2px;"></hr>
@@ -266,17 +266,16 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
               </span>               
           </div>
           <div class="col-xs-4">
-              Charge Back To:<textarea class="form-control" rows="4">Customer Code/Name:
-                                                                     Charge Amount:
-                             </textarea>              
-
+              Ship To: <input class="form-control" name="shipTo" value="<?php echo $shipTo ?>">
+              Charge Back To:<textarea class="form-control" rows="2">Customer Code/Name:
+Charge Amount:</textarea> 
           </div>            
         </div>
         
         
         <div class="row">
           <div class="col-xs-12">
-              Purpose:<textarea class="form-control" rows="3" name="purpose" placeholder="Attention : If it's project cost, please list your project name here!"><?php echo $purpose ?></textarea>
+              Remark:<textarea class="form-control" rows="3" name="purpose" placeholder="Attention : If it's project cost, please list your project name here!"><?php echo $purpose ?></textarea>
           </div>         
         </div>
     </form>
