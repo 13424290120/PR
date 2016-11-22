@@ -148,6 +148,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
     $recoverable=$row['recoverable'];
     $currency=$row['currency'];
     $capexNumber=$row['capexNumber'];
+    $capexBudgetNumber=$row['capexBudgetNumber'];
     $purpose=$row['purpose'];
     $deliveryDate=$row['deliveryDate'];
     $gridContents=$row['gridContents']; 
@@ -253,10 +254,11 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                   <option <?php if($currency==="EURO"){ echo "selected=selected"; }?> value="EURO">EURO</option>
               </select>
               CAPEX Number:<input name="capexNumber" class="form-control" value="<?php echo $capexNumber ?>">
+              CAPEX Budget Number:<input name="capexBudgetNumber" class="form-control" value="<?php echo $capexBudgetNumber ?>">
           </div>            
           <div class="col-xs-4">
               Delivery Date Required:<input type="date" name="deliveryDate" class="form-control" value="<?php echo $deliveryDate ?>"></input>
-              <span class="form-control">
+              <span class="form-control" style="margin: 20px 0 20px 0;">
                   With In Budget: <input  type="radio" name="withInBudget" value="1" <?php if ($withinBudget==="1"){ echo "checked"; } ?>>Yes</input>
                   <input type="radio" name="withInBudget" value="0" <?php if ($withinBudget==="0"){ echo "checked"; } ?>>No</input>
               </span>
@@ -266,8 +268,16 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
               </span>               
           </div>
           <div class="col-xs-4">
-              Ship To: <input class="form-control" name="shipTo" value="<?php echo $shipTo ?>">
-              Charge Back To:<textarea class="form-control" rows="2">Customer Code/Name:
+              Ship To: 
+              <select name="shipTo" class="form-control">                  
+                  <option></option>
+                  <option <?php if($shipTo==="APAC"){ echo "selected=selected"; }?> value="APAC">APAC</option>
+                  <option <?php if($shipTo==="SHAT"){ echo "selected=selected"; }?> value="SHAT">SHAT</option>
+                  <option <?php if($shipTo==="ShuangLin"){ echo "selected=selected"; }?> value="ShuangLin">ShuangLin</option>
+                  <option <?php if($shipTo==="Sunway"){ echo "selected=selected"; }?> value="Sunway">Sunway</option>
+                  <option <?php if($shipTo==="Others"){ echo "selected=selected"; }?> value="Others">Others</option>
+              </select>              
+              Charge Back To:<textarea class="form-control" rows="3">Customer Code/Name:
 Charge Amount:</textarea> 
           </div>            
         </div>
@@ -354,7 +364,7 @@ Charge Amount:</textarea>
           <div class="col-xs-12">
               <table style="width:100%;">
                   <tr>
-                      <th style="width:25%;">Requstor</th>
+                      <th style="width:25%;">Requestor</th>
                       <th style="width:25%;">Department Manager</th>
                       <th style="width:25%;">Finance</th>
                       <th style="width:25%;">General Manager</th>

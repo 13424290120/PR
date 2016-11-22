@@ -227,7 +227,9 @@ $stmtInvoice->execute();
         <div class="row">
           <div class="col-xs-4">
               Currency:<select name="currency" class="form-control"><option></option><option>RMB</option><option>HKD</option><option>USD</option><option>EURO</option></select>
-              CAPEX Number:<input name="capexNumber" class="form-control"></input>
+              CAPEX Number:<input name="capexNumber" class="form-control">
+              CAPEX Budget Number:<input name="capexBudgetNumber" class="form-control">
+
           </div>            
           <div class="col-xs-4">
               Delivery Date Required:<input type="date" name="deliveryDate" class="form-control"></input>
@@ -241,7 +243,15 @@ $stmtInvoice->execute();
               </span>              
           </div>
           <div class="col-xs-4">
-              Ship To: <input class="form-control" name="shipTo">
+              Ship To: 
+              <select name="shipTo" class="form-control">                  
+                  <option></option>
+                  <option value="APAC" selected="selected">APAC</option>
+                  <option value="SHAT">SHAT</option>
+                  <option value="ShuangLin">ShuangLin</option>
+                  <option value="Sunway">Sunway</option>
+                  <option value="Others">Others</option>
+              </select>                
               Charge Back To:<textarea class="form-control" rows="2">Customer Code/Name:
 Charge Amount:</textarea>              
 
@@ -312,7 +322,7 @@ Charge Amount:</textarea>
           <div class="col-xs-12">
               <table style="width:100%;">
                   <tr>
-                      <th style="width:25%;">Requstor</th>
+                      <th style="width:25%;">Requestor</th>
                       <th style="width:25%;">Department Manager</th>
                       <th style="width:25%;">Finance</th>
                       <th style="width:25%;">General Manager</th>
