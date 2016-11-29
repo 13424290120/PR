@@ -39,22 +39,24 @@
                 return false;    
             } 
             
-            $year = date("y"); //取得当前的年份
-            $month = date("m"); //取得当前的月份
-            if ($month>3){ //如果当前月份大于3月， 就进入新的财年
-                $yearCode = $year;               
-            }else{ // 如果当前月份小于或等于3月， 就还用去年的财年
-                $yearCode = $year - 1;                
-            }
+//            $year = date("y"); //取得当前的年份
+//            $month = date("m"); //取得当前的月份
+//            if ($month>3){ //如果当前月份大于3月， 就进入新的财年
+//                $yearCode = $year;               
+//            }else{ // 如果当前月份小于或等于3月， 就还用去年的财年
+//                $yearCode = $year - 1;                
+//            }
             
-            $sql = "SELECT `prNumber` FROM `request` WHERE `prNumber` LIKE '$yearCode%' ORDER BY `prNumber` DESC LIMIT 1";
+//            $sql = "SELECT `prNumber` FROM `request` WHERE `prNumber` LIKE '$yearCode%' ORDER BY `prNumber` DESC LIMIT 1";
+            $sql = "SELECT `prNumber` FROM `request` ORDER BY `prNumber` DESC LIMIT 1";
             $stmt = $db->prepare($sql);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             if($row){ //如果有找到当前年份的PR， 则取得最后一张PR号
                 $lastNumber = $row['prNumber'] + 1;
             }else{ // 如果没有找到当前年份的PR， 则重新生成PR
-                $lastNumber = $yearCode * 10000 + 1;
+                //$lastNumber = $yearCode * 10000 + 1;
+                $lastNumber = 100000 + 1;
             }           
             $_SESSION["lastNumber"] = $lastNumber;
            

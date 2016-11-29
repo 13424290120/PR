@@ -233,11 +233,11 @@ $stmtInvoice->execute();
           </div>            
           <div class="col-xs-4">
               Delivery Date Required:<input type="date" name="deliveryDate" class="form-control"></input>
-              <span class="form-control">
+              <span class="form-control" style="margin: 20px 0 20px 0;">
                   With In Budget: <input  type="radio" name="withInBudget" value="1" checked>Yes</input>
                   <input type="radio" name="withInBudget" value="0">No</input>                  
               </span> 
-              <span class="form-control">
+              <span class="form-control" style="margin: 20px 0 20px 0;">
                   Recoverable: <input  type="radio" name="Recoverable" value="1">Yes</input>
                   <input  type="radio" name="Recoverable" value="0" checked>No</input>
               </span>              
