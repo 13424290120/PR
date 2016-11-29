@@ -33,7 +33,7 @@
       
       include_once 'db.php';    
 
-        $sqlStatus = "SELECT `id`,`statusName` FROM `prStatus`";
+        $sqlStatus = "SELECT `id`,`statusName` FROM `prstatus`";
         $stmtStatus = $db->prepare($sqlStatus);
         $stmtStatus->execute();      
       
@@ -51,19 +51,19 @@
        if($_SESSION["adminUser"]){
             $sqlList = "SELECT r.prNumber AS prNumber, r.requestor AS Requestor, r.supplierName AS supplierName, "
                     . "r.currency AS Currency, r.total AS Total, r.prDate AS prDate, r.prStatus as prStatus, a.accountNumber AS accountNumber, category.name "
-                    . "AS categoryName, costcode.code AS costCode, prStatus.statusName AS statusName from request as r "
+                    . "AS categoryName, costcode.code AS costCode, prstatus.statusName AS statusName from request as r "
                     . "INNER JOIN account as a on ( r.accountNumber = a.id ) "
                     . "INNER JOIN category ON ( category.id = r.categoryName ) "
                     . "INNER JOIN costcode ON ( costcode.id = r.costCode ) " 
-                    . "INNER JOIN prStatus ON ( prStatus.id = r.prStatus )";
+                    . "INNER JOIN prstatus ON ( prstatus.id = r.prStatus )";
        }else{
             $sqlList = "SELECT r.prNumber AS prNumber, r.requestor AS Requestor, r.supplierName AS supplierName, "
                     . "r.currency AS Currency, r.total AS Total, r.prDate AS prDate, r.prStatus as prStatus, a.accountNumber AS accountNumber, category.name "
-                    . "AS categoryName, costcode.code AS costCode,  prStatus.statusName AS statusName from request as r "
+                    . "AS categoryName, costcode.code AS costCode,  prstatus.statusName AS statusName from request as r "
                     . "INNER JOIN account as a on ( r.accountNumber = a.id ) "
                     . "INNER JOIN category ON ( category.id = r.categoryName ) "
                     . "INNER JOIN costcode ON ( costcode.id = r.costCode ) "
-                    . "INNER JOIN prStatus ON ( prStatus.id = r.prStatus ) WHERE `requestor`='$requestor'";           
+                    . "INNER JOIN prstatus ON ( prstatus.id = r.prStatus ) WHERE `requestor`='$requestor'";           
        }
       
 
