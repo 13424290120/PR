@@ -152,6 +152,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
     $purpose=$row['purpose'];
     $deliveryDate=$row['deliveryDate'];
     $gridContents=$row['gridContents']; 
+    $taxRate=$row['taxRate']; 
     $arrayGridContents = unserialize($gridContents); //将表格内容由文本序列转换成数组
     //print_r($arrayGridContents);
 
@@ -259,7 +260,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
           <div class="col-xs-4">
               Delivery Date Required:<input type="date" name="deliveryDate" class="form-control" value="<?php echo $deliveryDate ?>"></input>
               <span class="form-control" style="margin: 20px 0 20px 0;">
-                  With In Budget: <input  type="radio" name="withInBudget" value="1" <?php if ($withinBudget==="1"){ echo "checked"; } ?>>Yes</input>
+                  Within Budget: <input  type="radio" name="withInBudget" value="1" <?php if ($withinBudget==="1"){ echo "checked"; } ?>>Yes</input>
                   <input type="radio" name="withInBudget" value="0" <?php if ($withinBudget==="0"){ echo "checked"; } ?>>No</input>
               </span>
               <span class="form-control">
@@ -346,9 +347,19 @@ Charge Amount:</textarea>
                     }
                     ?>
                     <tr>
-                            <td>Total:<a style='color:#ff0000;'>(Please use VAT price if it's RMB quotation)</a></td>                            
-                            <td></td>
-                            <td></td>
+                            <td>Total:<a style='color:#ff0000;'>(Please use VAT price and choose tax rate if it's RMB quotation)</a></td>                            
+                            <td>Tax Rate:</td>
+                            <td>                                
+                                <select name="taxRate" class="form-control">
+                                        <option></option>
+                                        <option  <?php if($taxRate==="17"){ echo "selected=selected"; }?> value="17">17%</option>
+                                        <option  <?php if($taxRate==="13"){ echo "selected=selected"; }?> value="13">13%</option>
+                                        <option  <?php if($taxRate==="11"){ echo "selected=selected"; }?> value="11">11%</option>
+                                        <option  <?php if($taxRate==="6"){ echo "selected=selected"; }?> value="6">6%</option>
+                                        <option  <?php if($taxRate==="3"){ echo "selected=selected"; }?> value="3">3%</option>
+                                        <option  <?php if($taxRate==="0"){ echo "selected=selected"; }?> value="0">0%</option>
+                                </select>                           
+                            </td>
                             <td colspan="6" style="text-align: right;">
                                     <input type="text" name="total" value="<?php echo $arrayGridContents['total'] ?>" class="total-box form-control" id="product-subtotal" readonly="readonly"></input>
                             </td>

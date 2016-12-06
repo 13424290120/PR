@@ -66,6 +66,7 @@
             echo "<div class='col-xs-4'>";
             echo "<button class='btn btn-lg btn-primary btn-block' onclick=\"location.href='new.php?lastNumber=$lastNumber'\">New Purchasing Request</button>";
             echo "<button class='btn btn-lg btn-primary btn-block' onclick=\"location.href='list.php'\">Purchasing Request History</button>";                        
+			echo "<button class='btn btn-lg btn-primary btn-block' onclick=\"location.href='http://cnszpms023/pss'\">New Approval Workflow</button>";
             echo "</div>";
             echo "<div class='col-xs-4'>";
             echo "</div>";

@@ -69,20 +69,19 @@ if (isset($_POST["loginForm"])) { //prevent null bind
 			$redir = "Location: http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/home.php";
 			header($redir); 
                         exit();  
-		}
-                
-	}else{
-	$failed = 1;
-            echo "<div class='alert alert-warning'>";
-            echo " <center><h3> Login failed, please try again.</h3></center><br>";
-            echo " <center><h4> <a href='index.php'>Go back</a></h4></center>";
-            echo "</div>";
+                }else{
+                        echo "<div class='alert alert-warning'>";
+                        echo " <center><h3> Login failed, please try again.</h3></center><br>";
+                        echo " <center><h4> <a href='index.php'>Go back</a></h4></center>";
+                        echo "</div>";                    
+                }
+
+        }else{
+                echo "<div class='alert alert-warning'>";
+                echo " <center><h3> Please login first !</h3></center><br>";
+                echo " <center><h4> <a href='index.php'>Go back</a></h4></center>";
+                echo "</div>";    
         }
-}else{
-        echo "<div class='alert alert-warning'>";
-        echo " <center><h3> Please login first !</h3></center><br>";
-        echo " <center><h4> <a href='index.php'>Go back</a></h4></center>";
-        echo "</div>";    
 }
 ?>      
 
