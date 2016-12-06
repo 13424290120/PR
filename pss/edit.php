@@ -114,7 +114,7 @@ if(isset($_SESSION["username"]) && $_SESSION["username"]){
 
 //define the unit for the gridForm
 
-$arrUnit = array('','PCS','EA','KG','KG','M','CM','Roll','Set','Gram','Bag'); 
+$arrUnit = array('','Bag','CM','EA','Gram','KG','M','PCS','Roll','Set'); 
 
 //从数据库取出字典数据，生成表单下拉清单
 
