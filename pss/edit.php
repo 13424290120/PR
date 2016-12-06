@@ -112,6 +112,10 @@ if(isset($_SESSION["username"]) && $_SESSION["username"]){
     return false;    
 }      
 
+//define the unit for the gridForm
+
+$arrUnit = array('','EA','KG','KG','M','CM','Roll','Set','Gram','Bag'); 
+
 //从数据库取出字典数据，生成表单下拉清单
 
 $currentDate = date("Y-m-d");
@@ -300,50 +304,94 @@ Charge Amount:</textarea>
               <input type="hidden" name="prNumber" value="<?php echo $prNumber ?>">  
             <table id="order-table" class="table-hover">
                     <tr>
-                            <th style="width:50%;">Item</th>
-                            <th style="width:5%;">Unit</th>
-                            <th style="width:20%;">Project Code</th>               
+                            <th style="width:55%;">Item</th>
+                            <th style="width:10%;">Unit</th>
+                            <th style="width:10%;">Project Code</th>               
                             <th style="width:8%;">UnitPrice</th>		
                             <th style="width:5%;">Quantity</th>
                             <th style="width:10%;">Subtotal</th>
                     </tr>
                     
                     <?php
-                    $i = 1; //定义行号                    
-                    foreach($arrayGridContents as $gridRow){ //遍历表格内容数组 
-                        
-                        if(is_array($gridRow)){ 
-                            $inputName = "row".$i."[]"; // 定义输入框名称，以数组的形式存储数据
-                            if($_SESSION["adminUser"]){
-                                    echo "<tr>";
-                                    echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='form-control' readonly='readonly'></td>";
-                                    echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[1]\" class='form-control' readonly='readonly'></td>";
-                                    echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[2]\" class='form-control' readonly='readonly'></td>";
-                                    echo "        <td><input name=\"$inputName\" type='text'  value=\"$gridRow[3]\" class='price-per-pallet form-control' readonly='readonly'></td>";
-                                    echo "        <td class='num-pallets'>";
-                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[4]\" class='num-pallets-input form-control' id='turface-pro-league-num-pallets' readonly='readonly'>";
-                                    echo "        </td>";             
-                                    echo "        <td class='row-total'>";
-                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[5]\" class='row-total-input form-control' id='turface-pro-league-row-total' readonly='readonly'>";
-                                    echo "        </td>";
-                                    echo "</tr>";                                 
-                            }else{
-                                    echo "<tr>";
-                                    echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='form-control'></td>";
-                                    echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[1]\" class='form-control'></td>";
-                                    echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[2]\" class='form-control'></td>";
-                                    echo "        <td><input name=\"$inputName\" type='text'  value=\"$gridRow[3]\" class='price-per-pallet form-control'></td>";
-                                    echo "        <td class='num-pallets'>";
-                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[4]\" class='num-pallets-input form-control' id='turface-pro-league-num-pallets'>";
-                                    echo "        </td>";             
-                                    echo "        <td class='row-total'>";
-                                    echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[5]\" class='row-total-input form-control' id='turface-pro-league-row-total' readonly='readonly'>";
-                                    echo "        </td>";
-                                    echo "</tr>";                                 
-                            }
+                    
+                    if($arrayGridContents != ""){
+                        $i = 1; //定义行号                    
+                        foreach($arrayGridContents as $gridRow){ //遍历表格内容数组 
+                            if(is_array($gridRow)){ 
+                                $inputName = "row".$i."[]"; // 定义输入框名称，以数组的形式存储数据
+                                if($_SESSION["adminUser"]){
+                                        echo "<tr>";
+                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='form-control' readonly='readonly'></td>";
+                                        //echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[1]\" class='form-control' readonly='readonly'></td>";
+                                        echo "        <td class='product-title'><select name=\"$inputName\" class='form-control'>";
+                                        foreach ($arrUnit as $unit) {
+                                            if($gridRow[1]===$unit){ 
+                                                echo "<option value='$unit' selected=selected>$unit</option>";                                         
+                                            }else{
+                                                echo "<option>$unit</option>";
+                                            }
+                                        } 
+                                        echo "        </td>";                                    
+                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[2]\" class='form-control' readonly='readonly'></td>";
+                                        echo "        <td><input name=\"$inputName\" type='text'  value=\"$gridRow[3]\" class='price-per-pallet form-control' readonly='readonly'></td>";
+                                        echo "        <td class='num-pallets'>";
+                                        echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[4]\" class='num-pallets-input form-control' id='turface-pro-league-num-pallets' readonly='readonly'>";
+                                        echo "        </td>";             
+                                        echo "        <td class='row-total'>";
+                                        echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[5]\" class='row-total-input form-control' id='turface-pro-league-row-total' readonly='readonly'>";
+                                        echo "        </td>";
+                                        echo "</tr>";                                 
+                                }else{
+                                        echo "<tr>";
+                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='form-control'></td>";
+                                        //echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[1]\" class='form-control'></td>";
+                                        echo "        <td class='product-title'><select name=\"$inputName\" class='form-control'>";
+                                        foreach ($arrUnit as $unit) {
+                                            if($gridRow[1]===$unit){ 
+                                                echo "<option value='$unit' selected=selected>$unit</option>";                                         
+                                            }else{
+                                                echo "<option>$unit</option>";
+                                            }
+                                        } 
+                                        echo "        </td>";                                     
+                                        //echo "        <td class='product-title'><select name=\"$inputName\" class='form-control'><option>EA</option><option>PCS</option><option>KG</option><option>M</option><option>CM</option><option>Roll</option><option>Set</option><option>Gram</option><option>Bag</option></select></td>";
+                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[2]\" class='form-control'></td>";
+                                        echo "        <td><input name=\"$inputName\" type='text'  value=\"$gridRow[3]\" class='price-per-pallet form-control'></td>";
+                                        echo "        <td class='num-pallets'>";
+                                        echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[4]\" class='num-pallets-input form-control' id='turface-pro-league-num-pallets'>";
+                                        echo "        </td>";             
+                                        echo "        <td class='row-total'>";
+                                        echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[5]\" class='row-total-input form-control' id='turface-pro-league-row-total' readonly='readonly'>";
+                                        echo "        </td>";
+                                        echo "</tr>";                                 
+                                }
 
-                            $i++;
+                                $i++;
+                            }
                         }
+                    }else{
+                        
+                        for($i=1; $i<16; $i++){ //遍历表格内容数组 
+                                $inputName = "row".$i."[]";
+                                echo "<tr>";
+                                echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control' ></td>";
+                                //echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control' ></td>";
+                                echo "        <td class='product-title'><select name=\"$inputName\" class='form-control'>";
+                                foreach ($arrUnit as $unit) {
+                                    echo "<option value='$unit'>$unit</option>";
+                                } 
+                                echo "        </td>"; 
+                                echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control'></td>";
+                                echo "        <td><input name=\"$inputName\" type='text' class='price-per-pallet form-control'></td>";
+                                echo "        <td class='num-pallets'>";
+                                echo "                <input name=\"$inputName\" type='text' class='num-pallets-input form-control' id='turface-pro-league-num-pallets'>";
+                                echo "        </td>";             
+                                echo "        <td class='row-total'>";
+                                echo "                <input name=\"$inputName\" type='text'  class='row-total-input form-control' id='turface-pro-league-row-total' readonly='readonly'>";
+                                echo "        </td>";
+                                echo "</tr>"; 
+                        }                          
+                        
                     }
                     ?>
                     <tr>

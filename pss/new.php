@@ -120,6 +120,9 @@ if(!isset($_GET['lastNumber'])){
         $lastPRnumber = $_GET['lastNumber'];
 }
 
+
+$currentDate = date("Y-m-d");
+
 //判断当前的PR编号是否己经存在
 
 $sqlCheckRequest = "SELECT `prNumber` FROM `request` WHERE `prNumber` = $lastPRnumber";
@@ -127,7 +130,7 @@ $stmtCheckRequest = $db->prepare($sqlCheckRequest);
 $stmtCheckRequest->execute();
 $rowCheckRequest = $stmtCheckRequest->fetch(PDO::FETCH_ASSOC);
 if (!$rowCheckRequest){ //如果PR单不存在，就新增该PR单
-    $sqlNewRequest = "INSERT INTO `request` (`prNumber`,`requestor`) VALUE('$lastPRnumber','$requestor');";
+    $sqlNewRequest = "INSERT INTO `request` (`prNumber`,`requestor`,`prDate`) VALUE('$lastPRnumber','$requestor','$currentDate');";
     $stmtNewRequest = $db->prepare($sqlNewRequest);
     $stmtNewRequest->execute();    
 }else{
@@ -135,10 +138,11 @@ if (!$rowCheckRequest){ //如果PR单不存在，就新增该PR单
     return false;
 }
 
+//define the unit for the gridForm
+
+$arrUnit = array('','EA','KG','KG','M','CM','Roll','Set','Gram','Bag'); 
+
 //从数据库取出字典数据，生成表单下拉清单
-
-$currentDate = date("Y-m-d");
-
 $sqlAccount = "SELECT `id`,`accountNumber`,`description` FROM `account`";
 $sqlCostCode = "SELECT `id`,`code`,`codeName` FROM `costcode`";
 $sqlCategory = "SELECT `id`,`name` FROM `category`";
@@ -275,9 +279,9 @@ Charge Amount:</textarea>
               <input type="hidden" name="prNumber" value="<?php echo $lastPRnumber ?>">  
             <table id="order-table" class="table-hover">
                     <tr>
-                            <th style="width:50%;">Item</th>
-                            <th style="width:5%;">Unit</th>
-                            <th style="width:20%;">Project Code</th>               
+                            <th style="width:55%;">Item</th>
+                            <th style="width:10%;">Unit</th>
+                            <th style="width:10%;">Project Code</th>               
                             <th style="width:8%;">UnitPrice</th>		
                             <th style="width:5%;">Quantity</th>
                             <th style="width:10%;">Subtotal</th>
@@ -289,7 +293,12 @@ Charge Amount:</textarea>
                             $inputName = "row".$i."[]";
                             echo "<tr>";
                             echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control' ></td>";
-                            echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control' ></td>";
+                            //echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control' ></td>";
+                            echo "        <td class='product-title'><select name=\"$inputName\" class='form-control'>";
+                            foreach ($arrUnit as $unit) {
+                                echo "<option value='$unit'>$unit</option>";
+                            } 
+                            echo "        </td>";
                             echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control'></td>";
                             echo "        <td><input name=\"$inputName\" type='text' class='price-per-pallet form-control'></td>";
                             echo "        <td class='num-pallets'>";
