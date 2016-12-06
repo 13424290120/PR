@@ -114,7 +114,7 @@ if(isset($_SESSION["username"]) && $_SESSION["username"]){
 
 //define the unit for the gridForm
 
-$arrUnit = array('','EA','KG','KG','M','CM','Roll','Set','Gram','Bag'); 
+$arrUnit = array('','PCS','EA','KG','KG','M','CM','Roll','Set','Gram','Bag'); 
 
 //从数据库取出字典数据，生成表单下拉清单
 
@@ -313,13 +313,13 @@ Charge Amount:</textarea>
                     </tr>
                     
                     <?php
-                    
+                    // if the user already submit the Grid table data.
                     if($arrayGridContents != ""){
                         $i = 1; //定义行号                    
                         foreach($arrayGridContents as $gridRow){ //遍历表格内容数组 
                             if(is_array($gridRow)){ 
                                 $inputName = "row".$i."[]"; // 定义输入框名称，以数组的形式存储数据
-                                if($_SESSION["adminUser"]){
+                                if($_SESSION["adminUser"]){ //if the user belong to admin group, then only allow him to view.
                                         echo "<tr>";
                                         echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='form-control' readonly='readonly'></td>";
                                         //echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[1]\" class='form-control' readonly='readonly'></td>";
@@ -341,12 +341,12 @@ Charge Amount:</textarea>
                                         echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[5]\" class='row-total-input form-control' id='turface-pro-league-row-total' readonly='readonly'>";
                                         echo "        </td>";
                                         echo "</tr>";                                 
-                                }else{
+                                }else{ //if the user is not admin group user, then he can edit his own PR form.
                                         echo "<tr>";
                                         echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='form-control'></td>";
                                         //echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[1]\" class='form-control'></td>";
                                         echo "        <td class='product-title'><select name=\"$inputName\" class='form-control'>";
-                                        foreach ($arrUnit as $unit) {
+                                        foreach ($arrUnit as $unit) { //populate the unit selection list
                                             if($gridRow[1]===$unit){ 
                                                 echo "<option value='$unit' selected=selected>$unit</option>";                                         
                                             }else{
@@ -369,7 +369,7 @@ Charge Amount:</textarea>
                                 $i++;
                             }
                         }
-                    }else{
+                    }else{ //if the user didn't submit any grid content, then show the blank table.
                         
                         for($i=1; $i<16; $i++){ //遍历表格内容数组 
                                 $inputName = "row".$i."[]";

@@ -140,7 +140,7 @@ if (!$rowCheckRequest){ //如果PR单不存在，就新增该PR单
 
 //define the unit for the gridForm
 
-$arrUnit = array('','EA','KG','KG','M','CM','Roll','Set','Gram','Bag'); 
+$arrUnit = array('','Bag','CM','EA','Gram','KG','M','PCS','Roll','Set'); 
 
 //从数据库取出字典数据，生成表单下拉清单
 $sqlAccount = "SELECT `id`,`accountNumber`,`description` FROM `account`";
