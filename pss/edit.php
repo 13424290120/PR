@@ -34,6 +34,50 @@
             // Click the saveButton action
             $("#saveButton").click(function()
             {
+                var withInBudget = $("input[name='withInBudget']:checked").val();
+                var capexBudgetNumber = $("input[name='capexBudgetNumber']").val();
+                if(withInBudget == 1 && capexBudgetNumber == "")
+                {
+                    alert ("Sorry, please don't forget to fill budget number if you choose Within Budget!");
+                    $("input[name='capexBudgetNumber']").focus();
+                    return false;
+                }
+           
+                // if taxRate is RMB, then user has to choose the taxRate.
+                var currency = $("select[name='currency']").val();
+                var taxRate = $("select[name='taxRate']").val();
+                if (currency == "RMB")
+                {
+                    if (taxRate == "")
+                    {
+                        alert ("Sorry, please don't forget to choose tax rate if currency is RMB!");
+                        $("select[name='taxRate']").focus();
+                        return false;
+                    }
+                }
+
+                
+                //If the PR is recoverable from customer, then the requestor must fill chargeBack fields
+                var recoverable = $("input[name='Recoverable']:checked").val();
+                var chargeBackCurrency = $("select[name='chargeBackCurrency']").val();
+                if (recoverable == 1)
+                {
+                    $(":text[name^='chargeBack']").each(function(i,item){
+                        if ($(this).val() == "")
+                        {
+                            alert ("Sorry, please don't forget to fill " + $(this).attr("name"));
+                            $(this).focus();
+                            return false;
+                        }
+                    }); 
+                    if (chargeBackCurrency == "")
+                    {
+                        alert ("Sorry, please don't forget to choose Charge Back Currency");
+                        $("select[name='chargeBackCurrency']").focus();
+                        return false;
+                    }                    
+                }
+                
                     // To submit ajaxform data by ajax.
                     $("#ajaxform").submit(function(e)
                     {
@@ -260,7 +304,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                   <option></option>
                   <option <?php if($currency==="RMB"){ echo "selected=selected"; }?> value="RMB">RMB</option>
                   <option <?php if($currency==="HKD"){ echo "selected=selected"; }?> value="HKD">HKD</option>
-                  <option <?php if($currencyy==="USD"){ echo "selected=selected"; }?> value="USD">USD</option>
+                  <option <?php if($currency==="USD"){ echo "selected=selected"; }?> value="USD">USD</option>
                   <option <?php if($currency==="EURO"){ echo "selected=selected"; }?> value="EURO">EURO</option>
               </select>
               Within Budget: 
