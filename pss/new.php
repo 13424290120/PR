@@ -228,25 +228,27 @@ $stmtInvoice->execute();
           </div>            
         </div>
         
-        <div class="row">
-          <div class="col-xs-4">
+<!--        <div class="row">
+          <div class="col-xs-3">
               Currency:<select name="currency" class="form-control"><option></option><option>RMB</option><option>HKD</option><option>USD</option><option>EURO</option></select>
               CAPEX Number:<input name="capexNumber" class="form-control">
               CAPEX Budget Number:<input name="capexBudgetNumber" class="form-control">
 
           </div>            
-          <div class="col-xs-4">
+          <div class="col-xs-3">
               Delivery Date Required:<input type="date" name="deliveryDate" class="form-control"></input>
-              <span class="form-control" style="margin: 20px 0 20px 0;">
-                  Within Budget: <input  type="radio" name="withInBudget" value="1" checked>Yes</input>
+              Within Budget: 
+              <span class="form-control">
+                  <input  type="radio" name="withInBudget" value="1" checked>Yes</input>
                   <input type="radio" name="withInBudget" value="0">No</input>                  
               </span> 
-              <span class="form-control" style="margin: 20px 0 20px 0;">
-                  Recoverable: <input  type="radio" name="Recoverable" value="1">Yes</input>
+              Recoverable: 
+              <span class="form-control">
+                  <input  type="radio" name="Recoverable" value="1">Yes</input>
                   <input  type="radio" name="Recoverable" value="0" checked>No</input>
               </span>              
           </div>
-          <div class="col-xs-4">
+          <div class="col-xs-3">
               Ship To: 
               <select name="shipTo" class="form-control">                  
                   <option></option>
@@ -256,10 +258,63 @@ $stmtInvoice->execute();
                   <option value="Sunway">Sunway</option>
                   <option value="Others">Others</option>
               </select>                
-              Charge Back To:<textarea class="form-control" rows="2">Customer Code/Name:
-Charge Amount:</textarea>              
+            
 
           </div>            
+        </div>-->
+
+        <div class="row">
+          <div class="col-xs-3">
+              Currency:
+              <select name="currency" class="form-control">
+                  <option></option>
+                  <option>RMB</option>
+                  <option>HKD</option>
+                  <option>USD</option>
+                  <option>EURO</option>
+              </select>
+              Within Budget: 
+              <span class="form-control">
+                  <input  type="radio" name="withInBudget" value="1" checked>Yes</input>
+                  <input type="radio" name="withInBudget" value="0">No</input>                  
+              </span>
+              Charge Back Customer Code:<input name="chargeBackCustomerCode" class="form-control">
+          </div>            
+          <div class="col-xs-3">
+              Delivery Date Required:<input type="date" name="deliveryDate" class="form-control">
+              CAPEX Budget Number:<input name="capexBudgetNumber" class="form-control">
+              Charge Back Amount: <input name="chargeBackAmount" class="form-control">
+          </div>
+          <div class="col-xs-3">
+              Ship To: 
+              <select name="shipTo" class="form-control">                  
+                  <option></option>
+                  <option value="APAC" selected="selected">APAC</option>
+                  <option value="SHAT">SHAT</option>
+                  <option value="ShuangLin">ShuangLin</option>
+                  <option value="Sunway">Sunway</option>
+                  <option value="Others">Others</option>
+              </select>  
+              Recoverable: 
+              <span class="form-control">
+                  <input  type="radio" name="Recoverable" value="1">Yes
+                  <input  type="radio" name="Recoverable" value="0" checked>No
+              </span>             
+              Charge Back PO Number:<input name="chargeBackPONumber" class="form-control">
+          </div>    
+          <div class="col-xs-3">
+              CAPEX Number:<input name="capexNumber" class="form-control">
+              Charge Back Customer Name:<input name="chargeBackCustomerName" class="form-control">
+              Charge Back Currency:
+              <select name="chargeBackCurrency" class="form-control">
+                  <option></option>
+                  <option>RMB</option>
+                  <option>HKD</option>
+                  <option>USD</option>
+                  <option>EURO</option>
+              </select>
+             
+          </div>              
         </div>
         
         

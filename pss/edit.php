@@ -150,6 +150,11 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
     $shipTo=$row["shipTo"];
     $withinBudget=$row['withinBudget'];
     $recoverable=$row['recoverable'];
+    $chargeBackCustomerName=$row['chargeBackCustomerName'];
+    $chargeBackCustomerCode=$row['chargeBackCustomerCode'];
+    $chargeBackAmount=$row['chargeBackAmount'];
+    $chargeBackPONumber=$row['chargeBackPONumber'];
+    $chargeBackCurrency=$row['chargeBackCurrency'];
     $currency=$row['currency'];
     $capexNumber=$row['capexNumber'];
     $capexBudgetNumber=$row['capexBudgetNumber'];
@@ -249,30 +254,29 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
         </div>
         
         <div class="row">
-          <div class="col-xs-4">
+          <div class="col-xs-3">
               Currency:
               <select name="currency" class="form-control">                  
                   <option></option>
                   <option <?php if($currency==="RMB"){ echo "selected=selected"; }?> value="RMB">RMB</option>
                   <option <?php if($currency==="HKD"){ echo "selected=selected"; }?> value="HKD">HKD</option>
-                  <option <?php if($currency==="USD"){ echo "selected=selected"; }?> value="USD">USD</option>
+                  <option <?php if($currencyy==="USD"){ echo "selected=selected"; }?> value="USD">USD</option>
                   <option <?php if($currency==="EURO"){ echo "selected=selected"; }?> value="EURO">EURO</option>
               </select>
-              CAPEX Number:<input name="capexNumber" class="form-control" value="<?php echo $capexNumber ?>">
-              CAPEX Budget Number:<input name="capexBudgetNumber" class="form-control" value="<?php echo $capexBudgetNumber ?>">
-          </div>            
-          <div class="col-xs-4">
-              Delivery Date Required:<input type="date" name="deliveryDate" class="form-control" value="<?php echo $deliveryDate ?>"></input>
-              <span class="form-control" style="margin: 20px 0 20px 0;">
-                  Within Budget: <input  type="radio" name="withInBudget" value="1" <?php if ($withinBudget==="1"){ echo "checked"; } ?>>Yes</input>
-                  <input type="radio" name="withInBudget" value="0" <?php if ($withinBudget==="0"){ echo "checked"; } ?>>No</input>
-              </span>
+              Within Budget: 
               <span class="form-control">
-                  Recoverable: <input  type="radio" name="Recoverable" value="1" <?php if ($recoverable==="1"){ echo "checked"; } ?>>Yes</input>
-                  <input  type="radio" name="Recoverable" value="0" <?php if ($recoverable==="0"){ echo "checked"; } ?>>No</input>
-              </span>               
+                  <input  type="radio" name="withInBudget" value="1" <?php if ($withinBudget==="1"){ echo "checked"; } ?>>Yes</input>
+                  <input type="radio" name="withInBudget" value="0" <?php if ($withinBudget==="0"){ echo "checked"; } ?>>No</input>
+              </span>              
+                            
+              Charge Back Customer Code:<input name="chargeBackCustomerCode" class="form-control" value="<?php echo $chargeBackCustomerCode ?>">
+          </div>            
+          <div class="col-xs-3">
+              Delivery Date Required:<input type="date" name="deliveryDate" class="form-control" value="<?php echo $deliveryDate ?>"></input>
+              CAPEX Budget Number:<input name="capexBudgetNumber" class="form-control" value="<?php echo $capexBudgetNumber ?>">
+              Charge Back Amount: <input name="chargeBackAmount" class="form-control" value="<?php echo $chargeBackAmount ?>">
           </div>
-          <div class="col-xs-4">
+          <div class="col-xs-3">
               Ship To: 
               <select name="shipTo" class="form-control">                  
                   <option></option>
@@ -281,13 +285,27 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                   <option <?php if($shipTo==="ShuangLin"){ echo "selected=selected"; }?> value="ShuangLin">ShuangLin</option>
                   <option <?php if($shipTo==="Sunway"){ echo "selected=selected"; }?> value="Sunway">Sunway</option>
                   <option <?php if($shipTo==="Others"){ echo "selected=selected"; }?> value="Others">Others</option>
+              </select> 
+              Recoverable: 
+              <span class="form-control">
+                  <input  type="radio" name="Recoverable" value="1" <?php if ($recoverable==="1"){ echo "checked"; } ?>>Yes</input>
+                  <input  type="radio" name="Recoverable" value="0" <?php if ($recoverable==="0"){ echo "checked"; } ?>>No</input>
+              </span>              
+              Charge Back PO Number:<input name="chargeBackPONumber" class="form-control" value="<?php echo $chargeBackPONumber ?>">
+          </div>    
+          <div class="col-xs-3">
+              CAPEX Number:<input name="capexNumber" class="form-control" value="<?php echo $capexNumber ?>">
+              Charge Back Customer Name:<input name="chargeBackCustomerName" class="form-control" value="<?php echo $chargeBackCustomerName ?>">
+              Charge Back Currency: 
+              <select name="chargeBackCurrency" class="form-control">                  
+                  <option></option>
+                  <option <?php if($chargeBackCurrency==="RMB"){ echo "selected=selected"; }?> value="RMB">RMB</option>
+                  <option <?php if($chargeBackCurrency==="HKD"){ echo "selected=selected"; }?> value="HKD">HKD</option>
+                  <option <?php if($chargeBackCurrency==="USD"){ echo "selected=selected"; }?> value="USD">USD</option>
+                  <option <?php if($chargeBackCurrency==="EURO"){ echo "selected=selected"; }?> value="EURO">EURO</option>
               </select>              
-              Charge Back To:<textarea class="form-control" rows="3">Customer Code/Name:
-Charge Amount:</textarea> 
-          </div>            
+          </div>              
         </div>
-        
-        
         <div class="row">
           <div class="col-xs-12">
               Remark:<textarea class="form-control" rows="3" name="purpose" placeholder="Attention : If it's project cost, please list your project name here!"><?php echo $purpose ?></textarea>
