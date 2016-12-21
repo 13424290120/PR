@@ -34,14 +34,14 @@
             
             $("#saveButton").click(function()
             {
-                var withInBudget = $("input[name='withInBudget']:checked").val();
-                var capexBudgetNumber = $("input[name='capexBudgetNumber']").val();
-                if(withInBudget == 1 && capexBudgetNumber == "")
-                {
-                    alert ("Sorry, please don't forget to fill budget number if you choose Within Budget!");
-                    $("input[name='capexBudgetNumber']").focus();
-                    return false;
-                }
+//                var withInBudget = $("input[name='withInBudget']:checked").val();
+//                var capexBudgetNumber = $("input[name='capexBudgetNumber']").val();
+//                if(withInBudget == 1 && capexBudgetNumber == "")
+//                {
+//                    alert ("Sorry, please don't forget to fill budget number if you choose Within Budget!");
+//                    $("input[name='capexBudgetNumber']").focus();
+//                    return false;
+//                }
            
                 // if taxRate is RMB, then user has to choose the taxRate.
                 var currency = $("select[name='currency']").val();
@@ -59,24 +59,31 @@
                 
                 //If the PR is recoverable from customer, then the requestor must fill chargeBack fields
                 var recoverable = $("input[name='Recoverable']:checked").val();
-                var chargeBackCurrency = $("select[name='chargeBackCurrency']").val();
-                if (recoverable == 1)
+                var chargeBackCustomerName = $("input[name='chargeBackCustomerName']").val();
+                if (recoverable == 1 && chargeBackCustomerName =="")
                 {
-                    $(":text[name^='chargeBack']").each(function(i,item){
-                        if ($(this).val() == "")
-                        {
-                            alert ("Sorry, please don't forget to fill " + $(this).attr("name"));
-                            $(this).focus();
-                            return false;
-                        }
-                    }); 
-                    if (chargeBackCurrency == "")
-                    {
-                        alert ("Sorry, please don't forget to choose Charge Back Currency");
-                        $("select[name='chargeBackCurrency']").focus();
-                        return false;
-                    }                    
-                }                
+                    alert ("Sorry, please don't forget to fill Charge Back Customer Name!");
+                    $("input[name='chargeBackCustomerName']").focus();
+                    return false;                    
+                }
+                
+//                if (recoverable == 1)
+//                {
+//                    $(":text[name^='chargeBack']").each(function(i,item){
+//                        if ($(this).val() == "")
+//                        {
+//                            alert ("Sorry, please don't forget to fill " + $(this).attr("name"));
+//                            $(this).focus();
+//                            return false;
+//                        }
+//                    }); 
+//                    if (chargeBackCurrency == "")
+//                    {
+//                        alert ("Sorry, please don't forget to choose Charge Back Currency");
+//                        $("select[name='chargeBackCurrency']").focus();
+//                        return false;
+//                    }                    
+//                }                
                     $("#gridForm").submit(function(e)
                     {
                             $("#simple-msg").html("");
@@ -416,7 +423,7 @@ $stmtInvoice->execute();
                             <td>
                                 
                                 <select name="taxRate" class="form-control">
-                                        <option></option>
+                                    <option value="" selected="selected"></option>
                                         <option value="17">17%</option>
                                         <option value="13">13%</option>
                                         <option value="11">11%</option>

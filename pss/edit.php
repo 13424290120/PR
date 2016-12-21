@@ -34,49 +34,26 @@
             // Click the saveButton action
             $("#saveButton").click(function()
             {
-                var withInBudget = $("input[name='withInBudget']:checked").val();
-                var capexBudgetNumber = $("input[name='capexBudgetNumber']").val();
-                if(withInBudget == 1 && capexBudgetNumber == "")
-                {
-                    alert ("Sorry, please don't forget to fill budget number if you choose Within Budget!");
-                    $("input[name='capexBudgetNumber']").focus();
-                    return false;
-                }
-           
                 // if taxRate is RMB, then user has to choose the taxRate.
                 var currency = $("select[name='currency']").val();
                 var taxRate = $("select[name='taxRate']").val();
-                if (currency == "RMB")
+                if (currency == "RMB" && taxRate == "")
                 {
-                    if (taxRate == "")
-                    {
-                        alert ("Sorry, please don't forget to choose tax rate if currency is RMB!");
-                        $("select[name='taxRate']").focus();
-                        return false;
-                    }
+                    alert ("Sorry, please don't forget to choose tax rate if currency is RMB!");
+                    $("select[name='taxRate']").focus();
+                    return false;
                 }
-
                 
                 //If the PR is recoverable from customer, then the requestor must fill chargeBack fields
                 var recoverable = $("input[name='Recoverable']:checked").val();
-                var chargeBackCurrency = $("select[name='chargeBackCurrency']").val();
-                if (recoverable == 1)
+                var chargeBackCustomerName = $("input[name='chargeBackCustomerName']").val();
+                if (recoverable == 1 && chargeBackCustomerName =="")
                 {
-                    $(":text[name^='chargeBack']").each(function(i,item){
-                        if ($(this).val() == "")
-                        {
-                            alert ("Sorry, please don't forget to fill " + $(this).attr("name"));
-                            $(this).focus();
-                            return false;
-                        }
-                    }); 
-                    if (chargeBackCurrency == "")
-                    {
-                        alert ("Sorry, please don't forget to choose Charge Back Currency");
-                        $("select[name='chargeBackCurrency']").focus();
-                        return false;
-                    }                    
-                }
+                    alert ("Sorry, please don't forget to fill Charge Back Customer Name!");
+                    $("input[name='chargeBackCustomerName']").focus();
+                    return false;   
+                }                
+
                 
                     // To submit ajaxform data by ajax.
                     $("#ajaxform").submit(function(e)
@@ -385,7 +362,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                                         echo "<tr>";
                                         echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='form-control' readonly='readonly'></td>";
                                         //echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[1]\" class='form-control' readonly='readonly'></td>";
-                                        echo "        <td class='product-title'><select name=\"$inputName\" class='form-control'>";
+                                        echo "        <td class='product-title'><select name=\"$inputName\" class='form-control' readonly='readonly'>";
                                         foreach ($arrUnit as $unit) {
                                             if($gridRow[1]===$unit){ 
                                                 echo "<option value='$unit' selected=selected>$unit</option>";                                         
@@ -461,7 +438,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                             <td>Tax Rate:</td>
                             <td>                                
                                 <select name="taxRate" class="form-control">
-                                        <option></option>
+                                        <option <?php if($taxRate===""){ echo "selected=selected"; }?> value=""></option>
                                         <option  <?php if($taxRate==="17"){ echo "selected=selected"; }?> value="17">17%</option>
                                         <option  <?php if($taxRate==="13"){ echo "selected=selected"; }?> value="13">13%</option>
                                         <option  <?php if($taxRate==="11"){ echo "selected=selected"; }?> value="11">11%</option>

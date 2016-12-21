@@ -18,19 +18,44 @@ function IsNumeric(sText)
    
 };
 
+// To format the subTotal as Finance view format 300,000.00
+function fmoney(s, n)   
+{   
+   n = n > 0 && n <= 20 ? n : 2;   
+   s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";   
+   var l = s.split(".")[0].split("").reverse(),   
+   r = s.split(".")[1];   
+   t = "";   
+   for(i = 0; i < l.length; i ++ )   
+   {   
+      t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");   
+   }   
+   return t.split("").reverse().join("") + "." + r;   
+} 
+
+// To convert back from Finance view format to normal number in order to do calculation
+function rmoney(s)   
+{   
+   return parseFloat(s.replace(/[^\d\.-]/g, ""));   
+} 
+
 function calcProdSubTotal() {
     
     var prodSubTotal = 0;
 
     $(".row-total-input").each(function(){
     
-        var valString = $(this).val() || 0;
+        var valString = $(this).val()+"" || 0;        
+        if ( valString != 0 && valString.indexOf(",") > 0 )
+        {
+            valString = rmoney(valString); //convert back from string to float
+        }        
         
-        prodSubTotal += parseFloat(valString);
-                    
+        prodSubTotal += parseFloat(valString); 
+        
     });
-       
-    $("#product-subtotal").val(prodSubTotal);
+      
+    $("#product-subtotal").val(fmoney(prodSubTotal, 2));
 
 };
 
@@ -51,7 +76,8 @@ $(function(){
         if ( (IsNumeric(numPallets)) && (numPallets != '') ) {
             
             var rowTotal = numPallets * multiplier;
-            var roundRowTotal = rowTotal.toFixed(2);
+            var roundRowTotal = fmoney(rowTotal, 2);
+            //var roundRowTotal = rowTotal.toFixed(2);
             
             $this
                 .css("background-color", "white")
@@ -83,7 +109,8 @@ $(function(){
         if ( (IsNumeric(pricePallets)) && (pricePallets != '') ) {
             
             var rowTotal = pricePallets * multiplier;
-            var roundRowTotal = rowTotal.toFixed(2);
+            //var roundRowTotal = rowTotal.toFixed(2);
+           var roundRowTotal = fmoney(rowTotal, 2);
             
             $this
                 .css("background-color", "white")
