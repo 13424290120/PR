@@ -48,7 +48,7 @@
                 var taxRate = $("select[name='taxRate']").val();
                 if (currency == "RMB")
                 {
-                    if (taxRate == "")
+                    if (taxRate == "0")
                     {
                         alert ("Sorry, please don't forget to choose tax rate if currency is RMB!");
                         $("select[name='taxRate']").focus();
@@ -58,7 +58,7 @@
 
                 
                 //If the PR is recoverable from customer, then the requestor must fill chargeBack fields
-                var recoverable = $("input[name='Recoverable']:checked").val();
+                var recoverable = $("input[name='recoverable']:checked").val();
                 var chargeBackCustomerName = $("input[name='chargeBackCustomerName']").val();
                 if (recoverable == 1 && chargeBackCustomerName =="")
                 {
@@ -278,41 +278,6 @@ $stmtInvoice->execute();
           </div>            
         </div>
         
-<!--        <div class="row">
-          <div class="col-xs-3">
-              Currency:<select name="currency" class="form-control"><option></option><option>RMB</option><option>HKD</option><option>USD</option><option>EURO</option></select>
-              CAPEX Number:<input name="capexNumber" class="form-control">
-              CAPEX Budget Number:<input name="capexBudgetNumber" class="form-control">
-
-          </div>            
-          <div class="col-xs-3">
-              Delivery Date Required:<input type="date" name="deliveryDate" class="form-control"></input>
-              Within Budget: 
-              <span class="form-control">
-                  <input  type="radio" name="withInBudget" value="1" checked>Yes</input>
-                  <input type="radio" name="withInBudget" value="0">No</input>                  
-              </span> 
-              Recoverable: 
-              <span class="form-control">
-                  <input  type="radio" name="Recoverable" value="1">Yes</input>
-                  <input  type="radio" name="Recoverable" value="0" checked>No</input>
-              </span>              
-          </div>
-          <div class="col-xs-3">
-              Ship To: 
-              <select name="shipTo" class="form-control">                  
-                  <option></option>
-                  <option value="APAC" selected="selected">APAC</option>
-                  <option value="SHAT">SHAT</option>
-                  <option value="ShuangLin">ShuangLin</option>
-                  <option value="Sunway">Sunway</option>
-                  <option value="Others">Others</option>
-              </select>                
-            
-
-          </div>            
-        </div>-->
-
         <div class="row">
           <div class="col-xs-3">
               Currency:
@@ -347,8 +312,8 @@ $stmtInvoice->execute();
               </select>  
               Recoverable: 
               <span class="form-control">
-                  <input  type="radio" name="Recoverable" value="1">Yes
-                  <input  type="radio" name="Recoverable" value="0" checked>No
+                  <input  type="radio" name="recoverable" value="1">Yes
+                  <input  type="radio" name="recoverable" value="0" checked>No
               </span>             
               Charge Back PO Number:<input name="chargeBackPONumber" class="form-control">
           </div>    
@@ -422,14 +387,13 @@ $stmtInvoice->execute();
                             <td>Tax Rate:</td>
                             <td>
                                 
-                                <select name="taxRate" class="form-control">
-                                    <option value="" selected="selected"></option>
+                                <select name="taxRate" class="form-control">                                    
                                         <option value="17">17%</option>
                                         <option value="13">13%</option>
                                         <option value="11">11%</option>
                                         <option value="6">6%</option>
                                         <option value="3">3%</option>
-                                        <option value="0">0%</option>
+                                        <option value="0" selected="selected">0%</option>
                                 </select>
                             </td>
                             <td colspan="6" style="text-align: right;">

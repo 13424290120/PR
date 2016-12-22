@@ -37,7 +37,7 @@
                 // if taxRate is RMB, then user has to choose the taxRate.
                 var currency = $("select[name='currency']").val();
                 var taxRate = $("select[name='taxRate']").val();
-                if (currency == "RMB" && taxRate == "")
+                if (currency == "RMB" && taxRate == "0")
                 {
                     alert ("Sorry, please don't forget to choose tax rate if currency is RMB!");
                     $("select[name='taxRate']").focus();
@@ -45,7 +45,7 @@
                 }
                 
                 //If the PR is recoverable from customer, then the requestor must fill chargeBack fields
-                var recoverable = $("input[name='Recoverable']:checked").val();
+                var recoverable = $("input[name='recoverable']:checked").val();
                 var chargeBackCustomerName = $("input[name='chargeBackCustomerName']").val();
                 if (recoverable == 1 && chargeBackCustomerName =="")
                 {
@@ -309,8 +309,8 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
               </select> 
               Recoverable: 
               <span class="form-control">
-                  <input  type="radio" name="Recoverable" value="1" <?php if ($recoverable==="1"){ echo "checked"; } ?>>Yes</input>
-                  <input  type="radio" name="Recoverable" value="0" <?php if ($recoverable==="0"){ echo "checked"; } ?>>No</input>
+                  <input  type="radio" name="recoverable" value="1" <?php if ($recoverable==="1"){ echo "checked"; } ?>>Yes</input>
+                  <input  type="radio" name="recoverable" value="0" <?php if ($recoverable==="0"){ echo "checked"; } ?>>No</input>
               </span>              
               Charge Back PO Number:<input name="chargeBackPONumber" class="form-control" value="<?php echo $chargeBackPONumber ?>">
           </div>    
@@ -437,8 +437,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                             <td>Total:<a style='color:#ff0000;'>(Please use VAT price and choose tax rate if it's RMB quotation)</a></td>                            
                             <td>Tax Rate:</td>
                             <td>                                
-                                <select name="taxRate" class="form-control">
-                                        <option <?php if($taxRate===""){ echo "selected=selected"; }?> value=""></option>
+                                <select name="taxRate" class="form-control">                                        
                                         <option  <?php if($taxRate==="17"){ echo "selected=selected"; }?> value="17">17%</option>
                                         <option  <?php if($taxRate==="13"){ echo "selected=selected"; }?> value="13">13%</option>
                                         <option  <?php if($taxRate==="11"){ echo "selected=selected"; }?> value="11">11%</option>
