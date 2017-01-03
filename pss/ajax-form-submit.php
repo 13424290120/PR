@@ -18,7 +18,8 @@ include_once 'db.php';
 	$ajaxFormData = $_POST;      
         $prNumber = ($ajaxFormData["prNumber"]);
         foreach($ajaxFormData as $key=>$value){
-            $sqlUpdate ="UPDATE `request` SET `$key` = '$value' WHERE `prNumber` = '$prNumber'";
+            $convertedValue=  htmlspecialchars($value, ENT_QUOTES);
+            $sqlUpdate ="UPDATE `request` SET `$key` = '$convertedValue' WHERE `prNumber` = '$prNumber'";
 //            echo $sqlUpdate;
             $stmtUpdate = $db->prepare($sqlUpdate);
             $stmtUpdate->execute();
