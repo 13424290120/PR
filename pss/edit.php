@@ -141,7 +141,7 @@ $arrUnit = array('','Bag','CM','EA','Gram','KG','M','PCS','Roll','Set');
 
 $currentDate = date("Y-m-d");
 
-$sqlAccount = "SELECT `id`,`accountNumber`,`description` FROM `account`";
+$sqlAccount = "SELECT `id`,`accountNumber`,`description` FROM `account` ORDER BY `accountNumber`";
 $sqlCostCode = "SELECT `id`,`code`,`codeName` FROM `costcode`";
 $sqlCategory = "SELECT `id`,`name` FROM `category`";
 $sqlInvoice = "SELECT `id`,`name`,`address` FROM `invoice`";
@@ -329,7 +329,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
         </div>
         <div class="row">
           <div class="col-xs-12">
-              Remark:<textarea class="form-control" rows="3" name="purpose" placeholder="Attention : If it's project cost, please list your project name here!"><?php echo $purpose ?></textarea>
+              Purpose/Remark:<textarea class="form-control" rows="3" name="purpose" placeholder="Attention : If it's project cost, please list your project name here!"><?php echo $purpose ?></textarea>
           </div>         
         </div>
     </form>
