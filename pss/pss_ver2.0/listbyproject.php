@@ -49,7 +49,7 @@
 //        }      
       
    
-            $sqlList = "SELECT r.prNumber AS prNumber, r.requestor AS Requestor, r.supplierName AS supplierName, r.gridContents AS gridContents, "
+            $sqlList = "SELECT r.prNumber AS prNumber, r.requestor AS Requestor, r.supplierName AS supplierName, r.shipTo AS shipTo, r.gridContents AS gridContents, "
                     . "r.currency AS Currency, r.total AS Total, r.prDate AS prDate, r.prStatus as prStatus, a.accountNumber AS accountNumber, category.name "
                     . "AS categoryName, costcode.code AS costCode, prstatus.statusName AS statusName from request as r "
                     . "LEFT JOIN account as a on ( r.accountNumber = a.id ) "
@@ -86,9 +86,16 @@
                     <th>costCode</th>
                     <th>accountNumber</th>                    
                     <th>requestor</th>
+                    <th>shipTo</th>
                     <th>Currency</th>
                     <th>total</th>
-                    <th>Item</th>                    
+                    <th>Item</th>
+                    <th>Unit</th> 
+                    <th>Project Code</th> 
+                    <th>Unit Price</th> 
+                    <th>Quantity</th> 
+                    <th>SubTotal</th> 
+                    
                 </tr>
                 
                 <?php
@@ -108,9 +115,15 @@
                                     echo "<td>".$rowList["costCode"]."</td>";
                                     echo "<td>".$rowList["accountNumber"]."</td>";
                                     echo "<td>".$rowList["Requestor"]."</td>";
+                                    echo "<td>".$rowList["shipTo"]."</td>";
                                     echo "<td>".$rowList["Currency"]."</td>";
                                     echo "<td>".$rowList["Total"]."</td>"; 
                                     echo "<td>".$gridRow["0"]."</td>";
+                                    echo "<td>".$gridRow["1"]."</td>";
+                                    echo "<td>".$gridRow["2"]."</td>";
+                                    echo "<td>".$gridRow["3"]."</td>";
+                                    echo "<td>".$gridRow["4"]."</td>";
+                                    echo "<td>".$gridRow["5"]."</td>";
                                     echo "</tr>";
                                 }
                             }

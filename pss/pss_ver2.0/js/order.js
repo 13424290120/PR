@@ -72,8 +72,8 @@ function calcTax(){
         if (IsNumeric(prodSubTotal)){
             var tax = prodSubTotal * taxRate;            
             var totalWithTax = tax + prodSubTotal;
-            $("#tax").val(tax);
-            $("#product-subtotal-tax").val(totalWithTax);  
+            $("#tax").val(fmoney(tax, 2));
+            $("#product-subtotal-tax").val(fmoney(totalWithTax, 2));  
         }
 }
 
@@ -158,8 +158,8 @@ $(function(){
         }
         var tax = taxVal * prodSubTotal;
         var prodSubTotalWithTax = prodSubTotal + tax;
-        $('#tax').val(tax);
-        $('#product-subtotal-tax').val(prodSubTotalWithTax);
+        $('#tax').val(fmoney(tax, 2));
+        $('#product-subtotal-tax').val(fmoney(prodSubTotalWithTax, 2));
     })
 
 });
