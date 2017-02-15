@@ -383,11 +383,11 @@ $stmtInvoice->execute();
                     
                  ?>      
                     <tr>
-                        <td>Total:<a style='color:#ff0000;'>(Please use VAT price and choose tax rate if it's RMB quotation)</a></td>                            
+                        <td>Total without Tax:<a style='color:#ff0000;'>(Please use VAT price and choose tax rate if it's RMB quotation)</a></td>                            
                             <td>Tax Rate:</td>
                             <td>
                                 
-                                <select name="taxRate" class="form-control">                                    
+                                <select name="taxRate" id="taxRate" class="form-control">                                    
                                         <option value="17">17%</option>
                                         <option value="13">13%</option>
                                         <option value="11">11%</option>
