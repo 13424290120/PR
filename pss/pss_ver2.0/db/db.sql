@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2016 at 10:38 AM
+-- Generation Time: Feb 16, 2017 at 08:39 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -114,7 +114,37 @@ INSERT INTO `account` (`id`, `accountNumber`, `description`, `explaination`) VAL
 (74, '779020', 'STOCK TAKE ADJ', 'stock take loss'),
 (75, '782010', 'COGS-3RD-ACCRUAL', 'n/a, system automatically run'),
 (76, '787040', 'OBS STOCK', 'obsolete stock can not be shipped out to customer'),
-(77, '788100', 'IC2 CHARGES', 'jig and fixture');
+(77, '788100', 'IC2 CHARGES', 'jig and fixture'),
+(78, '616060', 'Company Car Expenses', ''),
+(79, '616071', 'Plant Dormitory', ''),
+(80, '618021', 'Audit Fee-Others', ''),
+(81, '619100', 'Other Expat Cost', ''),
+(82, '619110', 'Expat Housing Cost', ''),
+(83, '619300', 'Other Prc Staff Cost', ''),
+(84, '619320', 'Visa Fee', ''),
+(85, '619400', 'Expatriate-Iit', ''),
+(86, '619500', 'Entertainment', ''),
+(87, '620020', 'Other Prc Staff Cost', ''),
+(88, '622000', 'Office Rental', ''),
+(89, '623020', 'R&M-Machine&Equipment', ''),
+(90, '623021', ' Cogs - Facility Maintenance', ''),
+(91, '632000', 'Wan/Lan', ''),
+(92, '634200', 'Tel/Idd-Staff', ''),
+(93, '640020', 'Outward Freight-Sea', ''),
+(94, '640040', 'Outward Freight-Road', ''),
+(95, '649100', 'Export Duties', ''),
+(96, '659061', 'Warranty', ''),
+(97, '664010', 'Om Charge', ''),
+(98, '770031', ' Actual Temperary Operation ', ''),
+(99, '770032', 'Effiency Loss', ''),
+(100, '772011', 'Trial Run Manhours', ''),
+(101, '772050', 'Goods Return', ''),
+(102, '782000', 'Cogs-3Rd-Mat', ''),
+(103, '782060', 'Cogs-Other Business', ''),
+(104, '788200', 'Cogs-Tooling Cost', ''),
+(105, '150000', 'Customer Tooling Recoverable', ''),
+(106, '151000', 'Other Receivable-Capex Export', ''),
+(107, '55000', 'Cip-Contribution In Progress', '');
 
 -- --------------------------------------------------------
 
@@ -274,6 +304,11 @@ CREATE TABLE `request` (
   `accountNumber` int(5) DEFAULT NULL,
   `withinBudget` int(2) DEFAULT NULL,
   `recoverable` int(2) DEFAULT NULL,
+  `chargeBackCustomerName` varchar(50) COLLATE gb2312_bin DEFAULT NULL,
+  `chargeBackCustomerCode` varchar(20) COLLATE gb2312_bin DEFAULT NULL,
+  `chargeBackAmount` varchar(20) COLLATE gb2312_bin DEFAULT NULL,
+  `chargeBackPONumber` varchar(20) COLLATE gb2312_bin DEFAULT NULL,
+  `chargeBackCurrency` varchar(5) COLLATE gb2312_bin DEFAULT NULL,
   `currency` varchar(5) COLLATE gb2312_bin DEFAULT NULL,
   `capexNumber` varchar(10) COLLATE gb2312_bin DEFAULT NULL,
   `capexBudgetNumber` varchar(10) COLLATE gb2312_bin DEFAULT NULL,
@@ -282,7 +317,10 @@ CREATE TABLE `request` (
   `projectNumber` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `requestor` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `gridContents` text COLLATE gb2312_bin,
-  `total` float DEFAULT NULL,
+  `taxRate` varchar(5) COLLATE gb2312_bin DEFAULT NULL,
+  `tax` varchar(10) COLLATE gb2312_bin DEFAULT NULL,
+  `totalWithoutTax` varchar(10) COLLATE gb2312_bin DEFAULT NULL,
+  `total` varchar(20) COLLATE gb2312_bin DEFAULT NULL,
   `prStatus` int(2) NOT NULL DEFAULT '3'
 ) ENGINE=InnoDB DEFAULT CHARSET=gb2312 COLLATE=gb2312_bin;
 
@@ -290,11 +328,9 @@ CREATE TABLE `request` (
 -- Dumping data for table `request`
 --
 
-INSERT INTO `request` (`id`, `prNumber`, `supplierName`, `supplierContact`, `supplierPhone`, `invoiceTo`, `shipTo`, `invoiceAddress`, `prDate`, `categoryName`, `costCode`, `accountNumber`, `withinBudget`, `recoverable`, `currency`, `capexNumber`, `capexBudgetNumber`, `purpose`, `deliveryDate`, `projectNumber`, `requestor`, `gridContents`, `total`, `prStatus`) VALUES
-(1, 160001, 'HP', 'Ben', '021-88645630', 1, 'APAC', '10&11/F,  Tagen Business Building, No. 7019, West HongLi Road, Futian district, Shenzhen', '2016-11-16', 8, 10, 6, 1, 0, 'RMB', '160002', NULL, 'To buy 10 sets of computers for new comers in Dec', '2016-11-30', NULL, 'JACKSON.LI', 'a:17:{s:8:"prNumber";s:6:"160001";s:4:"row1";a:6:{i:0;s:18:"HP EliteBook 840G3";i:1;s:3:"台";i:2;s:6:"000000";i:3;s:4:"7300";i:4;s:2:"10";i:5;s:8:"73000.00";}s:4:"row2";a:6:{i:0;s:8:"HP Mouse";i:1;s:3:"个";i:2;s:6:"000000";i:3;s:3:"130";i:4;s:2:"10";i:5;s:7:"1300.00";}s:4:"row3";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row4";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row5";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row6";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row7";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row8";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row9";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row10";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row11";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row12";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row13";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row14";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row15";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"total";s:5:"74300";}', 74300, 3),
-(2, 160002, 'HLS', 'Mr Li', '+86 755 33069888', 1, 'SHAT', '10&11/F,  Tagen Business Building, No. 7019, West HongLi Road, Futian district, Shenzhen', '2016-11-17', 8, 10, 6, 1, 0, 'RMB', '160002', NULL, 'To buy SG300 Switches for SHAT', '2016-11-30', NULL, 'JACKSON.LI', 'a:17:{s:8:"prNumber";s:6:"160002";s:4:"row1";a:6:{i:0;s:20:"Cisco SG300 28PP POE";i:1;s:3:"个";i:2;s:0:"";i:3;s:4:"5300";i:4;s:1:"5";i:5;s:8:"26500.00";}s:4:"row2";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row3";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row4";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row5";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row6";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row7";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row8";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row9";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row10";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row11";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row12";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row13";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row14";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row15";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"total";s:5:"26500";}', 26500, 3),
-(3, 160003, 'HP', 'Ben', '021-88888888', 1, 'APAC', '10&11/F,  Tagen Business Building, No. 7019, West HongLi Road, Futian district, Shenzhen', '2016-11-18', 8, 10, 6, 1, 0, 'RMB', '160003', NULL, 'Computers for new comers', '2016-11-30', NULL, 'JACKSON.LI', 'a:17:{s:8:"prNumber";s:6:"160003";s:4:"row1";a:6:{i:0;s:18:"HP Elitebook 840G3";i:1;s:3:"台";i:2;s:0:"";i:3;s:4:"7500";i:4;s:1:"3";i:5;s:8:"22500.00";}s:4:"row2";a:6:{i:0;s:14:"Logitech Mouse";i:1;s:3:"个";i:2;s:0:"";i:3;s:3:"150";i:4;s:1:"3";i:5;s:6:"450.00";}s:4:"row3";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row4";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row5";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row6";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row7";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row8";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row9";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row10";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row11";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row12";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row13";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row14";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row15";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"total";s:5:"22950";}', 22950, 3),
-(4, 160004, 'HP', 'Ben', '999999', 1, 'Sunway', '10&11/F,  Tagen Business Building, No. 7019, West HongLi Road, Futian district, Shenzhen', '2016-11-22', 8, 10, 6, 1, 1, 'RMB', '1600001', '0055660', 'For new comers in Dec', '2016-11-30', NULL, 'JACKSON.LI', 'a:17:{s:8:"prNumber";s:6:"160004";s:4:"row1";a:6:{i:0;s:18:"HP Elitebook 840G3";i:1;s:2:"pc";i:2;s:0:"";i:3;s:4:"8000";i:4;s:1:"6";i:5;s:8:"48000.00";}s:4:"row2";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row3";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row4";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row5";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row6";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row7";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row8";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row9";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row10";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row11";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row12";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row13";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row14";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row15";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"total";s:5:"48000";}', 48000, 3);
+INSERT INTO `request` (`id`, `prNumber`, `supplierName`, `supplierContact`, `supplierPhone`, `invoiceTo`, `shipTo`, `invoiceAddress`, `prDate`, `categoryName`, `costCode`, `accountNumber`, `withinBudget`, `recoverable`, `chargeBackCustomerName`, `chargeBackCustomerCode`, `chargeBackAmount`, `chargeBackPONumber`, `chargeBackCurrency`, `currency`, `capexNumber`, `capexBudgetNumber`, `purpose`, `deliveryDate`, `projectNumber`, `requestor`, `gridContents`, `taxRate`, `tax`, `totalWithoutTax`, `total`, `prStatus`) VALUES
+(1, 100001, 'Sinynet', 'Ben', '021-88660421', 1, 'SHAT', '10&amp;11/F,  Tagen Business Building, No. 7019, West HongLi Road, Futian district, Shenzhen', '2017-02-16', 8, 10, 107, 1, 0, 'N/A', 'N/A', 'N/A', 'N/A', 'RMB', 'RMB', 'SZ16010', 'N/A', 'To buy server and storage for SHAT factory, urgently need for WMS system, on top of that, we also need for the SHAT IT infrastructure.', '2017-02-28', NULL, 'JACKSON.LI', 'a:19:{s:8:"prNumber";s:6:"100001";s:4:"row1";a:6:{i:0;s:29:"Netapp FAS8020 Storage system";i:1;s:3:"Set";i:2;s:6:"160100";i:3;s:6:"300000";i:4;s:1:"1";i:5;s:10:"300,000.00";}s:4:"row2";a:6:{i:0;s:9:"HP Server";i:1;s:3:"Set";i:2;s:6:"160101";i:3;s:5:"50000";i:4;s:1:"3";i:5;s:10:"150,000.00";}s:4:"row3";a:6:{i:0;s:21:"Huawei Network Switch";i:1;s:3:"Set";i:2;s:6:"160111";i:3;s:4:"5000";i:4;s:1:"2";i:5;s:9:"10,000.00";}s:4:"row4";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row5";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row6";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row7";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row8";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row9";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row10";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row11";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row12";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row13";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row14";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:15:"totalWithoutTax";s:10:"629,694.00";s:7:"taxRate";s:4:"0.17";s:3:"tax";s:10:"107,047.98";s:5:"total";s:10:"736,741.98";}', '0.17', '107,047.98', '629,694.00', '736,741.98', 3),
+(2, 100002, 'HPE', 'Ben', '021-88645200', 1, 'SHAT', '10&amp;11/F,  Tagen Business Building, No. 7019, West HongLi Road, Futian district, Shenzhen', '2017-02-16', 8, 10, 107, 1, 0, 'N/A', 'N/A', 'N/A', 'N/A', 'RMB', 'RMB', 'N/A', 'N/A', 'To lease 10 sets computers for new comers in Mar.', '2017-02-28', NULL, 'JACKSON.LI', 'a:19:{s:8:"prNumber";s:6:"100002";s:4:"row1";a:6:{i:0;s:18:"HP Elitebook 840G3";i:1;s:3:"Set";i:2;s:6:"150221";i:3;s:4:"9200";i:4;s:1:"3";i:5;s:9:"27,600.00";}s:4:"row2";a:6:{i:0;s:18:"HP Elitedesk 820G3";i:1;s:3:"Set";i:2;s:6:"150330";i:3;s:4:"7500";i:4;s:1:"3";i:5;s:9:"22,500.00";}s:4:"row3";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row4";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row5";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row6";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row7";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row8";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:4:"row9";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row10";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row11";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row12";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row13";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:5:"row14";a:6:{i:0;s:0:"";i:1;s:0:"";i:2;s:0:"";i:3;s:0:"";i:4;s:0:"";i:5;s:0:"";}s:15:"totalWithoutTax";s:9:"50,100.00";s:7:"taxRate";s:4:"0.17";s:3:"tax";s:8:"8,517.00";s:5:"total";s:9:"58,617.00";}', '0.17', '8,517.00', '50,100.00', '58,617.00', 3);
 
 --
 -- Indexes for dumped tables
@@ -335,7 +371,11 @@ ALTER TABLE `prstatus`
 --
 ALTER TABLE `request`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `prNumber` (`prNumber`);
+  ADD UNIQUE KEY `prNumber` (`prNumber`),
+  ADD KEY `invoiceTo` (`invoiceTo`),
+  ADD KEY `categoryName` (`categoryName`),
+  ADD KEY `costCode` (`costCode`),
+  ADD KEY `accountNumber` (`accountNumber`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -345,7 +385,7 @@ ALTER TABLE `request`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 --
 -- AUTO_INCREMENT for table `category`
 --
@@ -370,7 +410,20 @@ ALTER TABLE `prstatus`
 -- AUTO_INCREMENT for table `request`
 --
 ALTER TABLE `request`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `request`
+--
+ALTER TABLE `request`
+  ADD CONSTRAINT `request_ibfk_1` FOREIGN KEY (`invoiceTo`) REFERENCES `invoice` (`id`),
+  ADD CONSTRAINT `request_ibfk_2` FOREIGN KEY (`categoryName`) REFERENCES `category` (`id`),
+  ADD CONSTRAINT `request_ibfk_3` FOREIGN KEY (`costCode`) REFERENCES `costcode` (`id`),
+  ADD CONSTRAINT `request_ibfk_4` FOREIGN KEY (`accountNumber`) REFERENCES `account` (`id`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
