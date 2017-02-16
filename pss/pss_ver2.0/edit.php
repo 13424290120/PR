@@ -34,6 +34,23 @@
             // Click the saveButton action
             $("#saveButton").click(function()
             {
+                
+                $("#ajaxform input").each(function(){
+                    if ($(this).val() == "")
+                    {
+                        $(this).focus();
+                        return false;
+                    } ;
+                })
+                $("#ajaxform select").each(function(){
+                    var choice = $(this).children('option:selected').val();
+                    if ( choice == "" || choice == "0" )
+                    {
+                        $(this).focus();
+                        return false;
+                    } ;
+                }) 
+                
                 // if taxRate is RMB, then user has to choose the taxRate.
                 var currency = $("select[name='currency']").val();
                 var taxRate = $("select[name='taxRate']").val();
@@ -135,7 +152,9 @@ if(isset($_SESSION["username"]) && $_SESSION["username"]){
 
 //define the unit for the gridForm
 
-$arrUnit = array('','Bag','CM','EA','Gram','KG','M','PCS','Roll','Set'); 
+$arrUnit = array('','Bag','CM','EA','Gram','Hour','KG','M','PCS','Roll','Set'); 
+$arrCurrency = array('','RMB','HKD','USD','EURO');
+$arrShipto = array('APAC','SHAT','Shuanglin','Sunway','Other'); 
 
 //从数据库取出字典数据，生成表单下拉清单
 
@@ -168,7 +187,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
     $supplierName=$row['supplierName'];
     $supplierContact = $row['supplierContact'];
     $supplierPhone= $row['supplierPhone'];
-    $shipTo=$row["shipTo"];
+    $PRshipTo=$row["shipTo"];
     $withinBudget=$row['withinBudget'];
     $recoverable=$row['recoverable'];
     $chargeBackCustomerName=$row['chargeBackCustomerName'];
@@ -176,7 +195,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
     $chargeBackAmount=$row['chargeBackAmount'];
     $chargeBackPONumber=$row['chargeBackPONumber'];
     $chargeBackCurrency=$row['chargeBackCurrency'];
-    $currency=$row['currency'];
+    $PRcurrency=$row['currency'];
     $capexNumber=$row['capexNumber'];
     $capexBudgetNumber=$row['capexBudgetNumber'];
     $purpose=$row['purpose'];
@@ -277,12 +296,16 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
         <div class="row">
           <div class="col-xs-3">
               Currency:
-              <select name="currency" class="form-control">                  
-                  <option></option>
-                  <option <?php if($currency==="RMB"){ echo "selected=selected"; }?> value="RMB">RMB</option>
-                  <option <?php if($currency==="HKD"){ echo "selected=selected"; }?> value="HKD">HKD</option>
-                  <option <?php if($currency==="USD"){ echo "selected=selected"; }?> value="USD">USD</option>
-                  <option <?php if($currency==="EURO"){ echo "selected=selected"; }?> value="EURO">EURO</option>
+              <select name="currency" class="form-control"> 
+                  <?php
+                    foreach ($arrCurrency as $currency) {
+                        if ($PRcurrency === $currency){
+                            echo "<option value='$currency' selected='selected'>$currency</option>";
+                        }else{
+                            echo "<option value='$currency'>$currency</option>";
+                        }
+                    }
+                  ?>  
               </select>
               Within Budget: 
               <span class="form-control">
@@ -300,12 +323,15 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
           <div class="col-xs-3">
               Ship To: 
               <select name="shipTo" class="form-control">                  
-                  <option></option>
-                  <option <?php if($shipTo==="APAC"){ echo "selected=selected"; }?> value="APAC">APAC</option>
-                  <option <?php if($shipTo==="SHAT"){ echo "selected=selected"; }?> value="SHAT">SHAT</option>
-                  <option <?php if($shipTo==="ShuangLin"){ echo "selected=selected"; }?> value="ShuangLin">ShuangLin</option>
-                  <option <?php if($shipTo==="Sunway"){ echo "selected=selected"; }?> value="Sunway">Sunway</option>
-                  <option <?php if($shipTo==="Others"){ echo "selected=selected"; }?> value="Others">Others</option>
+                  <?php
+                    foreach ($arrShipto as $Shipto) {
+                        if ($PRshipTo === $Shipto){
+                            echo "<option value='$Shipto' selected='selected'>$Shipto</option>";
+                        }else{
+                            echo "<option value='$Shipto'>$Shipto</option>";
+                        }
+                    }
+                  ?> 
               </select> 
               Recoverable: 
               <span class="form-control">
@@ -319,11 +345,15 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
               Charge Back Customer Name:<input name="chargeBackCustomerName" class="form-control" value="<?php echo $chargeBackCustomerName ?>">
               Charge Back Currency: 
               <select name="chargeBackCurrency" class="form-control">                  
-                  <option></option>
-                  <option <?php if($chargeBackCurrency==="RMB"){ echo "selected=selected"; }?> value="RMB">RMB</option>
-                  <option <?php if($chargeBackCurrency==="HKD"){ echo "selected=selected"; }?> value="HKD">HKD</option>
-                  <option <?php if($chargeBackCurrency==="USD"){ echo "selected=selected"; }?> value="USD">USD</option>
-                  <option <?php if($chargeBackCurrency==="EURO"){ echo "selected=selected"; }?> value="EURO">EURO</option>
+                  <?php
+                    foreach ($arrCurrency as $currency) {
+                        if ($chargeBackCurrency === $currency){
+                            echo "<option value='$currency' selected='selected'>$currency</option>";
+                        }else{
+                            echo "<option value='$currency'>$currency</option>";
+                        }
+                    }
+                  ?> 
               </select>              
           </div>              
         </div>
@@ -410,7 +440,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                         }
                     }else{ //if the user didn't submit any grid content, then show the blank table.
                         
-                        for($i=1; $i<16; $i++){ //遍历表格内容数组 
+                        for($i=1; $i<15; $i++){ //遍历表格内容数组 
                                 $inputName = "row".$i."[]";
                                 echo "<tr>";
                                 echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control' ></td>";
@@ -434,22 +464,38 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                     }
                     ?>
                     <tr>
-                            <td>Total:<a style='color:#ff0000;'>(Please use VAT price and choose tax rate if it's RMB quotation)</a></td>                            
-                            <td>Tax Rate:</td>
-                            <td>                                
-                                <select name="taxRate" class="form-control">                                        
-                                        <option  <?php if($taxRate==="17"){ echo "selected=selected"; }?> value="17">17%</option>
-                                        <option  <?php if($taxRate==="13"){ echo "selected=selected"; }?> value="13">13%</option>
-                                        <option  <?php if($taxRate==="11"){ echo "selected=selected"; }?> value="11">11%</option>
-                                        <option  <?php if($taxRate==="6"){ echo "selected=selected"; }?> value="6">6%</option>
-                                        <option  <?php if($taxRate==="3"){ echo "selected=selected"; }?> value="3">3%</option>
-                                        <option  <?php if($taxRate==="0"){ echo "selected=selected"; }?> value="0">0%</option>
-                                </select>                           
-                            </td>
-                            <td colspan="6" style="text-align: right;">
-                                    <input type="text" name="total" value="<?php echo $arrayGridContents['total'] ?>" class="total-box form-control" id="product-subtotal" readonly="readonly"></input>
+                        <td colspan="2"></td> 
+                        <td colspan="3"><b>Total without Tax</b></td>
+                            <td style="text-align: right;">
+                                    <input type="text" class="total-box form-control" id="product-subtotal" value="<?php echo $arrayGridContents['total'] ?>" name="total" readonly="readonly">
                             </td>
                     </tr>
+                    <tr>
+                        <td colspan="2"></td>                            
+                        <td><b>Tax Rate</b></td>
+                            <td colspan="2">
+                                <select name="taxRate" id="taxRate" class="form-control">                                    
+                                        <option  <?php if($taxRate==="0.17"){ echo "selected=selected"; }?> value="0.17">17%</option>
+                                        <option  <?php if($taxRate==="0.13"){ echo "selected=selected"; }?> value="0.13">13%</option>
+                                        <option  <?php if($taxRate==="0.11"){ echo "selected=selected"; }?> value="0.11">11%</option>
+                                        <option  <?php if($taxRate==="0.06"){ echo "selected=selected"; }?> value="0.06">6%</option>
+                                        <option  <?php if($taxRate==="0.03"){ echo "selected=selected"; }?> value="0.03">3%</option>
+                                        <option  <?php if($taxRate==="0"){ echo "selected=selected"; }?> value="0">0%</option>
+                                </select>
+                            </td>
+                            
+                            <td style="text-align: right;">
+                                    <input type="text" class="total-box form-control" id="tax" name="tax" readonly="readonly">
+                            </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td> 
+                        <td colspan="3"><b>Total with Tax</b></td>
+                            <td style="text-align: right;">
+                                    <input type="text" class="total-box form-control" id="product-subtotal-tax" name="totalWithTax" readonly="readonly">
+                            </td>
+                    </tr>                    
+
             </table>
           </form>
           </div>         

@@ -44,6 +44,21 @@
 //                }
            
                 // if taxRate is RMB, then user has to choose the taxRate.
+                $("#ajaxform input").each(function(){
+                    if ($(this).val() == "")
+                    {
+                        $(this).focus();
+                        return false;
+                    } ;
+                })
+                $("#ajaxform select").each(function(){
+                    var choice = $(this).children('option:selected').val();
+                    if ( choice == "" || choice == "0" )
+                    {
+                        $(this).focus();
+                        return false;
+                    } ;
+                })                
                 var currency = $("select[name='currency']").val();
                 var taxRate = $("select[name='taxRate']").val();
                 if (currency == "RMB")
@@ -190,7 +205,9 @@ $currentDate = date("Y-m-d");
 
 //define the unit for the gridForm
 
-$arrUnit = array('','Bag','CM','EA','Gram','KG','M','PCS','Roll','Set'); 
+$arrUnit = array('','Bag','CM','EA','Gram','Hour','KG','M','PCS','Roll','Set'); 
+$arrCurrency = array('','RMB','HKD','USD','EURO');
+$arrShipto = array('APAC','SHAT','Shuanglin','Sunway','Other');
 
 //从数据库取出字典数据，生成表单下拉清单
 $sqlAccount = "SELECT `id`,`accountNumber`,`description` FROM `account` ORDER BY `accountNumber`";
@@ -222,14 +239,14 @@ $stmtInvoice->execute();
         <div class="row">
           <div class="col-xs-6">
               <p><span class="badge">Supplier Info</span></p>
-              Order to:<input name="supplierName" class="form-control"></input>
-              Contact:<input name="supplierContact" class="form-control"></input>
-              Telephone:<input name="supplierPhone" class="form-control"></input>
+              Order to:<input name="supplierName" class="form-control" autofocus>
+              Contact:<input name="supplierContact" class="form-control">
+              Telephone:<input name="supplierPhone" class="form-control">
           </div>
           <div class="col-xs-6">
               <p><span class="badge">Invoice Info</span></p>
               Invoice to:              
-              <select id="mySelect" class="form-control" name="invoiceTo" >
+              <select id="mySelect" class="form-control" name="invoiceTo">
                   <option value="0" selected="selected">------------------------------</option>
                   <?php
                   while($rowInvoice = $stmtInvoice->fetch(PDO::FETCH_ASSOC)){
@@ -282,11 +299,11 @@ $stmtInvoice->execute();
           <div class="col-xs-3">
               Currency:
               <select name="currency" class="form-control">
-                  <option></option>
-                  <option>RMB</option>
-                  <option>HKD</option>
-                  <option>USD</option>
-                  <option>EURO</option>
+                  <?php
+                    foreach ($arrCurrency as $currency) {
+                        echo "<option value='$currency'>$currency</option>";
+                    }
+                  ?>
               </select>
               Within Budget: 
               <span class="form-control">
@@ -302,13 +319,12 @@ $stmtInvoice->execute();
           </div>
           <div class="col-xs-3">
               Ship To: 
-              <select name="shipTo" class="form-control">                  
-                  <option></option>
-                  <option value="APAC" selected="selected">APAC</option>
-                  <option value="SHAT">SHAT</option>
-                  <option value="ShuangLin">ShuangLin</option>
-                  <option value="Sunway">Sunway</option>
-                  <option value="Others">Others</option>
+              <select name="shipTo" class="form-control"> 
+                  <?php
+                            foreach ($arrShipto as $Shipto) {
+                                echo "<option value='$Shipto'>$Shipto</option>";
+                            }
+                  ?>
               </select>  
               Recoverable: 
               <span class="form-control">
@@ -322,11 +338,11 @@ $stmtInvoice->execute();
               Charge Back Customer Name:<input name="chargeBackCustomerName" class="form-control">
               Charge Back Currency:
               <select name="chargeBackCurrency" class="form-control">
-                  <option></option>
-                  <option>RMB</option>
-                  <option>HKD</option>
-                  <option>USD</option>
-                  <option>EURO</option>
+                  <?php
+                    foreach ($arrCurrency as $currency) {
+                        echo "<option value='$currency'>$currency</option>";
+                    }
+                  ?>
               </select>
              
           </div>              
@@ -444,7 +460,7 @@ $stmtInvoice->execute();
         <div class="row noprint">
             <center>
                 <input id="saveButton" type="button" value=" Save " class="btn btn-success">
-                <input id="printButton" type="button" value=" Print " class="btn btn-success">
+                <input id="printButton" type="button" value=" Save As PDF " class="btn btn-success">
                 <span class="btn btn-success"><a style="color:#FFF;" href="home.php">Home</a></span>
             </center>
             <hr>
