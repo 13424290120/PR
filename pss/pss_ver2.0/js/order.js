@@ -159,7 +159,7 @@ $(function(){
         var tax = taxVal * prodSubTotal;
         var prodSubTotalWithTax = prodSubTotal + tax;
         $('#tax').val(fmoney(tax, 2));
-        $('#product-subtotal-tax').val(fmoney(prodSubTotalWithTax, 2));
+        $('#product-subtotal-tax').val(fmoney(prodSubTotalWithTax, 2));       
     })
 
 });

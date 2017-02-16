@@ -55,7 +55,8 @@
                     . "LEFT JOIN account as a on ( r.accountNumber = a.id ) "
                     . "LEFT JOIN category ON ( category.id = r.categoryName ) "
                     . "LEFT JOIN costcode ON ( costcode.id = r.costCode ) " 
-                    . "LEFT JOIN prstatus ON ( prstatus.id = r.prStatus )";
+                    . "LEFT JOIN prstatus ON ( prstatus.id = r.prStatus ) "
+                    . "ORDER BY prNumber DESC";
        }else{
             $sqlList = "SELECT r.prNumber AS prNumber, r.requestor AS Requestor, r.supplierName AS supplierName, "
                     . "r.currency AS Currency, r.total AS Total, r.prDate AS prDate, r.prStatus as prStatus, a.accountNumber AS accountNumber, category.name "
@@ -63,7 +64,8 @@
                     . "LEFT JOIN account as a on ( r.accountNumber = a.id ) "
                     . "LEFT JOIN category ON ( category.id = r.categoryName ) "
                     . "LEFT JOIN costcode ON ( costcode.id = r.costCode ) "
-                    . "LEFT JOIN prstatus ON ( prstatus.id = r.prStatus ) WHERE `requestor`='$requestor'";           
+                    . "LEFT JOIN prstatus ON ( prstatus.id = r.prStatus ) WHERE `requestor`='$requestor' "
+                    . "ORDER BY prNumber DESC";           
        }
       
 

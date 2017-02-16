@@ -34,7 +34,7 @@
             // Click the saveButton action
             $("#saveButton").click(function()
             {
-                
+                //check each input to make sure no blank one.
                 $("#ajaxform input").each(function(){
                     if ($(this).val() == "")
                     {
@@ -42,6 +42,8 @@
                         return false;
                     } ;
                 })
+                
+                //check each select to make sure no blank one.
                 $("#ajaxform select").each(function(){
                     var choice = $(this).children('option:selected').val();
                     if ( choice == "" || choice == "0" )
@@ -86,7 +88,7 @@
                                     success:function(data, textStatus, jqXHR) 
                                     {
                                             $("#simple-msg").html('<pre><code class="prettyprint">'+data+'</code></pre>');
-                                            $("#simple-msg").fadeOut(600);
+                                            //$("#simple-msg").fadeOut(600);
 
                                     },
                                     error: function(jqXHR, textStatus, errorThrown) 
@@ -115,7 +117,7 @@
                                     success:function(data, textStatus, jqXHR) 
                                     {
                                             $("#simple-msg").html('<pre><code class="prettyprint">'+data+'</code></pre>');
-                                            $("#simple-msg").fadeOut(600);
+                                            $("#simple-msg").fadeOut(2400);
 
                                     },
                                     error: function(jqXHR, textStatus, errorThrown) 
@@ -341,7 +343,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
               Charge Back PO Number:<input name="chargeBackPONumber" class="form-control" value="<?php echo $chargeBackPONumber ?>">
           </div>    
           <div class="col-xs-3">
-              CAPEX Number:<input name="capexNumber" class="form-control" value="<?php echo $capexNumber ?>">
+              CAPEX/OPEX Number:<input name="capexNumber" class="form-control" value="<?php echo $capexNumber ?>">
               Charge Back Customer Name:<input name="chargeBackCustomerName" class="form-control" value="<?php echo $chargeBackCustomerName ?>">
               Charge Back Currency: 
               <select name="chargeBackCurrency" class="form-control">                  
@@ -467,7 +469,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                         <td colspan="2"></td> 
                         <td colspan="3"><b>Total without Tax</b></td>
                             <td style="text-align: right;">
-                                    <input type="text" class="total-box form-control" id="product-subtotal" value="<?php echo $arrayGridContents['total'] ?>" name="total" readonly="readonly">
+                                    <input type="text" class="total-box form-control" id="product-subtotal" value="<?php echo $arrayGridContents['totalWithoutTax'] ?>" name="totalWithoutTax" readonly="readonly">
                             </td>
                     </tr>
                     <tr>
@@ -485,14 +487,14 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                             </td>
                             
                             <td style="text-align: right;">
-                                    <input type="text" class="total-box form-control" id="tax" name="tax" readonly="readonly">
+                                    <input type="text" class="total-box form-control" id="tax" name="tax" value="<?php echo $arrayGridContents['tax'] ?>" readonly="readonly">
                             </td>
                     </tr>
                     <tr>
                         <td colspan="2"></td> 
                         <td colspan="3"><b>Total with Tax</b></td>
                             <td style="text-align: right;">
-                                    <input type="text" class="total-box form-control" id="product-subtotal-tax" name="totalWithTax" readonly="readonly">
+                                    <input type="text" class="total-box form-control" id="product-subtotal-tax" name="total" value="<?php echo $arrayGridContents['total'] ?>" readonly="readonly">
                             </td>
                     </tr>                    
 
@@ -526,7 +528,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
         <div class="row noprint">
             <center>
                 <input id="saveButton" type="button" value=" Save " class="btn btn-success">
-                <input id="printButton" type="button" value=" Print " class="btn btn-success">
+                <input id="printButton" type="button" value=" Print As PDF " class="btn btn-success">
                 <span class="btn btn-success"><a style="color:#FFF;" href="home.php">Home</a></span>
             </center>
             <hr>

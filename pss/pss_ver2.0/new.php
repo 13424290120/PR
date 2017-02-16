@@ -34,16 +34,7 @@
             
             $("#saveButton").click(function()
             {
-//                var withInBudget = $("input[name='withInBudget']:checked").val();
-//                var capexBudgetNumber = $("input[name='capexBudgetNumber']").val();
-//                if(withInBudget == 1 && capexBudgetNumber == "")
-//                {
-//                    alert ("Sorry, please don't forget to fill budget number if you choose Within Budget!");
-//                    $("input[name='capexBudgetNumber']").focus();
-//                    return false;
-//                }
-           
-                // if taxRate is RMB, then user has to choose the taxRate.
+
                 $("#ajaxform input").each(function(){
                     if ($(this).val() == "")
                     {
@@ -58,7 +49,8 @@
                         $(this).focus();
                         return false;
                     } ;
-                })                
+                }) 
+                // if taxRate is RMB, then user has to choose the taxRate.                
                 var currency = $("select[name='currency']").val();
                 var taxRate = $("select[name='taxRate']").val();
                 if (currency == "RMB")
@@ -140,7 +132,7 @@
                                     success:function(data, textStatus, jqXHR) 
                                     {
                                             $("#simple-msg").html('<pre><code class="prettyprint">'+data+'</code></pre>');
-                                            $("#simple-msg").fadeOut(600);
+                                            $("#simple-msg").fadeOut(1200);
 
                                     },
                                     error: function(jqXHR, textStatus, errorThrown) 
@@ -170,38 +162,38 @@ include_once 'db.php';
 //echo $_SESSION["username"];
 
 //判断用户是否登录
-//if(isset($_SESSION["username"]) && $_SESSION["username"]){
-//    $requestor=$_SESSION["username"];
-//}else{
-//    echo '<div class="error"> Sorry, please login first!<br><a href="index.php">Go Back</a></div>';  
-//    return false;    
-//}
+if(isset($_SESSION["username"]) && $_SESSION["username"]){
+    $requestor=$_SESSION["username"];
+}else{
+    echo '<div class="error"> Sorry, please login first!<br><a href="index.php">Go Back</a></div>';  
+    return false;    
+}
 //
-////判断用户是否是从首页进入
-//if(!isset($_GET['lastNumber'])){    
-//    echo '<div class="error"> Sorry, please visit home page first!<br><a href="home.php">Go Back</a></div>';  
-//    return false;
-//}else{
-//        $lastPRnumber = $_GET['lastNumber'];
-//}
+//判断用户是否是从首页进入
+if(!isset($_GET['lastNumber'])){    
+    echo '<div class="error"> Sorry, please visit home page first!<br><a href="home.php">Go Back</a></div>';  
+    return false;
+}else{
+        $lastPRnumber = $_GET['lastNumber'];
+}
 
 
 $currentDate = date("Y-m-d");
 
 //判断当前的PR编号是否己经存在
 
-//$sqlCheckRequest = "SELECT `prNumber` FROM `request` WHERE `prNumber` = $lastPRnumber";
-//$stmtCheckRequest = $db->prepare($sqlCheckRequest);
-//$stmtCheckRequest->execute();
-//$rowCheckRequest = $stmtCheckRequest->fetch(PDO::FETCH_ASSOC);
-//if (!$rowCheckRequest){ //如果PR单不存在，就新增该PR单
-//    $sqlNewRequest = "INSERT INTO `request` (`prNumber`,`requestor`,`prDate`) VALUE('$lastPRnumber','$requestor','$currentDate');";
-//    $stmtNewRequest = $db->prepare($sqlNewRequest);
-//    $stmtNewRequest->execute();    
-//}else{
-//    echo '<div class="error">Sorry, the PR number already registered in the database, please apply a new one!<br><a href="home.php">Go Back</a></div>';
-//    return false;
-//}
+$sqlCheckRequest = "SELECT `prNumber` FROM `request` WHERE `prNumber` = $lastPRnumber";
+$stmtCheckRequest = $db->prepare($sqlCheckRequest);
+$stmtCheckRequest->execute();
+$rowCheckRequest = $stmtCheckRequest->fetch(PDO::FETCH_ASSOC);
+if (!$rowCheckRequest){ //如果PR单不存在，就新增该PR单
+    $sqlNewRequest = "INSERT INTO `request` (`prNumber`,`requestor`,`prDate`) VALUE('$lastPRnumber','$requestor','$currentDate');";
+    $stmtNewRequest = $db->prepare($sqlNewRequest);
+    $stmtNewRequest->execute();    
+}else{
+    echo '<div class="error">Sorry, the PR number already registered in the database, please apply a new one!<br><a href="home.php">Go Back</a></div>';
+    return false;
+}
 
 //define the unit for the gridForm
 
@@ -334,7 +326,7 @@ $stmtInvoice->execute();
               Charge Back PO Number:<input name="chargeBackPONumber" class="form-control">
           </div>    
           <div class="col-xs-3">
-              CAPEX Number:<input name="capexNumber" class="form-control">
+              CAPEX/OPEX Number:<input name="capexNumber" class="form-control">
               Charge Back Customer Name:<input name="chargeBackCustomerName" class="form-control">
               Charge Back Currency:
               <select name="chargeBackCurrency" class="form-control">
@@ -402,20 +394,20 @@ $stmtInvoice->execute();
                         <td colspan="2"></td> 
                         <td colspan="3"><b>Total without Tax</b></td>
                             <td style="text-align: right;">
-                                    <input type="text" class="total-box form-control" id="product-subtotal" name="total" readonly="readonly">
+                                    <input type="text" class="total-box form-control" id="product-subtotal" name="totalWithoutTax" readonly="readonly">
                             </td>
                     </tr>
                     <tr>
                         <td colspan="2"></td>                            
                         <td><b>Tax Rate</b></td>
                             <td colspan="2">
-                                <select name="taxRate" id="taxRate" class="form-control">                                    
+                                <select name="taxRate" id="taxRate" class="form-control">
+                                        <option value="0">0%</option>
                                         <option value="0.17">17%</option>
                                         <option value="0.13">13%</option>
                                         <option value="0.11">11%</option>
                                         <option value="0.06">6%</option>
                                         <option value="0.03">3%</option>
-                                        <option value="0" selected="selected">0%</option>
                                 </select>
                             </td>
                             
@@ -427,7 +419,7 @@ $stmtInvoice->execute();
                         <td colspan="2"></td> 
                         <td colspan="3"><b>Total with Tax</b></td>
                             <td style="text-align: right;">
-                                    <input type="text" class="total-box form-control" id="product-subtotal-tax" name="totalWithTax" readonly="readonly">
+                                    <input type="text" class="total-box form-control" id="product-subtotal-tax" name="total" readonly="readonly">
                             </td>
                     </tr>
             </table>
@@ -460,7 +452,7 @@ $stmtInvoice->execute();
         <div class="row noprint">
             <center>
                 <input id="saveButton" type="button" value=" Save " class="btn btn-success">
-                <input id="printButton" type="button" value=" Save As PDF " class="btn btn-success">
+                <input id="printButton" type="button" value=" Print As PDF " class="btn btn-success">
                 <span class="btn btn-success"><a style="color:#FFF;" href="home.php">Home</a></span>
             </center>
             <hr>
