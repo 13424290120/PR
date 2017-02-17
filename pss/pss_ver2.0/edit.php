@@ -116,13 +116,13 @@
                                     data : postData,
                                     success:function(data, textStatus, jqXHR) 
                                     {
-                                            $("#simple-msg").html('<pre><code class="prettyprint">'+data+'</code></pre>');
-                                            $("#simple-msg").fadeOut(2400);
+                                            $("#simple-msg-grid").html('<pre><code class="prettyprint">'+data+'</code></pre>');
+                                            //$("#simple-msg").fadeOut(2400);
 
                                     },
                                     error: function(jqXHR, textStatus, errorThrown) 
                                     {
-                                            $("#simple-msg").html('<pre><code class="prettyprint">AJAX Request Failed<br/> textStatus='+textStatus+', errorThrown='+errorThrown+'</code></pre>');
+                                            $("#simple-msg-grid").html('<pre><code class="prettyprint">AJAX Request Failed<br/> textStatus='+textStatus+', errorThrown='+errorThrown+'</code></pre>');
                                     }
                             });
                         e.preventDefault();	//STOP default action
@@ -525,6 +525,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
         </div>
         <br></br>
         <div id="simple-msg"></div>
+        <div id="simple-msg-grid"></div>
         <div class="row noprint">
             <center>
                 <input id="saveButton" type="button" value=" Save " class="btn btn-success">

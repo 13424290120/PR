@@ -132,7 +132,7 @@
                                     success:function(data, textStatus, jqXHR) 
                                     {
                                             $("#simple-msg").html('<pre><code class="prettyprint">'+data+'</code></pre>');
-                                            $("#simple-msg").fadeOut(1200);
+                                            //$("#simple-msg").fadeOut(1200);
 
                                     },
                                     error: function(jqXHR, textStatus, errorThrown) 
