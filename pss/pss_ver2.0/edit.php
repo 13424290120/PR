@@ -38,8 +38,9 @@
                 $("#ajaxform input").each(function(){
                     if ($(this).val() == "")
                     {
+                        alert ("Please complete the form!");
                         $(this).focus();
-                        return false;
+                        exit();
                     } ;
                 })
                 
@@ -48,8 +49,9 @@
                     var choice = $(this).children('option:selected').val();
                     if ( choice == "" || choice == "0" )
                     {
+                        alert ("Please complete the form!");
                         $(this).focus();
-                        return false;
+                        exit();
                     } ;
                 }) 
                 
@@ -60,7 +62,7 @@
                 {
                     alert ("Sorry, please don't forget to choose tax rate if currency is RMB!");
                     $("select[name='taxRate']").focus();
-                    return false;
+                    exit();
                 }
                 
                 //If the PR is recoverable from customer, then the requestor must fill chargeBack fields
@@ -70,35 +72,35 @@
                 {
                     alert ("Sorry, please don't forget to fill Charge Back Customer Name!");
                     $("input[name='chargeBackCustomerName']").focus();
-                    return false;   
+                    exit();   
                 }                
 
                 
-                    // To submit ajaxform data by ajax.
-                    $("#ajaxform").submit(function(e)
-                    {
-                            $("#simple-msg").html("");
-                            var postData = $(this).serializeArray();
-                            var formURL = $(this).attr("action");
-                            $.ajax(
-                            {
-                                    url : formURL,
-                                    type: "POST",
-                                    data : postData,
-                                    success:function(data, textStatus, jqXHR) 
-                                    {
-                                            $("#simple-msg").html('<pre><code class="prettyprint">'+data+'</code></pre>');
-                                            //$("#simple-msg").fadeOut(600);
+                // To submit ajaxform data by ajax.
+                $("#ajaxform").submit(function(e)
+                {
+                        $("#simple-msg").html("");
+                        var postData = $(this).serializeArray();
+                        var formURL = $(this).attr("action");
+                        $.ajax(
+                        {
+                                url : formURL,
+                                type: "POST",
+                                data : postData,
+                                success:function(data, textStatus, jqXHR) 
+                                {
+                                        $("#simple-msg").html('<pre><code class="prettyprint">'+data+'</code></pre>');
+                                        $("#simple-msg").fadeOut(1800);
 
-                                    },
-                                    error: function(jqXHR, textStatus, errorThrown) 
-                                    {
-                                            $("#simple-msg").html('<pre><code class="prettyprint">AJAX Request Failed<br/> textStatus='+textStatus+', errorThrown='+errorThrown+'</code></pre>');
-                                    }
-                            });
-                        e.preventDefault();	//STOP default action
-                        //e.unbind();
-                    });
+                                },
+                                error: function(jqXHR, textStatus, errorThrown) 
+                                {
+                                        $("#simple-msg").html('<pre><code class="prettyprint">AJAX Request Failed<br/> textStatus='+textStatus+', errorThrown='+errorThrown+'</code></pre>');
+                                }
+                        });
+                    e.preventDefault();	//STOP default action
+                    //e.unbind();
+                });
 
                     $("#ajaxform").submit(); //SUBMIT FORM
                     
@@ -117,7 +119,7 @@
                                     success:function(data, textStatus, jqXHR) 
                                     {
                                             $("#simple-msg-grid").html('<pre><code class="prettyprint">'+data+'</code></pre>');
-                                            //$("#simple-msg").fadeOut(2400);
+                                            $("#simple-msg-grid").fadeOut(2400);
 
                                     },
                                     error: function(jqXHR, textStatus, errorThrown) 

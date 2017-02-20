@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="gbk">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,16 +39,18 @@
                 $("#ajaxform input").each(function(){
                     if ($(this).val() == "")
                     {
+                        alert ("Please complete the form!");
                         $(this).focus();
-                        return false;
+                        exit();
                     } ;
                 })
                 $("#ajaxform select").each(function(){
                     var choice = $(this).children('option:selected').val();
                     if ( choice == "" || choice == "0" )
                     {
+                        alert ("Please complete the form!");
                         $(this).focus();
-                        return false;
+                        exit();
                     } ;
                 }) 
                 // if taxRate is RMB, then user has to choose the taxRate.                
@@ -59,7 +62,7 @@
                     {
                         alert ("Sorry, please don't forget to choose tax rate if currency is RMB!");
                         $("select[name='taxRate']").focus();
-                        return false;
+                        exit();
                     }
                 }
 
@@ -71,26 +74,9 @@
                 {
                     alert ("Sorry, please don't forget to fill Charge Back Customer Name!");
                     $("input[name='chargeBackCustomerName']").focus();
-                    return false;                    
-                }
-                
-//                if (recoverable == 1)
-//                {
-//                    $(":text[name^='chargeBack']").each(function(i,item){
-//                        if ($(this).val() == "")
-//                        {
-//                            alert ("Sorry, please don't forget to fill " + $(this).attr("name"));
-//                            $(this).focus();
-//                            return false;
-//                        }
-//                    }); 
-//                    if (chargeBackCurrency == "")
-//                    {
-//                        alert ("Sorry, please don't forget to choose Charge Back Currency");
-//                        $("select[name='chargeBackCurrency']").focus();
-//                        return false;
-//                    }                    
-//                }                
+                    exit();                    
+                }                
+               
                     $("#gridForm").submit(function(e)
                     {
                             $("#simple-msg").html("");
@@ -104,12 +90,12 @@
                                     success:function(data, textStatus, jqXHR) 
                                     {
                                             $("#simple-msg").html('<pre><code class="prettyprint">'+data+'</code></pre>');
-                                           //$("#simple-msg").fadeOut(5000);
+                                            $("#simple-msg").fadeOut(1800);
 
                                     },
                                     error: function(jqXHR, textStatus, errorThrown) 
                                     {
-                                            $("#simple-msg").html('<pre><code class="prettyprint">AJAX Request Failed<br/> textStatus='+textStatus+', errorThrown='+errorThrown+'</code></pre>');
+                                            $("#simple-msg").html('<pre><code class="prettyprint">GridForm Submit Failed<br/> textStatus='+textStatus+', errorThrown='+errorThrown+'</code></pre>');
                                     }
                             });
                         e.preventDefault();	//STOP default action
@@ -131,13 +117,13 @@
                                     data : postData,
                                     success:function(data, textStatus, jqXHR) 
                                     {
-                                            $("#simple-msg").html('<pre><code class="prettyprint">'+data+'</code></pre>');
-                                            //$("#simple-msg").fadeOut(1200);
+                                            $("#simple-msg-ajax").html('<pre><code class="prettyprint">'+data+'</code></pre>');
+                                            $("#simple-msg-ajax").fadeOut(2400);
 
                                     },
                                     error: function(jqXHR, textStatus, errorThrown) 
                                     {
-                                            $("#simple-msg").html('<pre><code class="prettyprint">AJAX Request Failed<br/> textStatus='+textStatus+', errorThrown='+errorThrown+'</code></pre>');
+                                            $("#simple-msg-ajax").html('<pre><code class="prettyprint">AjaxForm Submit Failed<br/> textStatus='+textStatus+', errorThrown='+errorThrown+'</code></pre>');
                                     }
                             });
                         e.preventDefault();	//STOP default action
@@ -145,9 +131,7 @@
                     });
 
                     $("#ajaxform").submit(); //SUBMIT FORM                    
-            });           
-            
-          
+            });  
        }); 
     </script>
     
@@ -447,7 +431,8 @@ $stmtInvoice->execute();
               </table>
           </div>         
         </div>
-        <br></br>
+        <br>
+        <div id="simple-msg-ajax"></div>
         <div id="simple-msg"></div>
         <div class="row noprint">
             <center>

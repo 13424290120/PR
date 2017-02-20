@@ -21,13 +21,13 @@ include_once 'db.php';
         $total = $_POST['total'];
         
         
-        $gridContent = serialize($_POST); //convert ajax submit array data to a string.
+        $gridContent = $db->quote(serialize($_POST)); //convert ajax submit array data to a string.
         
         //echo $str;        
         
 	//$ajaxFormData = unserialize($gridContent); //convert string to array
         
-        $sqlUpdate = "UPDATE `request` SET `gridContents` = '$gridContent',`taxRate`='$taxRate',`tax`='$tax',`totalWithoutTax`='$totalWithoutTax',`total` = '$total' WHERE `prNumber`='$prNumber'";
+        $sqlUpdate = "UPDATE `request` SET `gridContents` = $gridContent,`taxRate`='$taxRate',`tax`='$tax',`totalWithoutTax`='$totalWithoutTax',`total` = '$total' WHERE `prNumber`='$prNumber'";
         $stmtUpdate=$db->prepare($sqlUpdate);
         $stmtUpdate->execute();
         echo "<center><h2>Saved Successfully!</h2></center>"; 

@@ -37,6 +37,6 @@ include_once 'db.php';
 //            $stmtUpdate->bindParam(':prNumber',$prNumber);
             //$stmtUpdate->execute(array($key,$value,$prNumber));
         }
-        echo "<center><h2>Saved Successfully!!!</h2></center>";    
+//        echo "<center><h2>You can click the Print Button to print the form now</h2></center>";    
         $db=null;
 ?>
