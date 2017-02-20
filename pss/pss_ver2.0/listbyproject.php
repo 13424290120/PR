@@ -128,32 +128,7 @@
                                 }
                             }
                         }
-                    }
-                                
-//                    echo "<tr>";
-//                    echo "<td><a href=edit.php?id=" .$rowList["prNumber"].">".$rowList["prNumber"]."</a></td>";
-//                    echo "<td>".$rowList["supplierName"]."</td>";
-//                    echo "<td>".$rowList["gridContents"]."</td>";
-//                    echo "<td>".$rowList["prDate"]."</td>";
-//                    echo "<td>".$rowList["categoryName"]."</td>";
-//                    echo "<td>".$rowList["costCode"]."</td>";
-//                    echo "<td>".$rowList["accountNumber"]."</td>";
-//                    echo "<td>".$rowList["Requestor"]."</td>";
-//                    echo "<td>".$rowList["Currency"]."</td>";
-//                    echo "<td>".$rowList["Total"]."</td>";
-//                    if($_SESSION["adminUser"]){
-//                        echo "<td>";
-//                        echo $rowList['prStatus'];
-//                        echo "<select id='statusSelect' class='form-control' name='status'>";
-//                        echo "<option value='3'>New</option>";
-//                        echo "<option value='4'>FA Approved</option>";
-//                        echo "<option value='5'>GM Approved</option>";
-//                        echo "</select>";
-//                        echo "</td>";
-//                    }else{
-//                        echo "<td>".$rowList["statusName"]."</td>";
-//                    }
-//                    echo "</tr>";                                           
+                    }              
                   }
                 
                 ?>
