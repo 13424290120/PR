@@ -234,7 +234,9 @@ $stmtInvoice->execute();
 
           </div>
         </div>   
-        <hr style="margin:5px; margin-bottom: 2px;"></hr>
+        <hr style="margin:5px; margin-bottom: 2px;">
+        
+        <!-- first row-->
         <div class="row">
           <div class="col-xs-4">
               Purchase Category:
@@ -271,60 +273,94 @@ $stmtInvoice->execute();
           </div>            
         </div>
         
+        <!-- Second row-->
         <div class="row">
-          <div class="col-xs-3">
-              Currency:
-              <select name="currency" class="form-control">
-                  <?php
-                    foreach ($arrCurrency as $currency) {
-                        echo "<option value='$currency'>$currency</option>";
-                    }
-                  ?>
-              </select>
-              Within Budget: 
-              <span class="form-control">
-                  <input  type="radio" name="withInBudget" value="1" checked>Yes</input>
-                  <input type="radio" name="withInBudget" value="0">No</input>                  
-              </span>
-              Charge Back Customer Code:<input name="chargeBackCustomerCode" class="form-control">
-          </div>            
-          <div class="col-xs-3">
-              Delivery Date Required:<input type="date" name="deliveryDate" class="form-control">
-              CAPEX Budget Number:<input name="capexBudgetNumber" class="form-control">
-              Charge Back Amount: <input name="chargeBackAmount" class="form-control">
-          </div>
-          <div class="col-xs-3">
-              Ship To: 
-              <select name="shipTo" class="form-control"> 
-                  <?php
-                            foreach ($arrShipto as $Shipto) {
-                                echo "<option value='$Shipto'>$Shipto</option>";
-                            }
-                  ?>
-              </select>  
-              Recoverable: 
-              <span class="form-control">
-                  <input  type="radio" name="recoverable" value="1">Yes
-                  <input  type="radio" name="recoverable" value="0" checked>No
-              </span>             
-              Charge Back PO Number:<input name="chargeBackPONumber" class="form-control">
-          </div>    
-          <div class="col-xs-3">
-              CAPEX/OPEX Number:<input name="capexNumber" class="form-control">
-              Charge Back Customer Name:<input name="chargeBackCustomerName" class="form-control">
-              Charge Back Currency:
-              <select name="chargeBackCurrency" class="form-control">
-                  <?php
-                    foreach ($arrCurrency as $currency) {
-                        echo "<option value='$currency'>$currency</option>";
-                    }
-                  ?>
-              </select>
-             
-          </div>              
+            <div class="col-xs-4">
+                Project Name:
+                <input type="text" name="projectName" class="form-control">
+            </div>
+            <div class="col-xs-2">
+                Currency:
+                <select name="currency" class="form-control">
+                    <?php
+                      foreach ($arrCurrency as $currency) {
+                          echo "<option value='$currency'>$currency</option>";
+                      }
+                    ?>
+                </select>
+            </div>
+            <div class="col-xs-2">
+                Ship To: 
+                <select name="shipTo" class="form-control"> 
+                    <?php
+                              foreach ($arrShipto as $Shipto) {
+                                  echo "<option value='$Shipto'>$Shipto</option>";
+                              }
+                    ?>
+                </select>                 
+            </div>
+            <div class="col-xs-2">
+                Within Budget: 
+                <span class="form-control">
+                    <input  type="radio" name="withInBudget" value="1" checked>Yes</input>
+                    <input type="radio" name="withInBudget" value="0">No</input>                  
+                </span>                
+            </div> 
+            <div class="col-xs-2">
+                Recoverable: 
+                <span class="form-control">
+                    <input  type="radio" name="recoverable" value="1">Yes
+                    <input  type="radio" name="recoverable" value="0" checked>No
+                </span>                 
+            </div>  
         </div>
         
+        <!-- Third Row -->
+        <div class="row">
+            <div class="col-xs-3">
+                Delivery Date Required:
+                <input type="date" name="deliveryDate" class="form-control">
+            </div>            
+            <div class="col-xs-3">
+                CAPEX/OPEX Number:
+                <input name="capexNumber" class="form-control">
+            </div>
+            <div class="col-xs-3">
+                CAPEX Budget Number:
+                <input name="capexBudgetNumber" class="form-control">
+            </div>
+            <div class="col-xs-3">
+                Charge Back Customer Name:
+                <input name="chargeBackCustomerName" class="form-control">
+            </div>            
+        </div>
         
+        <!-- Forth Row -->
+        <div class="row">
+            <div class="col-xs-3">
+                Charge Back Customer Code:
+                <input name="chargeBackCustomerCode" class="form-control">
+            </div>
+            <div class="col-xs-3">
+                Charge Back Amount:
+                <input name="chargeBackAmount" class="form-control">
+            </div>
+            <div class="col-xs-3">
+                Charge Back PO Number:
+                <input name="chargeBackPONumber" class="form-control">
+            </div>
+            <div class="col-xs-3">
+                Charge Back Currency:
+                <select name="chargeBackCurrency" class="form-control">
+                    <?php
+                      foreach ($arrCurrency as $currency) {
+                          echo "<option value='$currency'>$currency</option>";
+                      }
+                    ?>
+                </select>                
+            </div>            
+        </div>        
+
         <div class="row">
           <div class="col-xs-12">
               Purpose/Remark:<textarea class="form-control" rows="3" name="purpose" placeholder="Attention : If it's project cost, please list your project name here!"></textarea>

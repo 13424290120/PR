@@ -33,9 +33,9 @@
       
       include_once 'db.php';    
 
-        $sqlStatus = "SELECT `id`,`statusName` FROM `prstatus`";
-        $stmtStatus = $db->prepare($sqlStatus);
-        $stmtStatus->execute();      
+//        $sqlStatus = "SELECT `id`,`statusName` FROM `prstatus`";
+//        $stmtStatus = $db->prepare($sqlStatus);
+//        $stmtStatus->execute();      
       
       //echo $_SESSION["adminUser"];
       //echo $_SESSION["username"];
@@ -51,20 +51,19 @@
        if($_SESSION["adminUser"]){
             $sqlList = "SELECT r.prNumber AS prNumber, r.requestor AS Requestor, r.supplierName AS supplierName, "
                     . "r.currency AS Currency, r.total AS Total, r.prDate AS prDate, r.prStatus as prStatus, a.accountNumber AS accountNumber, category.name "
-                    . "AS categoryName, costcode.code AS costCode, prstatus.statusName AS statusName from request as r "
+                    . "AS categoryName, costcode.code AS costCode from request as r "
                     . "LEFT JOIN account as a on ( r.accountNumber = a.id ) "
                     . "LEFT JOIN category ON ( category.id = r.categoryName ) "
-                    . "LEFT JOIN costcode ON ( costcode.id = r.costCode ) " 
-                    . "LEFT JOIN prstatus ON ( prstatus.id = r.prStatus ) "
+                    . "LEFT JOIN costcode ON ( costcode.id = r.costCode ) "
                     . "ORDER BY prNumber DESC";
        }else{
             $sqlList = "SELECT r.prNumber AS prNumber, r.requestor AS Requestor, r.supplierName AS supplierName, "
                     . "r.currency AS Currency, r.total AS Total, r.prDate AS prDate, r.prStatus as prStatus, a.accountNumber AS accountNumber, category.name "
-                    . "AS categoryName, costcode.code AS costCode,  prstatus.statusName AS statusName from request as r "
+                    . "AS categoryName, costcode.code AS costCode from request as r "
                     . "LEFT JOIN account as a on ( r.accountNumber = a.id ) "
                     . "LEFT JOIN category ON ( category.id = r.categoryName ) "
                     . "LEFT JOIN costcode ON ( costcode.id = r.costCode ) "
-                    . "LEFT JOIN prstatus ON ( prstatus.id = r.prStatus ) WHERE `requestor`='$requestor' "
+                    . "WHERE `requestor`='$requestor' "
                     . "ORDER BY prNumber DESC";           
        }
       
@@ -115,18 +114,7 @@
                     echo "<td>".$rowList["Requestor"]."</td>";
                     echo "<td>".$rowList["Currency"]."</td>";
                     echo "<td>".$rowList["Total"]."</td>";
-                    if($_SESSION["adminUser"]){
-                        echo "<td>";
-//                        echo $rowList['prStatus'];
-                        echo "<select id='statusSelect' class='form-control' name='status'>";
-                        echo "<option value='3'>New</option>";
-                        echo "<option value='4'>FA Approved</option>";
-                        echo "<option value='5'>GM Approved</option>";
-                        echo "</select>";
-                        echo "</td>";
-                    }else{
-                        echo "<td>".$rowList["statusName"]."</td>";
-                    }
+                    echo "<td>".$rowList["prStatus"]."</td>";
                     echo "</tr>";                                           
                   }
                 
