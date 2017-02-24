@@ -19,27 +19,20 @@ include_once 'db.php';
         $tax = $_POST['tax'];
         $totalWithoutTax = $_POST['totalWithoutTax'];
         $total = $_POST['total'];
-        
-        
-        $gridContent = $db->quote(serialize($_POST)); //convert ajax submit array data to a string.
-        
-        //echo $str;        
-        
-	//$ajaxFormData = unserialize($gridContent); //convert string to array
-        
-        $sqlUpdate = "UPDATE `request` SET `gridContents` = $gridContent,`taxRate`='$taxRate',`tax`='$tax',`totalWithoutTax`='$totalWithoutTax',`total` = '$total' WHERE `prNumber`='$prNumber'";
+        //$gridContent = htmlspecialchars(serialize($_POST), ENT_QUOTES); //convert ajax submit array data to a string.
+        $gridContents = serialize($_POST);
+//        $sqlUpdate = "UPDATE `request` SET `gridContents` = '$gridContent',`taxRate`='$taxRate',`tax`='$tax',`totalWithoutTax`='$totalWithoutTax',`total` = '$total' WHERE `prNumber`='$prNumber'";
+//        $stmtUpdate=$db->prepare($sqlUpdate);
+//        $stmtUpdate->execute();
+        $sqlUpdate = "UPDATE `request` SET `gridContents` = :gridContents,`taxRate`=:taxRate,`tax`=:tax,`totalWithoutTax`=:totalWithoutTax,`total` = :total WHERE `prNumber`=:prNumber";
         $stmtUpdate=$db->prepare($sqlUpdate);
+        $stmtUpdate->bindParam(':gridContents',$gridContents);
+        $stmtUpdate->bindParam(':taxRate',$taxRate);
+        $stmtUpdate->bindParam(':tax',$tax);
+        $stmtUpdate->bindParam(':totalWithoutTax',$totalWithoutTax);
+        $stmtUpdate->bindParam(':total',$total);
+        $stmtUpdate->bindParam(':prNumber',$prNumber);
         $stmtUpdate->execute();
         echo "<center><h2>Saved Successfully!</h2></center>"; 
-        $db=null;
-        
-        
-        
-//        foreach($ajaxFormData as $key=>$value){
-//            $sqlUpdate ="UPDATE `request` SET `$key` = '$value' WHERE `prNumber` = '$prNumber'";
-//
-//            $stmtUpdate = $db->prepare($sqlUpdate);
-//            $stmtUpdate->execute();
-//        }
-//        echo "<center><h2>You can click the Print Button to print the form now</h2></center>";        
+        $db=null;      
 ?>

@@ -1394,7 +1394,9 @@ a.bg-info:focus {
   background-color: #afd9ee;
 }
 .bg-warning {
-  background-color: #fcf8e3;
+  background-color: #ff0000;
+  font-size: 18px;
+  color: #ffffff;
 }
 a.bg-warning:hover,
 a.bg-warning:focus {

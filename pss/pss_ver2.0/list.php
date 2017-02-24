@@ -32,10 +32,7 @@
       <?php
       
       include_once 'db.php';    
-
-//        $sqlStatus = "SELECT `id`,`statusName` FROM `prstatus`";
-//        $stmtStatus = $db->prepare($sqlStatus);
-//        $stmtStatus->execute();      
+     
       
       //echo $_SESSION["adminUser"];
       //echo $_SESSION["username"];

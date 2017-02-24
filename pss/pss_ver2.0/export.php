@@ -10,28 +10,8 @@ if(isset($_SESSION["username"]) && $_SESSION["username"]){
     return false;    
 }      
 
-//if($_SESSION["adminUser"]){
-//    $sqlList = "SELECT r.prNumber AS prNumber, r.requestor AS Requestor, r.supplierName AS supplierName, "
-//            . "r.currency AS Currency, r.total AS Total, r.prDate AS prDate, r.prStatus as prStatus, a.accountNumber AS accountNumber, category.name "
-//            . "AS categoryName, costcode.code AS costCode, prStatus.statusName AS statusName from request as r "
-//            . "INNER JOIN account as a on ( r.accountNumber = a.id ) "
-//            . "INNER JOIN category ON ( category.id = r.categoryName ) "
-//            . "INNER JOIN costcode ON ( costcode.id = r.costCode ) " 
-//            . "INNER JOIN prStatus ON ( prStatus.id = r.prStatus )";
-//}
-
 $startDate = $_POST["startDate"];
 $endDate = $_POST["endDate"];
-
-
-//$sqlList = "SELECT r.prNumber AS prNumber, r.requestor AS Requestor, r.supplierName AS supplierName, r.shipTo AS shipTo, r.gridContents AS gridContents, "
-//        . "r.currency AS Currency, r.total AS Total, r.prDate AS prDate, r.prStatus as prStatus, a.accountNumber AS accountNumber, category.name "
-//        . "AS categoryName, costcode.code AS costCode, prstatus.statusName AS statusName from request as r "
-//        . "LEFT JOIN account as a on ( r.accountNumber = a.id ) "
-//        . "LEFT JOIN category ON ( category.id = r.categoryName ) "
-//        . "LEFT JOIN costcode ON ( costcode.id = r.costCode ) " 
-//        . "LEFT JOIN prstatus ON ( prstatus.id = r.prStatus ) "
-//        . "WHERE `prDate` BETWEEN '$startDate' AND '$endDate'";
 
 $sqlList = "SELECT r.*, a.accountNumber AS accountNumber, category.name "
         . "AS categoryName, costcode.code AS costCode, prstatus.statusName AS statusName from request as r "
@@ -85,20 +65,21 @@ $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('X1', 'Unit')
             ->setCellValue('Y1', 'ProjectCode')            
             ->setCellValue('Z1', 'UnitPrice')
-            ->setCellValue('AA1', 'Quantity')
+            ->setCellValue('AA1', 'Quantity')            
             ->setCellValue('AB1', 'Subtotal')
-            ->setCellValue('AC1', 'TotalWithoutTax')
-            ->setCellValue('AD1', 'TaxRate')        
-            ->setCellValue('AE1', 'Tax')
-            ->setCellValue('AF1', 'Total');        
+            ->setCellValue('AC1', 'Currency')
+            ->setCellValue('AD1', 'TotalWithoutTax')
+            ->setCellValue('AE1', 'TaxRate')        
+            ->setCellValue('AF1', 'Tax')
+            ->setCellValue('AG1', 'Total');        
 //
 //
     $iSheetRow = 0;
-    $iRow = 2;
+    $iRow = 2; //start with row 2 in excel sheet
     while($rowList = $stmtList->fetch(PDO::FETCH_ASSOC)){
-        $gridContents = $rowList['gridContents'];                     
-        if($gridContents != ""){   
-            $arrayGridContents = unserialize($gridContents);            
+        $gridContents = $rowList['gridContents']; 
+        if($gridContents != ""){
+            $arrayGridContents = unserialize($gridContents); //convert serialized data to array            
             foreach($arrayGridContents as $gridRow){ //遍历表格内容数组 
                 if(is_array($gridRow)){
                     if ($gridRow["0"] != ""){
@@ -131,10 +112,11 @@ $objPHPExcel->setActiveSheetIndex(0)
                                     ->setCellValue('Z'.$iRow, $gridRow["3"])
                                     ->setCellValue('AA'.$iRow, $gridRow["4"])
                                     ->setCellValue('AB'.$iRow, $gridRow["5"])
-                                    ->setCellValue('AC'.$iRow, $rowList['totalWithoutTax'])
-                                    ->setCellValue('AD'.$iRow, $rowList['taxRate'])
-                                    ->setCellValue('AE'.$iRow, $rowList['tax'])
-                                    ->setCellValue('AF'.$iRow, $rowList['total']);
+                                    ->setCellValue('AC'.$iRow, $rowList['currency'])
+                                    ->setCellValue('AD'.$iRow, $rowList['totalWithoutTax'])
+                                    ->setCellValue('AE'.$iRow, $rowList['taxRate'])
+                                    ->setCellValue('AF'.$iRow, $rowList['tax'])
+                                    ->setCellValue('AG'.$iRow, $rowList['total']);
                         $iRow = $iRow + 1;
                     }
                     
@@ -149,24 +131,24 @@ $objPHPExcel->setActiveSheetIndex(0)
 //// Rename worksheet
 $objPHPExcel->getActiveSheet()->setTitle('Report');
 ////
-////
-////// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+//
+//// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 $objPHPExcel->setActiveSheetIndex(0);
-////
-////
-////// Redirect output to a client’s web browser (Excel2007)
+//
+//
+//// Redirect output to a client’s web browser (Excel2007)
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header('Content-Disposition: attachment;filename="prReport.xlsx"');
 header('Cache-Control: max-age=0');
-////// If you're serving to IE 9, then the following may be needed
+//// If you're serving to IE 9, then the following may be needed
 header('Cache-Control: max-age=1');
-////
-////// If you're serving to IE over SSL, then the following may be needed
+//
+//// If you're serving to IE over SSL, then the following may be needed
 header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
 header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
 header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
 header ('Pragma: public'); // HTTP/1.0
-////
+//
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 $objWriter->save('php://output');
 exit;

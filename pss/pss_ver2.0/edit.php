@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="gbk">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="text/html; charset=UTF-8"">
     
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -20,6 +19,34 @@
     <script type = "text/javascript" language = "javascript">
         // To get the invoice address from database by ajax
        $(document).ready(function() {
+            
+            //Validate the form fields
+            $("#ajaxform input").keyup(function(){
+                $('span.error-keyup-2').remove();
+                var inputVal = $(this).val();
+                var characterReg = /^\s*[a-zA-Z0-9,\u4e00-\u9fa5,&()./\+\-,\s]+\s*$/;
+                if(!characterReg.test(inputVal)) {
+                    $(this).after('<span class="bg-warning error-keyup-2">WARNING: illegal charactor detected! </span>');                      
+                    $('.error-keyup-2').fadeOut(4800);
+                    $(this).focus();
+                    //alert("No special characters allowed!!!");            
+                }                         
+            });
+            
+            $("#purpose").keyup(function(){
+                $('span.error-keyup-2').remove();
+                var inputVal = $(this).val();
+                var characterReg = /^\s*[a-zA-Z0-9,\u4e00-\u9fa5,&()./\+\-,\s]+\s*$/;
+                if(!characterReg.test(inputVal)) {
+                    $(this).after('<span class="bg-warning error-keyup-2">WARNING: illegal charactor detected! </span>');                      
+                    $('.error-keyup-2').fadeOut(4800);
+                    $(this).focus();
+                    //alert("No special characters allowed!!!");            
+                }                         
+            });          
+
+            
+            //To get the invoice address from database by ajax
             $("#mySelect").change(function(event){
                var invoiceId = $(this).val();
                $("#address").load('ajax.php', {"id":invoiceId} );
@@ -36,21 +63,28 @@
             {
                 //check each input to make sure no blank one.
                 $("#ajaxform input").each(function(){
-                    if ($(this).val() == "")
+                    var inputVal = $(this).val();
+                    var characterReg = /^\s*[a-zA-Z0-9,\u4e00-\u9fa5,&()./\+\-,\s]+\s*$/;
+                    if(!characterReg.test(inputVal))                    
+                    //if ($(this).val() === "")
                     {
-                        alert ("Please complete the form!");
+                        //alert ("Attention: Blank fields or illegal charactors detected, please correct it before submit!");
                         $(this).focus();
+                        $(this).after('<span class="bg-warning error-keyup-2">WARNING: illegal charactor detected! </span>');
+                        $('.error-keyup-2').fadeOut(4800);
                         exit();
-                    } ;
-                })
+                    } ;                     
+                });
                 
                 //check each select to make sure no blank one.
                 $("#ajaxform select").each(function(){
                     var choice = $(this).children('option:selected').val();
-                    if ( choice == "" || choice == "0" )
+                    if ( choice === "" || choice === "0" )
                     {
-                        alert ("Please complete the form!");
+                        //alert ("Please complete the form!");
                         $(this).focus();
+                        $(this).after('<span class="bg-warning error-keyup-2">WARNING: Complete the form please! </span>');
+                        $('.error-keyup-2').fadeOut(4800);                        
                         exit();
                     } ;
                 }) 
@@ -58,7 +92,7 @@
                 // if taxRate is RMB, then user has to choose the taxRate.
                 var currency = $("select[name='currency']").val();
                 var taxRate = $("select[name='taxRate']").val();
-                if (currency == "RMB" && taxRate == "0")
+                if (currency === "RMB" && taxRate === "0")
                 {
                     alert ("Sorry, please don't forget to choose tax rate if currency is RMB!");
                     $("select[name='taxRate']").focus();
@@ -68,7 +102,7 @@
                 //If the PR is recoverable from customer, then the requestor must fill chargeBack fields
                 var recoverable = $("input[name='recoverable']:checked").val();
                 var chargeBackCustomerName = $("input[name='chargeBackCustomerName']").val();
-                if (recoverable == 1 && chargeBackCustomerName =="")
+                if (recoverable === 1 && chargeBackCustomerName ==="")
                 {
                     alert ("Sorry, please don't forget to fill Charge Back Customer Name!");
                     $("input[name='chargeBackCustomerName']").focus();
@@ -132,9 +166,7 @@
                     });
 
                     $("#gridForm").submit(); //SUBMIT FORM
-            });           
-            
-          
+            }); 
        }); 
     </script>
     
@@ -208,8 +240,6 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
     $gridContents=$row['gridContents']; 
     $taxRate=$row['taxRate']; 
     $arrayGridContents = unserialize($gridContents); //将表格内容由文本序列转换成数组
-    //print_r($arrayGridContents);
-
 ?>
 
     <!-- Begin page content -->
@@ -404,7 +434,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
         <!-- Fifth Row-->
         <div class="row">
           <div class="col-xs-12">
-              Purpose/Remark:<textarea class="form-control" rows="3" name="purpose" placeholder="Attention : If it's project cost, please list your project name here!"><?php echo $purpose ?></textarea>
+              Purpose/Remark:<textarea id="purpose" class="form-control" rows="3" name="purpose" placeholder="Attention : If it's project cost, please list your project name here!"><?php echo $purpose ?></textarea>
           </div>         
         </div>
     </form>
@@ -434,9 +464,8 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                                 $inputName = "row".$i."[]"; // 定义输入框名称，以数组的形式存储数据
                                 if($_SESSION["adminUser"]){ //if the user belong to admin group, then only allow him to view.
                                         echo "<tr>";
-                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='form-control' readonly='readonly'></td>";
-                                        //echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[1]\" class='form-control' readonly='readonly'></td>";
-                                        echo "        <td class='product-title'><select name=\"$inputName\" class='form-control' readonly='readonly'>";
+                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='product-name form-control' readonly='readonly'></td>";
+                                        echo "        <td class='product-title'><select name=\"$inputName\" class='product-unit form-control' readonly='readonly'>";
                                         foreach ($arrUnit as $unit) {
                                             if($gridRow[1]===$unit){ 
                                                 echo "<option value='$unit' selected=selected>$unit</option>";                                         
@@ -445,7 +474,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                                             }
                                         } 
                                         echo "        </td>";                                    
-                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[2]\" class='form-control' readonly='readonly'></td>";
+                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[2]\" maxlength='6' class='project-code form-control' readonly='readonly'></td>";
                                         echo "        <td><input name=\"$inputName\" type='text'  value=\"$gridRow[3]\" class='price-per-pallet form-control' readonly='readonly'></td>";
                                         echo "        <td class='num-pallets'>";
                                         echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[4]\" class='num-pallets-input form-control' id='turface-pro-league-num-pallets' readonly='readonly'>";
@@ -456,9 +485,8 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                                         echo "</tr>";                                 
                                 }else{ //if the user is not admin group user, then he can edit his own PR form.
                                         echo "<tr>";
-                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='form-control'></td>";
-                                        //echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[1]\" class='form-control'></td>";
-                                        echo "        <td class='product-title'><select name=\"$inputName\" class='form-control'>";
+                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='product-name form-control'></td>";
+                                        echo "        <td class='product-title'><select name=\"$inputName\" class='product-unit form-control'>";
                                         foreach ($arrUnit as $unit) { //populate the unit selection list
                                             if($gridRow[1]===$unit){ 
                                                 echo "<option value='$unit' selected=selected>$unit</option>";                                         
@@ -466,9 +494,8 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                                                 echo "<option>$unit</option>";
                                             }
                                         } 
-                                        echo "        </td>";                                     
-                                        //echo "        <td class='product-title'><select name=\"$inputName\" class='form-control'><option>EA</option><option>PCS</option><option>KG</option><option>M</option><option>CM</option><option>Roll</option><option>Set</option><option>Gram</option><option>Bag</option></select></td>";
-                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[2]\" class='form-control'></td>";
+                                        echo "        </td>"; 
+                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[2]\" maxlength='6' class='project-code form-control'></td>";
                                         echo "        <td><input name=\"$inputName\" type='text'  value=\"$gridRow[3]\" class='price-per-pallet form-control'></td>";
                                         echo "        <td class='num-pallets'>";
                                         echo "                <input name=\"$inputName\" type='text' value=\"$gridRow[4]\" class='num-pallets-input form-control' id='turface-pro-league-num-pallets'>";
@@ -487,14 +514,13 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
                         for($i=1; $i<15; $i++){ //遍历表格内容数组 
                                 $inputName = "row".$i."[]";
                                 echo "<tr>";
-                                echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control' ></td>";
-                                //echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control' ></td>";
-                                echo "        <td class='product-title'><select name=\"$inputName\" class='form-control'>";
+                                echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='product-name form-control' ></td>";
+                                echo "        <td class='product-title'><select name=\"$inputName\" class='product-unit form-control'>";
                                 foreach ($arrUnit as $unit) {
                                     echo "<option value='$unit'>$unit</option>";
                                 } 
                                 echo "        </td>"; 
-                                echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='form-control'></td>";
+                                echo "        <td class='product-title'><input name=\"$inputName\" type='text' maxlength='6' class='project-code form-control'></td>";
                                 echo "        <td><input name=\"$inputName\" type='text' class='price-per-pallet form-control'></td>";
                                 echo "        <td class='num-pallets'>";
                                 echo "                <input name=\"$inputName\" type='text' class='num-pallets-input form-control' id='turface-pro-league-num-pallets'>";
