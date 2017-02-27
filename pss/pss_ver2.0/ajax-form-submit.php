@@ -1,7 +1,7 @@
 <?php
 
 include_once 'db.php';
-
+$currentDate = date("Y-m-d");
 $ajaxFormData = $_POST; 
 $prNumber = ($ajaxFormData["prNumber"]);
 foreach($ajaxFormData as $key=>$value){
@@ -11,7 +11,11 @@ foreach($ajaxFormData as $key=>$value){
     //To escape the dangerous and special charactor
     $sqlUpdate = "UPDATE `request` SET `$key`= :value WHERE `prNumber` = :prNumber";
     $stmtUpdate=$db->prepare($sqlUpdate);
-    $stmtUpdate->bindParam(':value', $value);
+    if ($key ==='prDate'){
+        $stmtUpdate->bindParam(':value', $currentDate);
+    }else{
+        $stmtUpdate->bindParam(':value', $value);
+    }
     $stmtUpdate->bindParam(':prNumber', $prNumber);
     $stmtUpdate->execute();
 }

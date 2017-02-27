@@ -48,25 +48,34 @@
 //            }
             
 //            $sql = "SELECT `prNumber` FROM `request` WHERE `prNumber` LIKE '$yearCode%' ORDER BY `prNumber` DESC LIMIT 1";
-            $sql = "SELECT `prNumber` FROM `request` ORDER BY `prNumber` DESC LIMIT 1";
-            $stmt = $db->prepare($sql);
-            $stmt->execute();
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            if($row){ //如果有找到当前年份的PR， 则取得最后一张PR号
-                $lastNumber = $row['prNumber'] + 1;
-            }else{ // 如果没有找到当前年份的PR， 则重新生成PR
-                //$lastNumber = $yearCode * 10000 + 1;
-                $lastNumber = 100000 + 1;
-            }           
-            $_SESSION["lastNumber"] = $lastNumber;
-           
             echo "<div class='row'>";
             echo "<div class='col-xs-4'>";
             echo "</div>";
             echo "<div class='col-xs-4'>";
-            echo "<button class='btn btn-lg btn-primary btn-block' onclick=\"location.href='new.php?lastNumber=$lastNumber'\">New Purchasing Request</button>";
-            echo "<button class='btn btn-lg btn-primary btn-block' onclick=\"location.href='list.php'\">Purchasing Request History</button>";                        
-			echo "<button class='btn btn-lg btn-primary btn-block' onclick=\"location.href='http://cnszpms023/pss'\">New Approval Workflow</button>";
+            
+            $sqlBlankPR = "SELECT `prNumber` FROM `request` WHERE `accountNumber` IS NULL and `costcode` IS NULL and `requestor`=UPPER('$requestor') ORDER BY `prNumber` LIMIT 1";
+            $stmtBlankPR = $db->prepare($sqlBlankPR);
+            $stmtBlankPR->execute();
+            $rowBlankPR = $stmtBlankPR->fetch(PDO::FETCH_ASSOC);
+            if($rowBlankPR){
+                $lastNumber = $rowBlankPR['prNumber'];
+                echo "<button class='btn btn-lg btn-primary btn-block' onclick=\"location.href='edit.php?id=$lastNumber'\">New Purchasing Request</button>";
+            }else{
+                $sql = "SELECT `prNumber` FROM `request` ORDER BY `prNumber` DESC LIMIT 1";
+                $stmt = $db->prepare($sql);
+                $stmt->execute();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                if($row){ //如果有找到当前年份的PR， 则取得最后一张PR号
+                    $lastNumber = $row['prNumber'] + 1;
+                }else{ // 如果没有找到当前年份的PR， 则重新生成PR
+                    //$lastNumber = $yearCode * 10000 + 1;
+                    $lastNumber = 100000 + 1;
+                }           
+                $_SESSION["lastNumber"] = $lastNumber;
+                echo "<button class='btn btn-lg btn-primary btn-block' onclick=\"location.href='new.php?lastNumber=$lastNumber'\">New Purchasing Request</button>"; 
+            }
+            echo "<button class='btn btn-lg btn-primary btn-block' onclick=\"location.href='list.php'\">Purchasing Request History</button>";
+            echo "<button class='btn btn-lg btn-primary btn-block' onclick=\"location.href='http://cnszpms023/pss'\">New Approval Workflow</button>";
             echo "</div>";
             echo "<div class='col-xs-4'>";
             echo "</div>";

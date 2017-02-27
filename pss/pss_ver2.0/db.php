@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-$db = new PDO('mysql:host=localhost;dbname=purchase;charset=gb2312', 'pss', '1qazWSX');
+$db = new PDO('mysql:host=localhost;dbname=prv2;charset=utf8', 'pssv2', 'eZNV9pNMAUdLfWyr');
 
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

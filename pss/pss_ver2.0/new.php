@@ -13,8 +13,10 @@
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet"> 
+    <link href="css/jquery-ui.css" rel="stylesheet"> 
     
     <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.js"></script>
     <script type="text/javascript" src="js/order.js"></script>  
     
     <script type = "text/javascript" language = "javascript">
@@ -98,6 +100,7 @@
                     if (taxRate === "0")
                     {
                         alert ("Sorry, please don't forget to choose tax rate if currency is RMB!");
+                        //$("#dialog").dialog();
                         $("select[name='taxRate']").focus();
                         exit();
                     }
@@ -248,7 +251,9 @@ $stmtInvoice->execute();
           PR Number: <input type="text" id="prNumber" class="prinput" name="prNumber" value="<?php echo $lastPRnumber ?>">
           PR Date: <input type="text" id="prDate" class="prinput" name="prDate" value="<?php echo $currentDate ?>">
       </div>        
-
+            <div id="dialog" title="Attention:" style="display:none;">
+                <p>Sorry, please choose tax rate if the PR currency is RMB!</p>
+            </div>
         <div class="row">
           <div class="col-xs-6">
               <p><span class="badge">Supplier Info</span></p>
