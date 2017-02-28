@@ -7,7 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="jackson li">
-    <title><?php echo $_GET['id'] ?></title>
+    <title><?php echo base64_decode($_GET['id']) ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -166,6 +166,12 @@
                     });
 
                     $("#gridForm").submit(); //SUBMIT FORM
+                    
+                    //Refresh the page when submit is done
+                    setTimeout(function() {
+                        location.reload()
+                    },3000);
+
             }); 
        }); 
     </script>
@@ -182,9 +188,9 @@ include_once 'db.php';
 if(isset($_SESSION["username"]) && $_SESSION["username"]){
     $requestor=$_SESSION["username"];
 }else{
-    echo '<div class="error"> Sorry, please login first!<br><a href="index.php">Go Back</a></div>';  
+    echo '<div class="error"><p><h3> Sorry, please login first!</h3></p><br><a href="index.php">Go Back</a></div>';  
     return false;    
-}      
+}
 
 //define the unit for the gridForm
 
@@ -213,12 +219,12 @@ $stmtInvoice->execute();
 
 //
 
-$prNumber=$_GET['id'];
+$prNumber=  base64_decode($_GET['id']);
 
 $sqlPrNumber = "SELECT * FROM `request` WHERE prNumber='$prNumber'";
 $stmtPrNumber = $db->query($sqlPrNumber);
 $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
-//print_r($row);
+if($row){
     $prDate=$row['prDate'];
     $supplierName=$row['supplierName'];
     $supplierContact = $row['supplierContact'];
@@ -240,6 +246,10 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
     $gridContents=$row['gridContents']; 
     $taxRate=$row['taxRate']; 
     $arrayGridContents = unserialize($gridContents); //将表格内容由文本序列转换成数组
+}else{
+    echo '<div class="error"><p><h3> Sorry, PR number is not found!</h3></p><br><a href="index.php">Go Back</a></div>';
+    return false;
+}
 ?>
 
     <!-- Begin page content -->
@@ -247,7 +257,7 @@ $row = $stmtPrNumber->fetch(PDO::FETCH_ASSOC);
         <form id="ajaxform" name="ajaxform" action="ajax-form-submit.php" method="post">
       <div class="page-header">
           <h1>PremiumSoundSolutions<small> Purchase Requisition</small></h1>          
-          PR Number: <input type="text" class="prinput" name="prNumber" value="<?php echo $_GET['id'] ?>">
+          PR Number: <input type="text" class="prinput" name="prNumber" value="<?php echo $prNumber ?>">
           PR Date: <input type="text" class="prinput" name="prDate" value="<?php echo $prDate ?>">
       </div>  
             

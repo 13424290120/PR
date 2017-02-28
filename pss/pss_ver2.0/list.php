@@ -102,7 +102,7 @@
                 <?php
                   while($rowList = $stmtList->fetch(PDO::FETCH_ASSOC)){                      
                     echo "<tr>";
-                    echo "<td><a href=edit.php?id=" .$rowList["prNumber"].">".$rowList["prNumber"]."</a></td>";
+                    echo "<td><a href=edit.php?id=" .base64_encode($rowList["prNumber"]).">".$rowList["prNumber"]."</a></td>";
                     echo "<td>".$rowList["supplierName"]."</td>";
                     echo "<td>".$rowList["prDate"]."</td>";
                     echo "<td>".$rowList["categoryName"]."</td>";

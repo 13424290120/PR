@@ -13,6 +13,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
@@ -35,7 +36,7 @@
             if(isset($_SESSION["username"]) && $_SESSION["username"]){
                 $requestor=$_SESSION["username"];
             }else{
-                echo '<div class="error"> Sorry, please login first!<br><a href="index.php">Go Back</a></div>';  
+                echo '<div class="error"><p><h3>Sorry, please login first!</h3></p><br><a href="index.php">Go Back</a></div>';  
                 return false;    
             } 
             
@@ -58,7 +59,7 @@
             $stmtBlankPR->execute();
             $rowBlankPR = $stmtBlankPR->fetch(PDO::FETCH_ASSOC);
             if($rowBlankPR){
-                $lastNumber = $rowBlankPR['prNumber'];
+                $lastNumber = base64_encode($rowBlankPR['prNumber']);
                 echo "<button class='btn btn-lg btn-primary btn-block' onclick=\"location.href='edit.php?id=$lastNumber'\">New Purchasing Request</button>";
             }else{
                 $sql = "SELECT `prNumber` FROM `request` ORDER BY `prNumber` DESC LIMIT 1";
