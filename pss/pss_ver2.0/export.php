@@ -81,7 +81,7 @@ $objPHPExcel->setActiveSheetIndex(0)
         $gridContents = $rowList['gridContents']; 
         if($gridContents != ""){
             $arrayGridContents = unserialize($gridContents); //convert serialized data to array            
-            foreach($arrayGridContents as $gridRow){ //遍历表格内容数组 
+            foreach($arrayGridContents as $gridRow){ //loop grid table contents
                 if(is_array($gridRow)){
                     if ($gridRow["0"] != ""){
                         $objPHPExcel->setActiveSheetIndex(0)
@@ -132,19 +132,17 @@ $objPHPExcel->setActiveSheetIndex(0)
 
 //// Rename worksheet
 $objPHPExcel->getActiveSheet()->setTitle('Report');
-////
-//
+
 //// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 $objPHPExcel->setActiveSheetIndex(0);
-//
-//
+
 //// Redirect output to a client’s web browser (Excel2007)
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header('Content-Disposition: attachment;filename="prReport.xlsx"');
 header('Cache-Control: max-age=0');
 //// If you're serving to IE 9, then the following may be needed
 header('Cache-Control: max-age=1');
-//
+
 //// If you're serving to IE over SSL, then the following may be needed
 header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
 header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
