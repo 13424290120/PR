@@ -82,9 +82,9 @@ $(function(){
     $('.product-name').keyup(function() {
         $('span.error-keyup-2').remove();
         var inputVal = $(this).val();
-        var characterReg = /^\s*[a-zA-Z0-9,\u4e00-\u9fa5,&(),\s]+\s*$/;
+        var characterReg = /^\s*[a-zA-Z0-9,\u4e00-\u9fa5,&()\-,\s]+\s*$/;
         if(!characterReg.test(inputVal)) {
-            $(this).after('<span class="bg-warning error-keyup-2">WARNING: illegal charactor detected! Please remove it.</span>');                      
+            $(this).after('<span class="bg-warning error-keyup-2">WARNING: blank or illegal charactor detected! Please remove it.</span>');                      
             $('.error-keyup-2').fadeOut(4800);
             $(this).focus();
             //alert("No special characters allowed!!!");            

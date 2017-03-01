@@ -14,7 +14,7 @@ foreach($ajaxFormData as $key=>$value){
     if ($key ==='prDate'){
         $stmtUpdate->bindParam(':value', $currentDate);
     }else{
-        $stmtUpdate->bindParam(':value', $value);
+        $stmtUpdate->bindParam(':value', trim($value));
     }
     $stmtUpdate->bindParam(':prNumber', $prNumber);
     $stmtUpdate->execute();

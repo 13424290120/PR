@@ -26,7 +26,7 @@
                 var inputVal = $(this).val();
                 var characterReg = /^\s*[a-zA-Z0-9,\u4e00-\u9fa5,&()./\+\-,\s]+\s*$/;
                 if(!characterReg.test(inputVal)) {
-                    $(this).after('<span class="bg-warning error-keyup-2">WARNING: illegal charactor detected! </span>');                      
+                    $(this).after('<span class="bg-warning error-keyup-2">WARNING: blank or illegal charactor detected! </span>');                      
                     $('.error-keyup-2').fadeOut(4800);
                     $(this).focus();
                     //alert("No special characters allowed!!!");            
@@ -38,7 +38,7 @@
                 var inputVal = $(this).val();
                 var characterReg = /^\s*[a-zA-Z0-9,\u4e00-\u9fa5,&()./\+\-,\s]+\s*$/;
                 if(!characterReg.test(inputVal)) {
-                    $(this).after('<span class="bg-warning error-keyup-2">WARNING: illegal charactor detected! </span>');                      
+                    $(this).after('<span class="bg-warning error-keyup-2">WARNING: blank or illegal charactor detected! </span>');                      
                     $('.error-keyup-2').fadeOut(4800);
                     $(this).focus();
                     //alert("No special characters allowed!!!");            
@@ -195,15 +195,15 @@ if(isset($_SESSION["username"]) && $_SESSION["username"]){
 //define the unit for the gridForm
 
 $arrUnit = array('','Bag','CM','EA','Gram','Hour','KG','M','PCS','Roll','Set'); 
-$arrCurrency = array('','RMB','HKD','USD','EURO');
-$arrShipto = array('APAC','SHAT','Shuanglin','Sunway','Other'); 
+$arrCurrency = array('','RMB','HKD','USD','EURO','N/A');
+$arrShipto = array('Shenzhen','SHAT','Shuanglin','Sunway','Other'); 
 
 //从数据库取出字典数据，生成表单下拉清单
 
 $currentDate = date("Y-m-d");
 
-$sqlAccount = "SELECT `id`,`accountNumber`,`description` FROM `account` ORDER BY `accountNumber`";
-$sqlCostCode = "SELECT `id`,`code`,`codeName` FROM `costcode`";
+$sqlAccount = "SELECT `id`,`accountNumber`,`description` FROM `account` WHERE `active`=1 ORDER BY `accountNumber`";
+$sqlCostCode = "SELECT `id`,`code`,`codeName` FROM `costcode` WHERE `active`=1";
 $sqlCategory = "SELECT `id`,`name` FROM `category`";
 $sqlInvoice = "SELECT `id`,`name`,`address` FROM `invoice`";
 
@@ -418,10 +418,6 @@ if($row){
                 <input name="chargeBackCustomerCode" class="form-control" value="<?php echo $chargeBackCustomerCode ?>">
             </div>
             <div class="col-xs-3">
-                Charge Back Amount:
-                <input name="chargeBackAmount" class="form-control" value="<?php echo $chargeBackAmount ?>">
-            </div>
-            <div class="col-xs-3">
                 Charge Back PO Number:
                 <input name="chargeBackPONumber" class="form-control" value="<?php echo $chargeBackPONumber ?>">
             </div>
@@ -438,6 +434,10 @@ if($row){
                       }
                     ?> 
                 </select>                 
+            </div>  
+            <div class="col-xs-3">
+                Charge Back Amount:
+                <input name="chargeBackAmount" class="form-control" value="<?php echo $chargeBackAmount ?>">
             </div>            
         </div>
         
@@ -474,7 +474,7 @@ if($row){
                                 $inputName = "row".$i."[]"; // 定义输入框名称，以数组的形式存储数据
                                 if($_SESSION["adminUser"]){ //if the user belong to admin group, then only allow him to view.
                                         echo "<tr>";
-                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='product-name form-control' readonly='readonly'></td>";
+                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" maxlength='65' class='product-name form-control' readonly='readonly'></td>";
                                         echo "        <td class='product-title'><select name=\"$inputName\" class='product-unit form-control' readonly='readonly'>";
                                         foreach ($arrUnit as $unit) {
                                             if($gridRow[1]===$unit){ 
@@ -495,7 +495,7 @@ if($row){
                                         echo "</tr>";                                 
                                 }else{ //if the user is not admin group user, then he can edit his own PR form.
                                         echo "<tr>";
-                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" class='product-name form-control'></td>";
+                                        echo "        <td class='product-title'><input name=\"$inputName\" type='text' value=\"$gridRow[0]\" maxlength='65' class='product-name form-control'></td>";
                                         echo "        <td class='product-title'><select name=\"$inputName\" class='product-unit form-control'>";
                                         foreach ($arrUnit as $unit) { //populate the unit selection list
                                             if($gridRow[1]===$unit){ 
@@ -524,7 +524,7 @@ if($row){
                         for($i=1; $i<15; $i++){ //遍历表格内容数组 
                                 $inputName = "row".$i."[]";
                                 echo "<tr>";
-                                echo "        <td class='product-title'><input name=\"$inputName\" type='text' class='product-name form-control' ></td>";
+                                echo "        <td class='product-title'><input name=\"$inputName\" type='text' maxlength='65' class='product-name form-control' ></td>";
                                 echo "        <td class='product-title'><select name=\"$inputName\" class='product-unit form-control'>";
                                 foreach ($arrUnit as $unit) {
                                     echo "<option value='$unit'>$unit</option>";
@@ -545,14 +545,14 @@ if($row){
                     ?>
                     <tr>
                         <td colspan="2"></td> 
-                        <td colspan="3"><b>Total without Tax</b></td>
+                        <td colspan="3"><b>Total without VAT</b></td>
                             <td style="text-align: right;">
                                     <input type="text" class="total-box form-control" id="product-subtotal" value="<?php echo $arrayGridContents['totalWithoutTax'] ?>" name="totalWithoutTax" readonly="readonly">
                             </td>
                     </tr>
                     <tr>
                         <td colspan="2"></td>                            
-                        <td><b>Tax Rate</b></td>
+                        <td><b>VAT Rate</b></td>
                             <td colspan="2">
                                 <select name="taxRate" id="taxRate" class="form-control">                                    
                                         <option  <?php if($taxRate==="0.17"){ echo "selected=selected"; }?> value="0.17">17%</option>
@@ -570,7 +570,7 @@ if($row){
                     </tr>
                     <tr>
                         <td colspan="2"></td> 
-                        <td colspan="3"><b>Total with Tax</b></td>
+                        <td colspan="3"><b>Total with VAT</b></td>
                             <td style="text-align: right;">
                                     <input type="text" class="total-box form-control" id="product-subtotal-tax" name="total" value="<?php echo $arrayGridContents['total'] ?>" readonly="readonly">
                             </td>

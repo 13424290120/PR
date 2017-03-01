@@ -14,11 +14,11 @@ $startDate = $_POST["startDate"];
 $endDate = $_POST["endDate"];
 
 $sqlList = "SELECT r.*, a.accountNumber AS accountNumber, category.name "
-        . "AS categoryName, costcode.code AS costCode, prstatus.statusName AS statusName from request as r "
+        . "AS categoryName, costcode.code AS costCode, invoice.name as invoiceTo from request as r "
         . "LEFT JOIN account as a on ( r.accountNumber = a.id ) "
         . "LEFT JOIN category ON ( category.id = r.categoryName ) "
         . "LEFT JOIN costcode ON ( costcode.id = r.costCode ) " 
-        . "LEFT JOIN prstatus ON ( prstatus.id = r.prStatus ) "
+        . "LEFT JOIN invoice ON ( invoice.id = r.invoiceTo ) "
         . "WHERE r.prDate BETWEEN '$startDate' AND '$endDate'";
 
 $stmtList = $db->prepare($sqlList);
@@ -49,29 +49,30 @@ $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('H1', 'Category')       
             ->setCellValue('I1', 'CostCode')
             ->setCellValue('J1', 'AccountName')
-            ->setCellValue('K1', 'WithInBudget')
-            ->setCellValue('L1', 'Recoverable')
-            ->setCellValue('M1', 'ChargeBackCustomerName')
-            ->setCellValue('N1', 'ChargeBackCustomerCode')
-            ->setCellValue('O1', 'ChargeBackPONumber')
-            ->setCellValue('P1', 'ChargeBackAmount')        
-            ->setCellValue('Q1', 'ChargeBackCurrency')       
-            ->setCellValue('R1', 'CapexNumber')
-            ->setCellValue('S1', 'CapexBudgetNumber')
-            ->setCellValue('T1', 'Purpose')
-            ->setCellValue('U1', 'DeliveryDate')
-            ->setCellValue('V1', 'Requestor')
-            ->setCellValue('W1', 'Item')
-            ->setCellValue('X1', 'Unit')
-            ->setCellValue('Y1', 'ProjectCode')            
-            ->setCellValue('Z1', 'UnitPrice')
-            ->setCellValue('AA1', 'Quantity')            
-            ->setCellValue('AB1', 'Subtotal')
-            ->setCellValue('AC1', 'Currency')
-            ->setCellValue('AD1', 'TotalWithoutTax')
-            ->setCellValue('AE1', 'TaxRate')        
-            ->setCellValue('AF1', 'Tax')
-            ->setCellValue('AG1', 'Total');        
+            ->setCellValue('K1', 'ProjectName')
+            ->setCellValue('L1', 'WithInBudget')
+            ->setCellValue('M1', 'Recoverable')
+            ->setCellValue('N1', 'ChargeBackCustomerName')
+            ->setCellValue('O1', 'ChargeBackCustomerCode')
+            ->setCellValue('P1', 'ChargeBackPONumber')
+            ->setCellValue('Q1', 'ChargeBackAmount')        
+            ->setCellValue('R1', 'ChargeBackCurrency')       
+            ->setCellValue('S1', 'CapexNumber')
+            ->setCellValue('T1', 'CapexBudgetNumber')
+            ->setCellValue('U1', 'Purpose')
+            ->setCellValue('V1', 'DeliveryDate')
+            ->setCellValue('W1', 'Requestor')
+            ->setCellValue('X1', 'Item')
+            ->setCellValue('Y1', 'Unit')
+            ->setCellValue('Z1', 'ProjectCode')            
+            ->setCellValue('AA1', 'UnitPrice')
+            ->setCellValue('AB1', 'Quantity')            
+            ->setCellValue('AC1', 'Subtotal')
+            ->setCellValue('AD1', 'Currency')
+            ->setCellValue('AE1', 'TotalWithoutVAT')
+            ->setCellValue('AF1', 'VAT Rate')        
+            ->setCellValue('AG1', 'VAT')
+            ->setCellValue('AH1', 'TotalWithVAT');        
 //
 //
     $iSheetRow = 0;
@@ -93,30 +94,31 @@ $objPHPExcel->setActiveSheetIndex(0)
                                     ->setCellValue('G'.$iRow, $rowList['prDate'])
                                     ->setCellValue('H'.$iRow, $rowList['categoryName']) 
                                     ->setCellValue('I'.$iRow, $rowList['costCode'])
-                                    ->setCellValue('J'.$iRow, $rowList['accountNumber'])
-                                    ->setCellValue('K'.$iRow, $rowList['withinBudget'])
-                                    ->setCellValue('L'.$iRow, $rowList['recoverable'])
-                                    ->setCellValue('M'.$iRow, $rowList['chargeBackCustomerName'])
-                                    ->setCellValue('N'.$iRow, $rowList['chargeBackCustomerCode'])                                
-                                    ->setCellValue('O'.$iRow, $rowList['chargeBackPONumber'])       
-                                    ->setCellValue('P'.$iRow, $rowList['chargeBackAmount'])
-                                    ->setCellValue('Q'.$iRow, $rowList['chargeBackCurrency'])
-                                    ->setCellValue('R'.$iRow, $rowList['capexNumber'])
-                                    ->setCellValue('S'.$iRow, $rowList['capexBudgetNumber'])
-                                    ->setCellValue('T'.$iRow, $rowList['purpose'])
-                                    ->setCellValue('U'.$iRow, $rowList['deliveryDate'])
-                                    ->setCellValue('V'.$iRow, $rowList['requestor'])       
-                                    ->setCellValue('W'.$iRow, $gridRow["0"])
-                                    ->setCellValue('X'.$iRow, $gridRow["1"])
-                                    ->setCellValue('Y'.$iRow, $gridRow["2"])
-                                    ->setCellValue('Z'.$iRow, $gridRow["3"])
-                                    ->setCellValue('AA'.$iRow, $gridRow["4"])
-                                    ->setCellValue('AB'.$iRow, $gridRow["5"])
-                                    ->setCellValue('AC'.$iRow, $rowList['currency'])
-                                    ->setCellValue('AD'.$iRow, $rowList['totalWithoutTax'])
-                                    ->setCellValue('AE'.$iRow, $rowList['taxRate'])
-                                    ->setCellValue('AF'.$iRow, $rowList['tax'])
-                                    ->setCellValue('AG'.$iRow, $rowList['total']);
+                                    ->setCellValue('J'.$iRow, "'".$rowList['accountNumber'])
+                                    ->setCellValue('K'.$iRow, $rowList['projectName'])
+                                    ->setCellValue('L'.$iRow, $rowList['withinBudget'])
+                                    ->setCellValue('M'.$iRow, $rowList['recoverable'])
+                                    ->setCellValue('N'.$iRow, $rowList['chargeBackCustomerName'])
+                                    ->setCellValue('O'.$iRow, $rowList['chargeBackCustomerCode'])                                
+                                    ->setCellValue('P'.$iRow, $rowList['chargeBackPONumber'])       
+                                    ->setCellValue('Q'.$iRow, $rowList['chargeBackAmount'])
+                                    ->setCellValue('R'.$iRow, $rowList['chargeBackCurrency'])
+                                    ->setCellValue('S'.$iRow, $rowList['capexNumber'])
+                                    ->setCellValue('T'.$iRow, $rowList['capexBudgetNumber'])
+                                    ->setCellValue('U'.$iRow, $rowList['purpose'])
+                                    ->setCellValue('V'.$iRow, $rowList['deliveryDate'])
+                                    ->setCellValue('W'.$iRow, $rowList['requestor'])       
+                                    ->setCellValue('X'.$iRow, $gridRow["0"])
+                                    ->setCellValue('Y'.$iRow, $gridRow["1"])
+                                    ->setCellValue('Z'.$iRow, $gridRow["2"])
+                                    ->setCellValue('AA'.$iRow, $gridRow["3"])
+                                    ->setCellValue('AB'.$iRow, $gridRow["4"])
+                                    ->setCellValue('AC'.$iRow, $gridRow["5"])
+                                    ->setCellValue('AD'.$iRow, $rowList['currency'])
+                                    ->setCellValue('AE'.$iRow, $rowList['totalWithoutTax'])
+                                    ->setCellValue('AF'.$iRow, $rowList['taxRate'])
+                                    ->setCellValue('AG'.$iRow, $rowList['tax'])
+                                    ->setCellValue('AH'.$iRow, $rowList['total']);
                         $iRow = $iRow + 1;
                     }
                     
