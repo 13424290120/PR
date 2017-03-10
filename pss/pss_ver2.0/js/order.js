@@ -39,7 +39,7 @@ function rmoney(s)
     if ( s != 0 && s.indexOf(",") > 0 ){
         return parseFloat(s.replace(/[^\d\.-]/g, ""));
     }else{
-        return s;
+        return parseFloat(s);
     }
        
 } 
@@ -73,7 +73,7 @@ function calcTax(){
             var tax = prodSubTotal * taxRate;            
             var totalWithTax = tax + prodSubTotal;
             $("#tax").val(fmoney(tax, 2));
-            $("#product-subtotal-tax").val(fmoney(totalWithTax, 2));  
+            $("#product-subtotal-tax").val(fmoney(totalWithTax, 2));
         }
 }
 

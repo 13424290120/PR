@@ -46,20 +46,28 @@
 //        }else{
 //            echo '<div class="error"> Sorry, please login first!<br><a href="index.php">Go Back</a></div>';  
 //            return false;    
-//        }      
-      
-   
+//        }
+        
+        if(isset($_POST["costCode"]) && count($_POST["costCode"]) > 1){
+            $arrCostCode = $_POST["costCode"];
+            $strCostCode = implode(",", $arrCostCode);
+        }else{
+            die("<div class='error'><h3>Sorry, Please choose your Code Center, you can select multiple cost centers by press CTRL on the keyboard.</h3></div>");
+        }
+        
             $sqlList = "SELECT r.prNumber AS prNumber, r.requestor AS Requestor, r.supplierName AS supplierName, r.shipTo AS shipTo, r.gridContents AS gridContents, "
                     . "r.currency AS Currency, r.total AS Total, r.prDate AS prDate, r.prStatus as prStatus, a.accountNumber AS accountNumber, category.name "
                     . "AS categoryName, costcode.code AS costCode, prstatus.statusName AS statusName from request as r "
                     . "LEFT JOIN account as a on ( r.accountNumber = a.id ) "
                     . "LEFT JOIN category ON ( category.id = r.categoryName ) "
                     . "LEFT JOIN costcode ON ( costcode.id = r.costCode ) " 
-                    . "LEFT JOIN prstatus ON ( prstatus.id = r.prStatus )";
+                    . "LEFT JOIN prstatus ON ( prstatus.id = r.prStatus ) "
+                    . "WHERE r.costCode in ($strCostCode)";
             
         $stmtList = $db->prepare($sqlList);
         $stmtList->execute();
         
+
       ?>
       <!--<div class="container" style="width:1280px;">-->
           <div class="page-header clearfix" style="display:inline;">
