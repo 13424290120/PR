@@ -72,7 +72,7 @@
                     {
                         //alert ("Attention: Blank fields or illegal charactors detected, please correct it before submit!");
                         $(this).focus();
-                        $(this).after('<span class="bg-warning error-keyup-2">WARNING: illegal charactor detected! </span>');
+                        $(this).after('<span class="bg-warning error-keyup-2">WARNING: blank or illegal charactor detected! </span>');
                         $('.error-keyup-2').fadeOut(4800);
                         exit();
                     } ;                     
