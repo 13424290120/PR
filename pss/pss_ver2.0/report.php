@@ -43,7 +43,7 @@ $stmtCostCode->execute();
 
       
       <div class="form-field">
-          <form class="form-signin" method="post" action="listbyproject.php" ?>
+          <form class="form-signin" method="post" action="export.php" ?>
         <input type='hidden' name='reportForm' value='1'>        
           <h2 class="form-signin-heading">Select Report Date Range</h2>
           <br>

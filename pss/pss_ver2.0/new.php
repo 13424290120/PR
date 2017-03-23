@@ -21,8 +21,8 @@
     
     <script type = "text/javascript" language = "javascript">
         // To get the invoice address from database by ajax
-       $(document).ready(function() {          
-            
+       $(document).ready(function() { 
+
             //Validate the form fields
             $("#ajaxform input").blur(function(){
                 $('span.error-keyup-2').remove();
@@ -56,7 +56,7 @@
           
           //print the form
             $("#printButton").click(function()
-            {                    
+            {  
                     window.print();
             });
             
@@ -170,7 +170,8 @@
                         //e.unbind();
                     });
 
-                    $("#ajaxform").submit(); //SUBMIT FORM                    
+                    $("#ajaxform").submit(); //SUBMIT FORM
+                    
             });  
        }); 
     </script>
@@ -518,7 +519,8 @@ $stmtInvoice->execute();
                 <span class="btn btn-success"><a style="color:#FFF;" href="home.php">Home</a></span>
             </center>
             <hr>
-        </div>        
+        </div>
+                
     </div>
   </body>
 </html>

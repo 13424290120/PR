@@ -6,9 +6,15 @@ require_once dirname(__FILE__) . '/PHPExcel/PHPExcel.php';
 if(isset($_SESSION["username"]) && $_SESSION["username"]){
     $requestor=$_SESSION["username"];
 }else{
-    echo '<div class="error"> Sorry, please login first!<br><a href="index.php">Go Back</a></div>';  
-    return false;    
-}      
+    die('<div class="error"> Sorry, please login first!<br><a href="index.php">Go Back</a></div>'); 
+}     
+
+if(isset($_POST["costCode"]) && count($_POST["costCode"]) > 0){
+    $arrCostCode = $_POST["costCode"];
+    $strCostCode = implode(",", $arrCostCode);
+}else{
+    die("<div class='error'><h3>Sorry, Please choose your Code Center, you can select multiple cost centers by press CTRL on the keyboard.</h3></div>");
+}
 
 $startDate = $_POST["startDate"];
 $endDate = $_POST["endDate"];
@@ -19,7 +25,7 @@ $sqlList = "SELECT r.*, a.accountNumber AS accountNumber, category.name "
         . "LEFT JOIN category ON ( category.id = r.categoryName ) "
         . "LEFT JOIN costcode ON ( costcode.id = r.costCode ) " 
         . "LEFT JOIN invoice ON ( invoice.id = r.invoiceTo ) "
-        . "WHERE r.prDate BETWEEN '$startDate' AND '$endDate'";
+        . "WHERE r.costCode in ($strCostCode) AND r.prDate BETWEEN '$startDate' AND '$endDate'";
 
 $stmtList = $db->prepare($sqlList);
 $stmtList->execute();

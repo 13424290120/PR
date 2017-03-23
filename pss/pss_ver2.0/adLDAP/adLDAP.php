@@ -108,7 +108,7 @@ class adLDAP {
     * 
     * @var array
     */
-    protected $domainControllers = array("cnszpdc004.premiumsoundsolutions.com");
+    protected $domainControllers = array("161.92.80.93","130.145.124.132");
 	
     /**
     * Optional account with higher privileges for searching

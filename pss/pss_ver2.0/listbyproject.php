@@ -32,10 +32,8 @@
       <?php
       
       include_once 'db.php';    
+      include_once 'dbwf.php';    
 
-        $sqlStatus = "SELECT `id`,`statusName` FROM `prstatus`";
-        $stmtStatus = $db->prepare($sqlStatus);
-        $stmtStatus->execute();      
       
       //echo $_SESSION["adminUser"];
       //echo $_SESSION["username"];
@@ -48,7 +46,7 @@
 //            return false;    
 //        }
         
-        if(isset($_POST["costCode"]) && count($_POST["costCode"]) > 1){
+        if(isset($_POST["costCode"]) && count($_POST["costCode"]) > 0){
             $arrCostCode = $_POST["costCode"];
             $strCostCode = implode(",", $arrCostCode);
         }else{
@@ -103,6 +101,8 @@
                     <th>Unit Price</th> 
                     <th>Quantity</th> 
                     <th>SubTotal</th> 
+                    <th>Status</th> 
+                    <th>Resolution</th> 
                     
                 </tr>
                 
@@ -110,6 +110,18 @@
                 
                 while($rowList = $stmtList->fetch(PDO::FETCH_ASSOC)){
                     $gridContents = $rowList['gridContents'];                     
+                    $prNumber = $rowList['prNumber'];
+                    $sqlStatus = "SELECT `bug_status`,`resolution` FROM bugs WHERE `short_desc`='$prNumber' ORDER BY `delta_ts` DESC LIMIT 1";
+                    $stmtStatus = $dbwf->query($sqlStatus);
+                    $rowStatus = $stmtStatus->fetch(PDO::FETCH_ASSOC);
+                    if($rowStatus){
+                        $prStatus = $rowStatus['bug_status'];
+                        $prResolution = $rowStatus['resolution'];
+                    }else{
+                        $prStatus = "N/A";
+                        $prResolution = "N/A";
+                    }
+                    
                     if($gridContents != ""){   
                         $arrayGridContents = unserialize($gridContents);
                         foreach($arrayGridContents as $gridRow){ //遍历表格内容数组 
@@ -132,6 +144,8 @@
                                     echo "<td>".$gridRow["3"]."</td>";
                                     echo "<td>".$gridRow["4"]."</td>";
                                     echo "<td>".$gridRow["5"]."</td>";
+                                    echo "<td>".$prStatus."</td>";
+                                    echo "<td>".$prResolution."</td>";
                                     echo "</tr>";
                                 }
                             }
